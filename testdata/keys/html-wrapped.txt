@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Install Instructions</h1>
+<pre>
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+mQINBGLvAj0BEADFqyP9to6M7cJ7RnNvGJE0FkJFxQqQKvVBNaW8dCqJN8CcZSWx
+Fake key data here for testing
+-----END PGP PUBLIC KEY BLOCK-----
+</pre>
+</body>
+</html>

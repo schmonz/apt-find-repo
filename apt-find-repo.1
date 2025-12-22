@@ -1,0 +1,98 @@
+.TH APT-FIND-REPO 1 "December 2024" "apt-find-repo 0.1.0" "User Commands"
+.SH NAME
+apt-find-repo \- find and add third-party APT repositories from web pages
+.SH SYNOPSIS
+.B apt-find-repo
+[\fB\-v\fR]
+.I url
+[\fBadd\fR]
+.SH DESCRIPTION
+.B apt-find-repo
+parses web pages that describe third-party Debian/Ubuntu repositories,
+extracts GPG signing keys and source list entries, and lists available
+packages. When invoked with the \fBadd\fR argument, it installs the
+repository configuration to the system.
+.PP
+The tool automates the manual process of reading repository documentation,
+downloading GPG keys, and creating sources.list entries. It generates modern
+deb822 format sources files in \fI/etc/apt/sources.list.d/\fR and stores
+keys in \fI/etc/apt/keyrings/\fR.
+.SH OPTIONS
+.TP
+.B \-v
+Verbose output. Shows GPG key URLs, source entries, and installation progress
+on stderr.
+.TP
+.I url
+URL of a web page containing repository installation instructions, such as
+a GitHub README or documentation page.
+.TP
+.B add
+Install the repository. Requires root privileges. Without this argument,
+the command only lists available packages.
+.SH EXAMPLES
+.PP
+Detect a repository and list available packages:
+.PP
+.nf
+.RS
+apt-find-repo https://github.com/JonasGroeger/jetbrains-ppa
+.RE
+.fi
+.PP
+Install the detected repository (requires root):
+.PP
+.nf
+.RS
+sudo apt-find-repo https://github.com/JonasGroeger/jetbrains-ppa add
+.RE
+.fi
+.PP
+Show detailed information about what was found:
+.PP
+.nf
+.RS
+apt-find-repo -v https://github.com/JonasGroeger/jetbrains-ppa
+.RE
+.fi
+.SH FILES
+.TP
+.I /etc/apt/keyrings/*.gpg
+.TQ
+.I /etc/apt/keyrings/*.asc
+GPG signing keys for third-party repositories. Keys are stored in binary
+(.gpg) or ASCII-armored (.asc) format depending on the source format.
+.TP
+.I /etc/apt/sources.list.d/*.sources
+Repository source entries in deb822 format. Files are named after the
+repository.
+.SH EXIT STATUS
+.TP
+.B 0
+Success
+.TP
+.B 1
+Error occurred (missing keys, missing sources, permission denied, etc.)
+.SH NOTES
+The tool requires root privileges (via \fBsudo\fR) when invoked with the
+\fBadd\fR argument to write system configuration files.
+.PP
+Repository keys and sources are validated before installation. If a key or
+sources file already exists at the target location, the command will fail
+rather than overwrite existing configuration.
+.PP
+After adding a repository, run \fBapt update\fR to refresh the package cache:
+.PP
+.nf
+.RS
+sudo apt update
+.RE
+.fi
+.SH SEE ALSO
+.BR apt (8),
+.BR apt-key (8),
+.BR sources.list (5)
+.SH AUTHOR
+Amitai Schleier and his LLM friends
+.SH BUGS
+Report bugs at: https://github.com/schmonz/apt-find-repo

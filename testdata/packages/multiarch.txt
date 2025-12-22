@@ -1,0 +1,11 @@
+Package: amd64-pkg
+Version: 1.0
+Architecture: amd64
+
+Package: arm64-pkg
+Version: 1.0
+Architecture: arm64
+
+Package: all-arch-pkg
+Version: 1.0
+Architecture: all

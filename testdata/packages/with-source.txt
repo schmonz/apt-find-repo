@@ -1,0 +1,10 @@
+Package: real-package
+Version: 1.0
+Architecture: amd64
+
+Source: source-only-pkg
+Binary: real-package
+
+Package: another-package
+Version: 2.0
+Architecture: all
