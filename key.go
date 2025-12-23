@@ -32,7 +32,7 @@ func detectKeyFormat(data []byte) (string, error) {
 	if len(data) > 100 {
 		sample = data[:100]
 	}
-	
+
 	for _, b := range sample {
 		if b < 32 || b > 126 {
 			nonPrintable++
@@ -62,11 +62,11 @@ func normalizeKey(data []byte) ([]byte, error) {
 			return nil, fmt.Errorf("failed to extract armored key")
 		}
 		return extracted, nil
-	
+
 	case "binary", "dearmored":
 		// Binary formats are fine as-is
 		return data, nil
-	
+
 	default:
 		return nil, fmt.Errorf("unknown format: %s", format)
 	}

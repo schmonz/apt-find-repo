@@ -44,7 +44,7 @@ func fetchPackageList(debLine string) ([]string, error) {
 
 	// Try common architectures
 	arches := []string{"amd64", "all"}
-	
+
 	for _, arch := range arches {
 		// Try Packages.gz first (smaller), then uncompressed
 		urls := []string{
@@ -101,10 +101,10 @@ func parsePackagesFile(data []byte) []string {
 	seen := make(map[string]bool)
 
 	scanner := bufio.NewScanner(bytes.NewReader(data))
-	
+
 	for scanner.Scan() {
 		line := scanner.Text()
-		
+
 		// Package stanzas are separated by blank lines
 		// We only care about "Package:" fields
 		if strings.HasPrefix(line, "Package:") {

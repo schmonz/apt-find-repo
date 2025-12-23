@@ -72,7 +72,7 @@ func TestMatchKeysToSources(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			matches, err := matchKeysToSources(tc.gpgURLs, tc.debLines)
-			
+
 			if tc.wantErr {
 				if err == nil {
 					t.Error("Expected error, got none")
@@ -134,7 +134,7 @@ func TestGenerateKeyPath(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			path, format := generateKeyPath(tc.gpgURL, tc.repoName)
-			
+
 			if path != tc.wantPath {
 				t.Errorf("Path: got %s, want %s", path, tc.wantPath)
 			}
@@ -192,7 +192,7 @@ Signed-By: /etc/apt/keyrings/example.gpg`,
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			entry, filename := generateSourcesEntry(tc.debLine, tc.keyPath)
-			
+
 			if entry != tc.wantEntry {
 				t.Errorf("Entry:\ngot:\n%s\n\nwant:\n%s", entry, tc.wantEntry)
 			}
@@ -228,12 +228,12 @@ func TestCheckAptDirectories(t *testing.T) {
 
 func TestCheckConflicts(t *testing.T) {
 	tests := []struct {
-		name            string
-		keyPath         string
-		sourcesFilename string
-		setupFunc       func() // create test files
-		cleanupFunc     func() // remove test files
-		wantKeyExists   bool
+		name             string
+		keyPath          string
+		sourcesFilename  string
+		setupFunc        func() // create test files
+		cleanupFunc      func() // remove test files
+		wantKeyExists    bool
 		wantSourceExists bool
 	}{
 		{
@@ -255,7 +255,7 @@ func TestCheckConflicts(t *testing.T) {
 			}
 
 			keyExists, sourceExists := checkConflicts(tc.keyPath, tc.sourcesFilename)
-			
+
 			if keyExists != tc.wantKeyExists {
 				t.Errorf("Key exists: got %v, want %v", keyExists, tc.wantKeyExists)
 			}
@@ -265,5 +265,3 @@ func TestCheckConflicts(t *testing.T) {
 		})
 	}
 }
-
-

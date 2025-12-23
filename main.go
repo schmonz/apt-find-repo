@@ -219,7 +219,7 @@ func findGPGKeys(doc *goquery.Document) []string {
 
 func findDebLines(doc *goquery.Document) []string {
 	var lines []string
-	
+
 	// Look for deb lines in code blocks and pre tags first (most reliable)
 	doc.Find("code, pre").Each(func(i int, s *goquery.Selection) {
 		text := s.Text()
@@ -234,17 +234,17 @@ func findDebLines(doc *goquery.Document) []string {
 			lines = append(lines, line)
 		}
 	})
-	
+
 	// If we found deb lines in code blocks, use those
 	if len(lines) > 0 {
 		return dedup(lines)
 	}
-	
+
 	// Fall back to searching full text
 	text := doc.Text()
 	re := regexp.MustCompile(`deb\s+(?:\[[^\]]+\]\s+)?https?://[^\s]+(?:\s+[a-zA-Z0-9][a-zA-Z0-9._-]*)+`)
 	matches := re.FindAllString(text, -1)
-	
+
 	for _, match := range matches {
 		match = strings.TrimRight(match, `"';|`)
 		line := regexp.MustCompile(`\s+`).ReplaceAllString(strings.TrimSpace(match), " ")
@@ -254,14 +254,14 @@ func findDebLines(doc *goquery.Document) []string {
 	// Look for .list files in curl/wget commands that we should fetch
 	listURLRe := regexp.MustCompile(`(?:curl|wget)[^\n]*?(https?://[^\s'"]+\.list)`)
 	listMatches := listURLRe.FindAllStringSubmatch(text, -1)
-	
+
 	for _, match := range listMatches {
 		if len(match) > 1 {
 			listURL := match[1]
 			if verbose {
 				fmt.Fprintf(os.Stderr, "Following .list file: %s\n", listURL)
 			}
-			
+
 			// Fetch the .list file
 			resp, err := http.Get(listURL)
 			if err != nil {
@@ -272,7 +272,7 @@ func findDebLines(doc *goquery.Document) []string {
 			if err != nil {
 				continue
 			}
-			
+
 			// Parse deb lines from the fetched file
 			listRe := regexp.MustCompile(`deb\s+(?:\[[^\]]+\]\s+)?https?://[^\s]+(?:\s+[a-zA-Z0-9][a-zA-Z0-9._-]*)+`)
 			listDebLines := listRe.FindAllString(string(body), -1)

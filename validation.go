@@ -48,7 +48,7 @@ func matchKeysToSources(gpgURLs, debLines []string) ([]Match, error) {
 	// Match keys to sources by domain
 	var matches []Match
 	keysByDomain := make(map[string][]string)
-	
+
 	for _, gpgURL := range gpgURLs {
 		u, err := url.Parse(gpgURL)
 		if err != nil {
@@ -186,7 +186,7 @@ func checkAptDirectories() error {
 		"/etc/apt/keyrings",
 		"/etc/apt/sources.list.d",
 	}
-	
+
 	for _, dir := range dirs {
 		info, err := os.Stat(dir)
 		if err != nil {
@@ -199,7 +199,7 @@ func checkAptDirectories() error {
 			return fmt.Errorf("%s is not a directory", dir)
 		}
 	}
-	
+
 	return nil
 }
 

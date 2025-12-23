@@ -59,7 +59,7 @@ func TestParsePackagesFile(t *testing.T) {
 			sort.Strings(tc.wantPackages)
 
 			if !reflect.DeepEqual(packages, tc.wantPackages) && len(packages) != 0 && len(tc.wantPackages) != 0 {
-				t.Errorf("Package list mismatch.\nGot:  %v (len=%d)\nWant: %v (len=%d)", 
+				t.Errorf("Package list mismatch.\nGot:  %v (len=%d)\nWant: %v (len=%d)",
 					packages, len(packages), tc.wantPackages, len(tc.wantPackages))
 			}
 		})
@@ -116,5 +116,3 @@ func TestParseDebLine(t *testing.T) {
 		})
 	}
 }
-
-

@@ -7,10 +7,10 @@ import (
 )
 
 type KeyTestCase struct {
-	name        string
-	inputFile   string
-	wantFormat  string // "armored", "binary", "dearmored"
-	wantError   bool
+	name       string
+	inputFile  string
+	wantFormat string // "armored", "binary", "dearmored"
+	wantError  bool
 }
 
 var keyTestCases = []KeyTestCase{
@@ -40,9 +40,9 @@ var keyTestCases = []KeyTestCase{
 		wantFormat: "armored",
 	},
 	{
-		name:       "not-a-key",
-		inputFile:  "testdata/keys/garbage.txt",
-		wantError:  true,
+		name:      "not-a-key",
+		inputFile: "testdata/keys/garbage.txt",
+		wantError: true,
 	},
 }
 
@@ -75,9 +75,9 @@ func TestDetectKeyFormat(t *testing.T) {
 
 func TestNormalizeKey(t *testing.T) {
 	tests := []struct {
-		name      string
-		input     []byte
-		wantType  string // what apt expects: "armored" or "binary"
+		name     string
+		input    []byte
+		wantType string // what apt expects: "armored" or "binary"
 	}{
 		{
 			name:     "armored-stays-armored",
@@ -168,5 +168,3 @@ func TestKeyFetchAndNormalize(t *testing.T) {
 		})
 	}
 }
-
-
