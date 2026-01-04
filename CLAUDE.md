@@ -376,8 +376,9 @@ When modifying parsing logic, add test cases to `TestFindDebLines` in repo_finde
 ## Git Workflow
 
 ### Branch Strategy
-- Currently working on: `claude/add-claude-documentation-QgAAH`
-- Default development appears to be direct to main branch
+- **Push directly to main branch** - no PRs required
+- All development commits go straight to main
+- Ensure tests pass before pushing
 
 ### Commit Message Style
 Looking at recent commits:
@@ -385,11 +386,12 @@ Looking at recent commits:
 - Descriptive: "Detect JetBrains repo. No Zoom or Tailscale yet."
 - Keep commits focused and atomic
 
-### Before Committing
+### Before Pushing to Main
 ```bash
 go fmt ./...                  # Format code
 ./setup_tests.sh && make test # Run tests
 make build                     # Ensure it compiles
+git push origin main           # Push directly to main
 ```
 
 ## Architecture Notes
