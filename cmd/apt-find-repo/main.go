@@ -85,12 +85,52 @@ func main() {
 			continue
 		}
 
-		gpgURLs, debLines = finder.ParseRepoPage(string(body))
+		htmlContent := string(body)
+		gpgURLs, debLines = finder.ParseRepoPage(htmlContent)
+
 		if len(gpgURLs) > 0 && len(debLines) > 0 {
 			url = candidateURL
 			if verbose {
 				fmt.Fprintf(os.Stderr, "  Found GPG keys and deb sources!\n")
 			}
+			break
+		}
+
+		// If no keys/sources found, look for install scripts
+		if verbose {
+			fmt.Fprintf(os.Stderr, "  No keys/sources on page, checking for install scripts...\n")
+		}
+
+		scriptURLs := findInstallScripts(htmlContent)
+		for _, scriptURL := range scriptURLs {
+			if verbose {
+				fmt.Fprintf(os.Stderr, "  Fetching script: %s\n", scriptURL)
+			}
+
+			scriptResp, err := http.Get(scriptURL)
+			if err != nil {
+				continue
+			}
+
+			scriptBody, err := io.ReadAll(scriptResp.Body)
+			scriptResp.Body.Close()
+			if err != nil {
+				continue
+			}
+
+			scriptGPGs, scriptDebs := parseInstallScript(string(scriptBody))
+			gpgURLs = append(gpgURLs, scriptGPGs...)
+			debLines = append(debLines, scriptDebs...)
+			if len(gpgURLs) > 0 && len(debLines) > 0 {
+				url = candidateURL
+				if verbose {
+					fmt.Fprintf(os.Stderr, "  Found GPG keys and deb sources in script!\n")
+				}
+				break
+			}
+		}
+
+		if len(gpgURLs) > 0 && len(debLines) > 0 {
 			break
 		}
 
@@ -299,6 +339,153 @@ func searchForRepo(packageName string) []string {
 	}
 
 	return urls
+}
+
+// findInstallScripts extracts URLs to shell scripts from HTML
+func findInstallScripts(html string) []string {
+	var scripts []string
+
+	// Look for curl/wget commands with shell script URLs
+	patterns := []string{
+		`(?:curl|wget)[^\n]*?(https?://[^\s'"]+\.sh)`,
+		`(?:curl|wget)[^\n]*?(https?://[^\s'"]+/install[^\s'"]*)`,
+		`href=["'](https?://[^\s'"]+\.sh)["']`,
+		`href=["'](https?://[^\s'"]+/install[^\s'"]*)["']`,
+	}
+
+	seen := make(map[string]bool)
+	for _, pattern := range patterns {
+		re := regexp.MustCompile(pattern)
+		matches := re.FindAllStringSubmatch(html, -1)
+		for _, match := range matches {
+			if len(match) > 1 && !seen[match[1]] {
+				scripts = append(scripts, match[1])
+				seen[match[1]] = true
+			}
+		}
+	}
+
+	return scripts
+}
+
+// parseInstallScript extracts GPG keys and deb sources from shell scripts
+func parseInstallScript(script string) ([]string, []string) {
+	var gpgURLs []string
+	var debLines []string
+
+	// Look for GPG key URLs (without variables)
+	keyPatterns := []string{
+		`https?://[^\s'"$]+\.(?:gpg|asc|key)`,
+		`https?://[^\s'"$]+/gpg[^a-zA-Z]`,
+		`https?://[^\s'"$]+\.noarmor\.gpg`,
+	}
+
+	seenKeys := make(map[string]bool)
+	for _, pattern := range keyPatterns {
+		re := regexp.MustCompile(pattern)
+		matches := re.FindAllString(script, -1)
+		for _, match := range matches {
+			if !seenKeys[match] {
+				gpgURLs = append(gpgURLs, match)
+				seenKeys[match] = true
+			}
+		}
+	}
+
+	// Look for URL patterns with shell variables and try to resolve them
+	// Common patterns like: "https://pkgs.tailscale.com/$TRACK/$OS/$VERSION.noarmor.gpg"
+	keyVarPatterns := []string{
+		`https?://[^"'\s]*\$[A-Z_]+[^"'\s]*\.gpg`,
+		`https?://[^"'\s]*\$[A-Z_]+[^"'\s]*\.asc`,
+		`https?://[^"'\s]*\$[A-Z_]+[^"'\s]*\.key`,
+	}
+
+	// Common substitutions for Debian/Ubuntu systems
+	substitutions := []map[string]string{
+		{"TRACK": "stable", "OS": "ubuntu", "VERSION": "jammy"},
+		{"TRACK": "stable", "OS": "ubuntu", "VERSION": "focal"},
+		{"TRACK": "stable", "OS": "debian", "VERSION": "bookworm"},
+		{"TRACK": "stable", "OS": "debian", "VERSION": "bullseye"},
+	}
+
+	for _, pattern := range keyVarPatterns {
+		re := regexp.MustCompile(pattern)
+		matches := re.FindAllString(script, -1)
+		for _, match := range matches {
+			// Try each substitution
+			for _, subst := range substitutions {
+				resolved := match
+				for varName, value := range subst {
+					resolved = strings.ReplaceAll(resolved, "$"+varName, value)
+				}
+				if !seenKeys[resolved] {
+					gpgURLs = append(gpgURLs, resolved)
+					seenKeys[resolved] = true
+				}
+			}
+		}
+	}
+
+	// Look for .list file URLs with variables that contain deb sources
+	listPattern := regexp.MustCompile(`https?://[^"'\s]*\$[A-Z_]+[^"'\s]*\.list`)
+	listMatches := listPattern.FindAllString(script, -1)
+
+	seenListURLs := make(map[string]bool)
+	seenDebs := make(map[string]bool)
+
+	for _, match := range listMatches {
+		// Try each substitution
+		for _, subst := range substitutions {
+			resolved := match
+			for varName, value := range subst {
+				resolved = strings.ReplaceAll(resolved, "$"+varName, value)
+			}
+
+			if seenListURLs[resolved] {
+				continue
+			}
+			seenListURLs[resolved] = true
+
+			// Fetch the .list file and extract deb lines
+			resp, err := http.Get(resolved)
+			if err != nil {
+				continue
+			}
+			listBody, err := io.ReadAll(resp.Body)
+			resp.Body.Close()
+			if err != nil {
+				continue
+			}
+
+			// Parse deb lines from the .list file
+			listDebPattern := regexp.MustCompile(`deb\s+(?:\[[^\]]+\]\s+)?https?://[^\s]+(?:\s+[a-zA-Z0-9][a-zA-Z0-9._-]*)+`)
+			listDebMatches := listDebPattern.FindAllString(string(listBody), -1)
+			for _, debMatch := range listDebMatches {
+				line := strings.TrimRight(debMatch, `"';|`)
+				line = regexp.MustCompile(`\s+`).ReplaceAllString(strings.TrimSpace(line), " ")
+				if !seenDebs[line] {
+					debLines = append(debLines, line)
+					seenDebs[line] = true
+				}
+			}
+		}
+	}
+
+	// Look for deb source lines directly in the script
+	debPattern := regexp.MustCompile(`deb\s+(?:\[[^\]]+\]\s+)?https?://[^\s$]+(?:\s+[a-zA-Z0-9][a-zA-Z0-9._-]*)+`)
+	matches := debPattern.FindAllString(script, -1)
+
+	for _, match := range matches {
+		// Clean up the line
+		line := strings.TrimRight(match, `"';|`)
+		line = regexp.MustCompile(`\s+`).ReplaceAllString(strings.TrimSpace(line), " ")
+		if !seenDebs[line] {
+			debLines = append(debLines, line)
+			seenDebs[line] = true
+		}
+	}
+
+	return gpgURLs, debLines
 }
 
 // extractRepoName tries to get a reasonable name from the URL

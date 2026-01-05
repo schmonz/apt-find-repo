@@ -1,5 +1,5 @@
 # Build artifacts
-apt-find-repo
+/apt-find-repo
 build/
 
 # Go build cache
