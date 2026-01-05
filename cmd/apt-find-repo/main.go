@@ -339,7 +339,7 @@ func validatePackageGlob(glob string, packages []string) (bool, []string) {
 	return len(matched) > 0, matched
 }
 
-// searchForRepo searches for repository URLs using ddgr or googler
+// searchForRepo searches for repository URLs using ddgr
 func searchForRepo(packageName string) []string {
 	// Strip glob wildcards for web search (they're for package matching, not search)
 	searchTerm := strings.ReplaceAll(packageName, "*", "")
@@ -352,23 +352,14 @@ func searchForRepo(packageName string) []string {
 		fmt.Fprintf(os.Stderr, "Searching: %s\n", query)
 	}
 
-	// Try ddgr first (request more results since we filter heavily)
+	// Search with ddgr (request more results since we filter heavily)
 	cmd := exec.Command("ddgr", "--json", "--num", "40", "--np", query)
 	output, err := cmd.Output()
-
 	if err != nil {
-		// Fall back to googler
 		if verbose {
-			fmt.Fprintf(os.Stderr, "ddgr failed, trying googler...\n")
+			fmt.Fprintf(os.Stderr, "Search failed: %v\n", err)
 		}
-		cmd = exec.Command("googler", "--json", "--count", "40", "--np", query)
-		output, err = cmd.Output()
-		if err != nil {
-			if verbose {
-				fmt.Fprintf(os.Stderr, "Search failed: %v\n", err)
-			}
-			return nil
-		}
+		return nil
 	}
 
 	// Parse JSON results
