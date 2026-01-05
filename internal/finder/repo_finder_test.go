@@ -161,6 +161,231 @@ var testCases = []TestCase{
 		expectedGPG: []string{},
 		expectedDeb: []string{},
 	},
+	{
+		name:     "audacity-unofficial",
+		htmlFile: "../../testdata/webpages/audacity-unofficial.html",
+		expectedGPG: []string{},
+		expectedDeb: []string{
+			"deb https://ppa.launchpadcontent.net/audacity-team/daily/ubuntu YOUR_UBUNTU_VERSION_HERE main deb-src https",
+		},
+	},
+	{
+		name:     "brave-official",
+		htmlFile: "../../testdata/webpages/brave-official.html",
+		expectedGPG: []string{
+			"https://dl.brave.com/install.sh{,.asc",
+			"https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg",
+			"https://brave-browser-apt-beta.s3.brave.com/brave-browser-beta-archive-keyring.gpg",
+			"https://brave-browser-apt-nightly.s3.brave.com/brave-browser-nightly-archive-keyring.gpg",
+		},
+		expectedDeb: []string{},
+	},
+	{
+		name:     "caddy-official",
+		htmlFile: "../../testdata/webpages/caddy-official.html",
+		expectedGPG: []string{
+			"https://dl.cloudsmith.io/public/caddy/stable/gpg.key",
+			"https://dl.cloudsmith.io/public/caddy/testing/gpg.key",
+			"https://dl.cloudsmith.io/public/caddy/stable/gpg",
+			"https://dl.cloudsmith.io/public/caddy/testing/gpg",
+		},
+		expectedDeb: []string{},
+	},
+	{
+		name:        "chrome-official",
+		htmlFile:    "../../testdata/webpages/chrome-official.html",
+		expectedGPG: []string{},
+		expectedDeb: []string{},
+	},
+	{
+		name:     "docker-official",
+		htmlFile: "../../testdata/webpages/docker-official.html",
+		expectedGPG: []string{
+			"https://download.docker.com/linux/ubuntu/gpg",
+		},
+		expectedDeb: []string{},
+	},
+	{
+		name:        "elasticsearch-official",
+		htmlFile:    "../../testdata/webpages/elasticsearch-official.html",
+		expectedGPG: []string{},
+		expectedDeb: []string{},
+	},
+	{
+		name:        "gitlab-runner-official",
+		htmlFile:    "../../testdata/webpages/gitlab-runner-official.html",
+		expectedGPG: []string{},
+		expectedDeb: []string{},
+	},
+	{
+		name:     "graphics-drivers-unofficial",
+		htmlFile: "../../testdata/webpages/graphics-drivers-unofficial.html",
+		expectedGPG: []string{},
+		expectedDeb: []string{
+			"deb https://ppa.launchpadcontent.net/graphics-drivers/ppa/ubuntu YOUR_UBUNTU_VERSION_HERE main deb-src https",
+		},
+	},
+	{
+		name:     "handbrake-unofficial",
+		htmlFile: "../../testdata/webpages/handbrake-unofficial.html",
+		expectedGPG: []string{},
+		expectedDeb: []string{
+			"deb https://ppa.launchpadcontent.net/savoury1/handbrake/ubuntu YOUR_UBUNTU_VERSION_HERE main deb-src https",
+		},
+	},
+	{
+		name:        "influxdb-official",
+		htmlFile:    "../../testdata/webpages/influxdb-official.html",
+		expectedGPG: []string{},
+		expectedDeb: []string{},
+	},
+	{
+		name:     "inkscape-unofficial",
+		htmlFile: "../../testdata/webpages/inkscape-unofficial.html",
+		expectedGPG: []string{},
+		expectedDeb: []string{
+			"deb https://ppa.launchpadcontent.net/inkscape.dev/stable/ubuntu YOUR_UBUNTU_VERSION_HERE main deb-src https",
+		},
+	},
+	{
+		name:     "kdenlive-unofficial",
+		htmlFile: "../../testdata/webpages/kdenlive-unofficial.html",
+		expectedGPG: []string{},
+		expectedDeb: []string{
+			"deb https://ppa.launchpadcontent.net/kdenlive/kdenlive-stable/ubuntu YOUR_UBUNTU_VERSION_HERE main deb-src https",
+		},
+	},
+	{
+		name:     "libreoffice-unofficial",
+		htmlFile: "../../testdata/webpages/libreoffice-unofficial.html",
+		expectedGPG: []string{},
+		expectedDeb: []string{
+			"deb https://ppa.launchpadcontent.net/libreoffice/ppa/ubuntu YOUR_UBUNTU_VERSION_HERE main deb-src https",
+		},
+	},
+	{
+		name:     "lutris-unofficial",
+		htmlFile: "../../testdata/webpages/lutris-unofficial.html",
+		expectedGPG: []string{},
+		expectedDeb: []string{
+			"deb https://ppa.launchpadcontent.net/lutris-team/lutris/ubuntu YOUR_UBUNTU_VERSION_HERE main deb-src https",
+		},
+	},
+	{
+		name:        "mongodb-official",
+		htmlFile:    "../../testdata/webpages/mongodb-official.html",
+		expectedGPG: []string{},
+		expectedDeb: []string{},
+	},
+	{
+		name:     "neovim-unofficial",
+		htmlFile: "../../testdata/webpages/neovim-unofficial.html",
+		expectedGPG: []string{},
+		expectedDeb: []string{
+			"deb https://ppa.launchpadcontent.net/neovim-ppa/stable/ubuntu YOUR_UBUNTU_VERSION_HERE main deb-src https",
+		},
+	},
+	{
+		name:        "nodejs-nodesource",
+		htmlFile:    "../../testdata/webpages/nodejs-nodesource.html",
+		expectedGPG: []string{},
+		expectedDeb: []string{},
+	},
+	{
+		name:        "nodejs-unofficial",
+		htmlFile:    "../../testdata/webpages/nodejs-unofficial.html",
+		expectedGPG: []string{},
+		expectedDeb: []string{},
+	},
+	{
+		name:     "obs-studio-unofficial",
+		htmlFile: "../../testdata/webpages/obs-studio-unofficial.html",
+		expectedGPG: []string{},
+		expectedDeb: []string{
+			"deb https://ppa.launchpadcontent.net/obsproject/obs-studio/ubuntu YOUR_UBUNTU_VERSION_HERE main deb-src https",
+		},
+	},
+	{
+		name:     "oibaf-graphics-unofficial",
+		htmlFile: "../../testdata/webpages/oibaf-graphics-unofficial.html",
+		expectedGPG: []string{},
+		expectedDeb: []string{
+			"deb https://ppa.launchpadcontent.net/oibaf/graphics-drivers/ubuntu YOUR_UBUNTU_VERSION_HERE main deb-src https",
+		},
+	},
+	{
+		name:     "openshot-unofficial",
+		htmlFile: "../../testdata/webpages/openshot-unofficial.html",
+		expectedGPG: []string{},
+		expectedDeb: []string{
+			"deb https://ppa.launchpadcontent.net/openshot.developers/ppa/ubuntu YOUR_UBUNTU_VERSION_HERE main deb-src https",
+		},
+	},
+	{
+		name:        "redis-official",
+		htmlFile:    "../../testdata/webpages/redis-official.html",
+		expectedGPG: []string{},
+		expectedDeb: []string{},
+	},
+	{
+		name:     "savoury-ffmpeg-unofficial",
+		htmlFile: "../../testdata/webpages/savoury-ffmpeg-unofficial.html",
+		expectedGPG: []string{},
+		expectedDeb: []string{
+			"deb https://ppa.launchpadcontent.net/savoury1/ffmpeg5/ubuntu YOUR_UBUNTU_VERSION_HERE main deb-src https",
+		},
+	},
+	{
+		name:     "savoury-multimedia-unofficial",
+		htmlFile: "../../testdata/webpages/savoury-multimedia-unofficial.html",
+		expectedGPG: []string{},
+		expectedDeb: []string{
+			"deb https://ppa.launchpadcontent.net/savoury1/multimedia/ubuntu YOUR_UBUNTU_VERSION_HERE main deb-src https",
+		},
+	},
+	{
+		name:        "slack-official",
+		htmlFile:    "../../testdata/webpages/slack-official.html",
+		expectedGPG: []string{},
+		expectedDeb: []string{},
+	},
+	{
+		name:        "spotify-official",
+		htmlFile:    "../../testdata/webpages/spotify-official.html",
+		expectedGPG: []string{},
+		expectedDeb: []string{},
+	},
+	{
+		name:     "terraform-official",
+		htmlFile: "../../testdata/webpages/terraform-official.html",
+		expectedGPG: []string{
+			"https://apt.releases.hashicorp.com/gpg",
+		},
+		expectedDeb: []string{},
+	},
+	{
+		name:     "ubuntuhandbook-ffmpeg-unofficial",
+		htmlFile: "../../testdata/webpages/ubuntuhandbook-ffmpeg-unofficial.html",
+		expectedGPG: []string{},
+		expectedDeb: []string{
+			"deb https://ppa.launchpadcontent.net/ubuntuhandbook1/ffmpeg8/ubuntu YOUR_UBUNTU_VERSION_HERE main deb-src https",
+		},
+	},
+	{
+		name:     "vscode-official",
+		htmlFile: "../../testdata/webpages/vscode-official.html",
+		expectedGPG: []string{
+			"https://packages.microsoft.com/keys/microsoft.asc",
+			`https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc`,
+		},
+		expectedDeb: []string{},
+	},
+	{
+		name:        "yarn-official",
+		htmlFile:    "../../testdata/webpages/yarn-official.html",
+		expectedGPG: []string{},
+		expectedDeb: []string{},
+	},
 }
 
 func TestParseRepoPage(t *testing.T) {

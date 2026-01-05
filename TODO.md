@@ -10,7 +10,8 @@
       "noble" and "and64" or whatever
       when would we reject a source that otherwise matches?
 - [ ] Make sure we have microtests for all these edges
+- [ ] Does it simplify our code if we first reduce HTML to Markdown?
 - [ ] Handle a bunch more examples
-- [ ] Add [Go Report Card](https://goreportcard.com)
+- [ ] Rewrite in C with CMake, libcheck, freely taking library dependencies to avoid reinventing any wheels (json, regex, markdown, even a vendored copy of ddgr if that's how we can use it as a library)
 - [ ] Create Debian packages with OpenBuildService
 - [ ] Publish a Homebrew tap
