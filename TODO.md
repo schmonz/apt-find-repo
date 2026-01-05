@@ -3,10 +3,6 @@
 ## 1. Broaden search "enough"
 
 - Iterate over search results, blocklisting more and more crummy tutorial sites until results look decent
-   - deepwiki.com
-   - learnubuntumate.weebly.com
-   - ubuntuhandbook.org
-   - www.nom.one
 - Tweak search terms: omit Ubuntu? or add Mint?
 - Fetch "too many" results so we probably still have "enough"
 

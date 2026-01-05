@@ -361,14 +361,14 @@ func scoreSource(source string, sysInfo *SystemInfo) int {
 	} else {
 		// Check if it's a different codename for same OS
 		knownCodenames := map[string]string{
-			"jammy":     "ubuntu",
-			"focal":     "ubuntu",
-			"noble":     "ubuntu",
-			"mantic":    "ubuntu",
-			"bookworm":  "debian",
-			"bullseye":  "debian",
-			"buster":    "debian",
-			"trixie":    "debian",
+			"jammy":    "ubuntu",
+			"focal":    "ubuntu",
+			"noble":    "ubuntu",
+			"mantic":   "ubuntu",
+			"bookworm": "debian",
+			"bullseye": "debian",
+			"buster":   "debian",
+			"trixie":   "debian",
 		}
 		if knownOS, ok := knownCodenames[dist]; ok {
 			if knownOS == sysInfo.OSName {

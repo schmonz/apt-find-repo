@@ -198,12 +198,12 @@ func TestScoreSource(t *testing.T) {
 
 func TestMatchKeysToSourcesWithSystem(t *testing.T) {
 	tests := []struct {
-		name        string
-		gpgURLs     []string
-		debLines    []string
-		sysInfo     *SystemInfo
-		wantFirst   string // Expected first match debLine
-		wantErr     bool
+		name      string
+		gpgURLs   []string
+		debLines  []string
+		sysInfo   *SystemInfo
+		wantFirst string // Expected first match debLine
+		wantErr   bool
 	}{
 		{
 			name: "prefer-matching-codename",

@@ -148,8 +148,8 @@ var testCases = []TestCase{
 		},
 	},
 	{
-		name:     "hugo-unofficial",
-		htmlFile: "../../testdata/webpages/hugo-unofficial.html",
+		name:        "hugo-unofficial",
+		htmlFile:    "../../testdata/webpages/hugo-unofficial.html",
 		expectedGPG: []string{},
 		expectedDeb: []string{
 			"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/hugo.gpg] https://hugo-apt.8hob.io latest main",
@@ -162,8 +162,8 @@ var testCases = []TestCase{
 		expectedDeb: []string{},
 	},
 	{
-		name:     "audacity-unofficial",
-		htmlFile: "../../testdata/webpages/audacity-unofficial.html",
+		name:        "audacity-unofficial",
+		htmlFile:    "../../testdata/webpages/audacity-unofficial.html",
 		expectedGPG: []string{},
 		expectedDeb: []string{
 			"deb https://ppa.launchpadcontent.net/audacity-team/daily/ubuntu YOUR_UBUNTU_VERSION_HERE main deb-src https",
@@ -217,16 +217,16 @@ var testCases = []TestCase{
 		expectedDeb: []string{},
 	},
 	{
-		name:     "graphics-drivers-unofficial",
-		htmlFile: "../../testdata/webpages/graphics-drivers-unofficial.html",
+		name:        "graphics-drivers-unofficial",
+		htmlFile:    "../../testdata/webpages/graphics-drivers-unofficial.html",
 		expectedGPG: []string{},
 		expectedDeb: []string{
 			"deb https://ppa.launchpadcontent.net/graphics-drivers/ppa/ubuntu YOUR_UBUNTU_VERSION_HERE main deb-src https",
 		},
 	},
 	{
-		name:     "handbrake-unofficial",
-		htmlFile: "../../testdata/webpages/handbrake-unofficial.html",
+		name:        "handbrake-unofficial",
+		htmlFile:    "../../testdata/webpages/handbrake-unofficial.html",
 		expectedGPG: []string{},
 		expectedDeb: []string{
 			"deb https://ppa.launchpadcontent.net/savoury1/handbrake/ubuntu YOUR_UBUNTU_VERSION_HERE main deb-src https",
@@ -239,32 +239,32 @@ var testCases = []TestCase{
 		expectedDeb: []string{},
 	},
 	{
-		name:     "inkscape-unofficial",
-		htmlFile: "../../testdata/webpages/inkscape-unofficial.html",
+		name:        "inkscape-unofficial",
+		htmlFile:    "../../testdata/webpages/inkscape-unofficial.html",
 		expectedGPG: []string{},
 		expectedDeb: []string{
 			"deb https://ppa.launchpadcontent.net/inkscape.dev/stable/ubuntu YOUR_UBUNTU_VERSION_HERE main deb-src https",
 		},
 	},
 	{
-		name:     "kdenlive-unofficial",
-		htmlFile: "../../testdata/webpages/kdenlive-unofficial.html",
+		name:        "kdenlive-unofficial",
+		htmlFile:    "../../testdata/webpages/kdenlive-unofficial.html",
 		expectedGPG: []string{},
 		expectedDeb: []string{
 			"deb https://ppa.launchpadcontent.net/kdenlive/kdenlive-stable/ubuntu YOUR_UBUNTU_VERSION_HERE main deb-src https",
 		},
 	},
 	{
-		name:     "libreoffice-unofficial",
-		htmlFile: "../../testdata/webpages/libreoffice-unofficial.html",
+		name:        "libreoffice-unofficial",
+		htmlFile:    "../../testdata/webpages/libreoffice-unofficial.html",
 		expectedGPG: []string{},
 		expectedDeb: []string{
 			"deb https://ppa.launchpadcontent.net/libreoffice/ppa/ubuntu YOUR_UBUNTU_VERSION_HERE main deb-src https",
 		},
 	},
 	{
-		name:     "lutris-unofficial",
-		htmlFile: "../../testdata/webpages/lutris-unofficial.html",
+		name:        "lutris-unofficial",
+		htmlFile:    "../../testdata/webpages/lutris-unofficial.html",
 		expectedGPG: []string{},
 		expectedDeb: []string{
 			"deb https://ppa.launchpadcontent.net/lutris-team/lutris/ubuntu YOUR_UBUNTU_VERSION_HERE main deb-src https",
@@ -277,8 +277,8 @@ var testCases = []TestCase{
 		expectedDeb: []string{},
 	},
 	{
-		name:     "neovim-unofficial",
-		htmlFile: "../../testdata/webpages/neovim-unofficial.html",
+		name:        "neovim-unofficial",
+		htmlFile:    "../../testdata/webpages/neovim-unofficial.html",
 		expectedGPG: []string{},
 		expectedDeb: []string{
 			"deb https://ppa.launchpadcontent.net/neovim-ppa/stable/ubuntu YOUR_UBUNTU_VERSION_HERE main deb-src https",
@@ -291,24 +291,24 @@ var testCases = []TestCase{
 		expectedDeb: []string{},
 	},
 	{
-		name:     "obs-studio-unofficial",
-		htmlFile: "../../testdata/webpages/obs-studio-unofficial.html",
+		name:        "obs-studio-unofficial",
+		htmlFile:    "../../testdata/webpages/obs-studio-unofficial.html",
 		expectedGPG: []string{},
 		expectedDeb: []string{
 			"deb https://ppa.launchpadcontent.net/obsproject/obs-studio/ubuntu YOUR_UBUNTU_VERSION_HERE main deb-src https",
 		},
 	},
 	{
-		name:     "oibaf-graphics-unofficial",
-		htmlFile: "../../testdata/webpages/oibaf-graphics-unofficial.html",
+		name:        "oibaf-graphics-unofficial",
+		htmlFile:    "../../testdata/webpages/oibaf-graphics-unofficial.html",
 		expectedGPG: []string{},
 		expectedDeb: []string{
 			"deb https://ppa.launchpadcontent.net/oibaf/graphics-drivers/ubuntu YOUR_UBUNTU_VERSION_HERE main deb-src https",
 		},
 	},
 	{
-		name:     "openshot-unofficial",
-		htmlFile: "../../testdata/webpages/openshot-unofficial.html",
+		name:        "openshot-unofficial",
+		htmlFile:    "../../testdata/webpages/openshot-unofficial.html",
 		expectedGPG: []string{},
 		expectedDeb: []string{
 			"deb https://ppa.launchpadcontent.net/openshot.developers/ppa/ubuntu YOUR_UBUNTU_VERSION_HERE main deb-src https",
@@ -321,16 +321,16 @@ var testCases = []TestCase{
 		expectedDeb: []string{},
 	},
 	{
-		name:     "savoury-ffmpeg-unofficial",
-		htmlFile: "../../testdata/webpages/savoury-ffmpeg-unofficial.html",
+		name:        "savoury-ffmpeg-unofficial",
+		htmlFile:    "../../testdata/webpages/savoury-ffmpeg-unofficial.html",
 		expectedGPG: []string{},
 		expectedDeb: []string{
 			"deb https://ppa.launchpadcontent.net/savoury1/ffmpeg5/ubuntu YOUR_UBUNTU_VERSION_HERE main deb-src https",
 		},
 	},
 	{
-		name:     "savoury-multimedia-unofficial",
-		htmlFile: "../../testdata/webpages/savoury-multimedia-unofficial.html",
+		name:        "savoury-multimedia-unofficial",
+		htmlFile:    "../../testdata/webpages/savoury-multimedia-unofficial.html",
 		expectedGPG: []string{},
 		expectedDeb: []string{
 			"deb https://ppa.launchpadcontent.net/savoury1/multimedia/ubuntu YOUR_UBUNTU_VERSION_HERE main deb-src https",
@@ -357,8 +357,8 @@ var testCases = []TestCase{
 		expectedDeb: []string{},
 	},
 	{
-		name:     "ubuntuhandbook-ffmpeg-unofficial",
-		htmlFile: "../../testdata/webpages/ubuntuhandbook-ffmpeg-unofficial.html",
+		name:        "ubuntuhandbook-ffmpeg-unofficial",
+		htmlFile:    "../../testdata/webpages/ubuntuhandbook-ffmpeg-unofficial.html",
 		expectedGPG: []string{},
 		expectedDeb: []string{
 			"deb https://ppa.launchpadcontent.net/ubuntuhandbook1/ffmpeg8/ubuntu YOUR_UBUNTU_VERSION_HERE main deb-src https",

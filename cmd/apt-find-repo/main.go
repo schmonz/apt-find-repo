@@ -63,10 +63,10 @@ func main() {
 
 	// Try each candidate URL until we find one that works
 	type candidateResult struct {
-		url              string
-		gpgURL           string
-		debLine          string
-		matchedPackages  []string
+		url             string
+		gpgURL          string
+		debLine         string
+		matchedPackages []string
 	}
 
 	var result *candidateResult
@@ -475,8 +475,8 @@ func findInstallScripts(html string) []string {
 				// Additional validation: URL should not contain common non-script paths
 				url := match[1]
 				if strings.Contains(url, "/installer") ||
-				   strings.Contains(url, "/installation") ||
-				   strings.Contains(url, "/installing") {
+					strings.Contains(url, "/installation") ||
+					strings.Contains(url, "/installing") {
 					continue // Skip false positives like /installation-guide
 				}
 				scripts = append(scripts, url)
