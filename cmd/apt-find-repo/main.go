@@ -1,11 +1,13 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
 	"net/http"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -20,41 +22,82 @@ func main() {
 	flag.Parse()
 
 	args := flag.Args()
-	if len(args) != 2 {
-		fmt.Fprintf(os.Stderr, "Usage: apt-find-repo [-v] <package-glob> <url>\n")
+	if len(args) < 1 || len(args) > 2 {
+		fmt.Fprintf(os.Stderr, "Usage: apt-find-repo [-v] <package-glob> [url]\n")
 		fmt.Fprintf(os.Stderr, "\n")
-		fmt.Fprintf(os.Stderr, "Finds a signed repository at the given URL and validates that it provides\n")
-		fmt.Fprintf(os.Stderr, "packages matching the glob pattern. If run as root, configures apt to use\n")
-		fmt.Fprintf(os.Stderr, "the repository. Otherwise, displays what would be configured.\n")
+		fmt.Fprintf(os.Stderr, "Finds a signed repository and validates that it provides packages matching\n")
+		fmt.Fprintf(os.Stderr, "the glob pattern, then configures apt to use it.\n")
+		fmt.Fprintf(os.Stderr, "\n")
+		fmt.Fprintf(os.Stderr, "If URL is omitted, searches the web for the package and tries candidate\n")
+		fmt.Fprintf(os.Stderr, "repositories automatically.\n")
 		fmt.Fprintf(os.Stderr, "\n")
 		fmt.Fprintf(os.Stderr, "Examples:\n")
-		fmt.Fprintf(os.Stderr, "  apt-find-repo tailscale https://tailscale.com/kb/1039/install-ubuntu-2004\n")
-		fmt.Fprintf(os.Stderr, "  sudo apt-find-repo 'tailscale*' https://tailscale.com/kb/1039/install-ubuntu-2004\n")
+		fmt.Fprintf(os.Stderr, "  sudo apt-find-repo tailscale\n")
+		fmt.Fprintf(os.Stderr, "  sudo apt-find-repo tailscale https://tailscale.com/kb/1039/install-ubuntu-2004\n")
+		fmt.Fprintf(os.Stderr, "  sudo apt-find-repo 'tailscale*' https://tailscale.com/kb/...\n")
 		os.Exit(1)
 	}
 
 	packageGlob := args[0]
-	url := args[1]
+	var url string
+	var candidateURLs []string
 
-	// Fetch and parse the page
-	if verbose {
-		fmt.Fprintf(os.Stderr, "Fetching %s...\n", url)
+	if len(args) == 2 {
+		// Explicit URL provided
+		url = args[1]
+		candidateURLs = []string{url}
+	} else {
+		// Auto-discover: search the web
+		if verbose {
+			fmt.Fprintf(os.Stderr, "Searching for %s repositories...\n", packageGlob)
+		}
+		candidateURLs = searchForRepo(packageGlob)
+		if len(candidateURLs) == 0 {
+			fmt.Fprintf(os.Stderr, "Error: no candidate repositories found\n")
+			os.Exit(1)
+		}
+		if verbose {
+			fmt.Fprintf(os.Stderr, "Found %d candidate URLs to try\n", len(candidateURLs))
+		}
 	}
 
-	resp, err := http.Get(url)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error fetching URL: %v\n", err)
-		os.Exit(1)
-	}
-	defer resp.Body.Close()
+	// Try each candidate URL until we find one that works
+	var gpgURLs, debLines []string
+	for i, candidateURL := range candidateURLs {
+		if verbose {
+			fmt.Fprintf(os.Stderr, "Trying [%d/%d]: %s\n", i+1, len(candidateURLs), candidateURL)
+		}
 
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error reading response: %v\n", err)
-		os.Exit(1)
-	}
+		resp, err := http.Get(candidateURL)
+		if err != nil {
+			if verbose {
+				fmt.Fprintf(os.Stderr, "  Failed to fetch: %v\n", err)
+			}
+			continue
+		}
 
-	gpgURLs, debLines := finder.ParseRepoPage(string(body))
+		body, err := io.ReadAll(resp.Body)
+		resp.Body.Close()
+		if err != nil {
+			if verbose {
+				fmt.Fprintf(os.Stderr, "  Failed to read: %v\n", err)
+			}
+			continue
+		}
+
+		gpgURLs, debLines = finder.ParseRepoPage(string(body))
+		if len(gpgURLs) > 0 && len(debLines) > 0 {
+			url = candidateURL
+			if verbose {
+				fmt.Fprintf(os.Stderr, "  Found GPG keys and deb sources!\n")
+			}
+			break
+		}
+
+		if verbose {
+			fmt.Fprintf(os.Stderr, "  No keys/sources found\n")
+		}
+	}
 
 	if len(gpgURLs) == 0 {
 		fmt.Fprintf(os.Stderr, "Error: no GPG keys found\n")
@@ -196,6 +239,66 @@ func validatePackageGlob(glob string, packages []string) (bool, []string) {
 	}
 
 	return len(matched) > 0, matched
+}
+
+// searchForRepo searches for repository URLs using ddgr or googler
+func searchForRepo(packageName string) []string {
+	query := fmt.Sprintf("%s debian ubuntu apt repository install", packageName)
+
+	if verbose {
+		fmt.Fprintf(os.Stderr, "Searching: %s\n", query)
+	}
+
+	// Try ddgr first
+	cmd := exec.Command("ddgr", "--json", "--num", "15", "--np", query)
+	output, err := cmd.Output()
+
+	if err != nil {
+		// Fall back to googler
+		if verbose {
+			fmt.Fprintf(os.Stderr, "ddgr failed, trying googler...\n")
+		}
+		cmd = exec.Command("googler", "--json", "--count", "15", "--np", query)
+		output, err = cmd.Output()
+		if err != nil {
+			if verbose {
+				fmt.Fprintf(os.Stderr, "Search failed: %v\n", err)
+			}
+			return nil
+		}
+	}
+
+	// Parse JSON results
+	var results []struct {
+		URL string `json:"url"`
+	}
+
+	if err := json.Unmarshal(output, &results); err != nil {
+		if verbose {
+			fmt.Fprintf(os.Stderr, "Failed to parse search results: %v\n", err)
+		}
+		return nil
+	}
+
+	// Extract and filter URLs
+	var urls []string
+	seen := make(map[string]bool)
+
+	for _, result := range results {
+		url := result.URL
+		// Filter for useful URLs
+		if !seen[url] &&
+		   !strings.Contains(url, "wikipedia.org") &&
+		   !strings.Contains(url, "youtube.com") &&
+		   !strings.Contains(url, "facebook.com") &&
+		   !strings.Contains(url, "twitter.com") &&
+		   !strings.Contains(url, ".pdf") {
+			urls = append(urls, url)
+			seen[url] = true
+		}
+	}
+
+	return urls
 }
 
 // extractRepoName tries to get a reasonable name from the URL
