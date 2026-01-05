@@ -27,8 +27,8 @@ func matchKeysToSources(gpgURLs, debLines []string) ([]Match, error) {
 		return []Match{{GPGURL: gpgURLs[0], DebLine: debLines[0]}}, nil
 	}
 
-	// Build domain map for sources
-	sourceDomains := make(map[string]string)
+	// Build domain map for sources (allow multiple sources per domain)
+	sourcesByDomain := make(map[string][]string)
 	for _, deb := range debLines {
 		debURL, _, _, err := parseDebLine(deb)
 		if err != nil {
@@ -39,16 +39,11 @@ func matchKeysToSources(gpgURLs, debLines []string) ([]Match, error) {
 			continue
 		}
 		domain := u.Host
-		if _, exists := sourceDomains[domain]; exists {
-			return nil, fmt.Errorf("ambiguous: multiple sources for domain %s", domain)
-		}
-		sourceDomains[domain] = deb
+		sourcesByDomain[domain] = append(sourcesByDomain[domain], deb)
 	}
 
-	// Match keys to sources by domain
-	var matches []Match
+	// Build domain map for keys
 	keysByDomain := make(map[string][]string)
-
 	for _, gpgURL := range gpgURLs {
 		u, err := url.Parse(gpgURL)
 		if err != nil {
@@ -58,23 +53,38 @@ func matchKeysToSources(gpgURLs, debLines []string) ([]Match, error) {
 		keysByDomain[domain] = append(keysByDomain[domain], gpgURL)
 	}
 
-	// Check for ambiguous matches
-	for domain, keys := range keysByDomain {
-		if len(keys) > 1 && sourceDomains[domain] != "" {
-			return nil, fmt.Errorf("ambiguous: multiple keys for domain %s", domain)
-		}
-	}
-
 	// Create matches
-	for domain, deb := range sourceDomains {
+	var matches []Match
+	for domain, sources := range sourcesByDomain {
 		keys := keysByDomain[domain]
 		if len(keys) == 0 {
 			return nil, fmt.Errorf("no key found for domain %s", domain)
 		}
-		matches = append(matches, Match{
-			GPGURL:  keys[0],
-			DebLine: deb,
-		})
+
+		// If multiple keys but one source, that's ambiguous
+		if len(keys) > 1 && len(sources) == 1 {
+			return nil, fmt.Errorf("ambiguous: multiple keys for domain %s", domain)
+		}
+
+		// If one key and any number of sources, use the same key for all
+		if len(keys) == 1 {
+			for _, source := range sources {
+				matches = append(matches, Match{
+					GPGURL:  keys[0],
+					DebLine: source,
+				})
+			}
+			continue
+		}
+
+		// If multiple keys and multiple sources, try path-based matching
+		if len(keys) > 1 && len(sources) > 1 {
+			pathMatches, err := matchByPath(keys, sources)
+			if err != nil {
+				return nil, fmt.Errorf("ambiguous: multiple keys and sources for domain %s: %w", domain, err)
+			}
+			matches = append(matches, pathMatches...)
+		}
 	}
 
 	if len(matches) == 0 {
@@ -85,6 +95,52 @@ func matchKeysToSources(gpgURLs, debLines []string) ([]Match, error) {
 	sort.Slice(matches, func(i, j int) bool {
 		return matches[i].GPGURL < matches[j].GPGURL
 	})
+
+	return matches, nil
+}
+
+// matchByPath attempts to match keys to sources by finding common keywords in paths
+func matchByPath(keys, sources []string) ([]Match, error) {
+	var matches []Match
+	matched := make(map[string]bool)
+
+	for _, key := range keys {
+		// Extract path components from key URL
+		keyURL, err := url.Parse(key)
+		if err != nil {
+			continue
+		}
+		keyPath := keyURL.Path
+
+		// Try to find a matching source
+		for _, source := range sources {
+			if matched[source] {
+				continue
+			}
+
+			// Extract distribution from deb line
+			_, dist, _, err := parseDebLine(source)
+			if err != nil {
+				continue
+			}
+
+			// Check if the distribution name appears in the key path
+			// e.g., "jammy" in "stable/ubuntu/jammy.noarmor.gpg"
+			if regexp.MustCompile(`\b` + regexp.QuoteMeta(dist) + `\b`).MatchString(keyPath) {
+				matches = append(matches, Match{
+					GPGURL:  key,
+					DebLine: source,
+				})
+				matched[source] = true
+				break
+			}
+		}
+	}
+
+	// Check if all sources were matched
+	if len(matches) != len(sources) {
+		return nil, fmt.Errorf("could not match all sources (matched %d of %d)", len(matches), len(sources))
+	}
 
 	return matches, nil
 }

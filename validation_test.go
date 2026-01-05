@@ -62,6 +62,45 @@ func TestMatchKeysToSources(t *testing.T) {
 			wantErr:  true,
 		},
 		{
+			name:    "one-key-multiple-sources-same-domain",
+			gpgURLs: []string{"https://mirror.mwt.me/zoom/gpgkey"},
+			debLines: []string{
+				"deb [arch=amd64 signed-by=/etc/apt/keyrings/mwt.asc by-hash=force] https://mirror.mwt.me/zoom/deb any main",
+				"deb [arch=amd64 signed-by=/etc/apt/keyrings/mwt.asc by-hash=force] https://mirror.mwt.me/rstudio/deb/jammy jammy main",
+			},
+			wantMatches: []Match{
+				{
+					GPGURL:  "https://mirror.mwt.me/zoom/gpgkey",
+					DebLine: "deb [arch=amd64 signed-by=/etc/apt/keyrings/mwt.asc by-hash=force] https://mirror.mwt.me/zoom/deb any main",
+				},
+				{
+					GPGURL:  "https://mirror.mwt.me/zoom/gpgkey",
+					DebLine: "deb [arch=amd64 signed-by=/etc/apt/keyrings/mwt.asc by-hash=force] https://mirror.mwt.me/rstudio/deb/jammy jammy main",
+				},
+			},
+		},
+		{
+			name: "multiple-keys-and-sources-path-based-match",
+			gpgURLs: []string{
+				"https://pkgs.tailscale.com/stable/ubuntu/jammy.noarmor.gpg",
+				"https://pkgs.tailscale.com/stable/ubuntu/focal.noarmor.gpg",
+			},
+			debLines: []string{
+				"deb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/ubuntu jammy main",
+				"deb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/ubuntu focal main",
+			},
+			wantMatches: []Match{
+				{
+					GPGURL:  "https://pkgs.tailscale.com/stable/ubuntu/focal.noarmor.gpg",
+					DebLine: "deb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/ubuntu focal main",
+				},
+				{
+					GPGURL:  "https://pkgs.tailscale.com/stable/ubuntu/jammy.noarmor.gpg",
+					DebLine: "deb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/ubuntu jammy main",
+				},
+			},
+		},
+		{
 			name:     "no-matches",
 			gpgURLs:  []string{},
 			debLines: []string{},
