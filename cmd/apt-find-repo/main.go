@@ -352,8 +352,8 @@ func searchForRepo(packageName string) []string {
 		fmt.Fprintf(os.Stderr, "Searching: %s\n", query)
 	}
 
-	// Try ddgr first
-	cmd := exec.Command("ddgr", "--json", "--num", "15", "--np", query)
+	// Try ddgr first (request more results since we filter heavily)
+	cmd := exec.Command("ddgr", "--json", "--num", "40", "--np", query)
 	output, err := cmd.Output()
 
 	if err != nil {
@@ -361,7 +361,7 @@ func searchForRepo(packageName string) []string {
 		if verbose {
 			fmt.Fprintf(os.Stderr, "ddgr failed, trying googler...\n")
 		}
-		cmd = exec.Command("googler", "--json", "--count", "15", "--np", query)
+		cmd = exec.Command("googler", "--json", "--count", "40", "--np", query)
 		output, err = cmd.Output()
 		if err != nil {
 			if verbose {
@@ -403,12 +403,34 @@ func searchForRepo(packageName string) []string {
 		"computingforgeeks.com",
 		"linuxhint.com",
 		"itsfoss.com",
+		"itsfoss.gitlab.io",
 		"howtogeek.com",
 		"digitalocean.com/community/tutorials",
+		"deepwiki.com",
+		"learnubuntumate.weebly.com",
+		"ubuntuhandbook.org",
+		"www.nom.one",
+		"howtouselinux.com",
+		"linuxbash.sh",
+		"geekersdigest.com",
+		"linuxcapable.com",
+		"ubuntushell.com",
+		"thelinuxvault.net",
+		"kifarunix.com",
+		"datacamp.com",
+		"dev.to",
+		"phoenixnap.com",
+		"tech2geek.net",
+		"m.ac",
+		"thelinuxcode.com",
+		"devengoratela.com",
+		"atulhost.com",
+		"zakops.com",
 		// Generic documentation (not package-specific)
 		"documentation.ubuntu.com",
 		"ubuntu.com/tutorials",
 		"debian.org/doc",
+		"wiki.debian.org",
 		// Corporate blogs (generic tutorials)
 		"jumpcloud.com/blog",
 		"operavps.com",
