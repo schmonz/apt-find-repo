@@ -62,7 +62,16 @@ func main() {
 	}
 
 	// Try each candidate URL until we find one that works
-	var gpgURLs, debLines []string
+	type candidateResult struct {
+		url              string
+		gpgURL           string
+		debLine          string
+		matchedPackages  []string
+	}
+
+	var result *candidateResult
+	userProvidedURL := len(args) == 2
+
 	for i, candidateURL := range candidateURLs {
 		if verbose {
 			fmt.Fprintf(os.Stderr, "Trying [%d/%d]: %s\n", i+1, len(candidateURLs), candidateURL)
@@ -73,6 +82,10 @@ func main() {
 			if verbose {
 				fmt.Fprintf(os.Stderr, "  Failed to fetch: %v\n", err)
 			}
+			if userProvidedURL {
+				fmt.Fprintf(os.Stderr, "Error: failed to fetch URL: %v\n", err)
+				os.Exit(1)
+			}
 			continue
 		}
 
@@ -82,115 +95,150 @@ func main() {
 			if verbose {
 				fmt.Fprintf(os.Stderr, "  Failed to read: %v\n", err)
 			}
+			if userProvidedURL {
+				fmt.Fprintf(os.Stderr, "Error: failed to read response: %v\n", err)
+				os.Exit(1)
+			}
 			continue
 		}
 
 		htmlContent := string(body)
-		gpgURLs, debLines = finder.ParseRepoPage(htmlContent)
+		gpgURLs, debLines := finder.ParseRepoPage(htmlContent)
 
 		if len(gpgURLs) > 0 && len(debLines) > 0 {
-			url = candidateURL
 			if verbose {
 				fmt.Fprintf(os.Stderr, "  Found GPG keys and deb sources!\n")
 			}
-			break
-		}
-
-		// If no keys/sources found, look for install scripts
-		if verbose {
-			fmt.Fprintf(os.Stderr, "  No keys/sources on page, checking for install scripts...\n")
-		}
-
-		scriptURLs := findInstallScripts(htmlContent)
-		for _, scriptURL := range scriptURLs {
+		} else {
+			// If no keys/sources found, look for install scripts
 			if verbose {
-				fmt.Fprintf(os.Stderr, "  Fetching script: %s\n", scriptURL)
+				fmt.Fprintf(os.Stderr, "  No keys/sources on page, checking for install scripts...\n")
 			}
 
-			scriptResp, err := http.Get(scriptURL)
-			if err != nil {
-				continue
-			}
-
-			scriptBody, err := io.ReadAll(scriptResp.Body)
-			scriptResp.Body.Close()
-			if err != nil {
-				continue
-			}
-
-			scriptGPGs, scriptDebs := parseInstallScript(string(scriptBody))
-			gpgURLs = append(gpgURLs, scriptGPGs...)
-			debLines = append(debLines, scriptDebs...)
-			if len(gpgURLs) > 0 && len(debLines) > 0 {
-				url = candidateURL
+			scriptURLs := findInstallScripts(htmlContent)
+			for _, scriptURL := range scriptURLs {
 				if verbose {
-					fmt.Fprintf(os.Stderr, "  Found GPG keys and deb sources in script!\n")
+					fmt.Fprintf(os.Stderr, "  Fetching script: %s\n", scriptURL)
 				}
-				break
+
+				scriptResp, err := http.Get(scriptURL)
+				if err != nil {
+					continue
+				}
+
+				scriptBody, err := io.ReadAll(scriptResp.Body)
+				scriptResp.Body.Close()
+				if err != nil {
+					continue
+				}
+
+				scriptGPGs, scriptDebs := parseInstallScript(string(scriptBody))
+				gpgURLs = append(gpgURLs, scriptGPGs...)
+				debLines = append(debLines, scriptDebs...)
+				if len(gpgURLs) > 0 && len(debLines) > 0 {
+					if verbose {
+						fmt.Fprintf(os.Stderr, "  Found GPG keys and deb sources in script!\n")
+					}
+					break
+				}
 			}
 		}
 
-		if len(gpgURLs) > 0 && len(debLines) > 0 {
-			break
+		// If we didn't find both keys and sources, try next candidate
+		if len(gpgURLs) == 0 || len(debLines) == 0 {
+			if verbose {
+				fmt.Fprintf(os.Stderr, "  No keys/sources found\n")
+			}
+			if userProvidedURL {
+				if len(gpgURLs) == 0 {
+					fmt.Fprintf(os.Stderr, "Error: no GPG keys found\n")
+				} else {
+					fmt.Fprintf(os.Stderr, "Error: no deb sources found\n")
+				}
+				os.Exit(1)
+			}
+			continue
 		}
+
+		// Try to match keys to sources
+		matches, err := finder.MatchKeysToSources(gpgURLs, debLines)
+		if err != nil {
+			if verbose {
+				fmt.Fprintf(os.Stderr, "  %v\n", err)
+			}
+			if userProvidedURL {
+				fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+				os.Exit(1)
+			}
+			continue
+		}
+
+		// Use first match
+		match := matches[0]
 
 		if verbose {
-			fmt.Fprintf(os.Stderr, "  No keys/sources found\n")
+			fmt.Fprintf(os.Stderr, "  Matched key: %s\n", match.GPGURL)
+			fmt.Fprintf(os.Stderr, "  Matched source: %s\n", match.DebLine)
 		}
+
+		// Fetch package list
+		if verbose {
+			fmt.Fprintf(os.Stderr, "  Fetching package list...\n")
+		}
+
+		packages, err := finder.FetchPackageList(match.DebLine)
+		if err != nil {
+			if verbose {
+				fmt.Fprintf(os.Stderr, "  Error fetching packages: %v\n", err)
+			}
+			if userProvidedURL {
+				fmt.Fprintf(os.Stderr, "Error fetching packages: %v\n", err)
+				os.Exit(1)
+			}
+			continue
+		}
+
+		// Validate package glob matches at least one package
+		matched, matchedPackages := validatePackageGlob(packageGlob, packages)
+		if !matched {
+			if verbose {
+				fmt.Fprintf(os.Stderr, "  No packages matching '%s' found\n", packageGlob)
+			}
+			if userProvidedURL {
+				fmt.Fprintf(os.Stderr, "Error: no packages matching '%s' found in repository\n", packageGlob)
+				fmt.Fprintf(os.Stderr, "Available packages: %s\n", strings.Join(packages, ", "))
+				os.Exit(1)
+			}
+			continue
+		}
+
+		// Success! We found a working repository
+		result = &candidateResult{
+			url:             candidateURL,
+			gpgURL:          match.GPGURL,
+			debLine:         match.DebLine,
+			matchedPackages: matchedPackages,
+		}
+		break
 	}
 
-	if len(gpgURLs) == 0 {
-		fmt.Fprintf(os.Stderr, "Error: no GPG keys found\n")
+	// Check if we found a working candidate
+	if result == nil {
+		fmt.Fprintf(os.Stderr, "Error: no working repository found\n")
 		os.Exit(1)
 	}
 
-	if len(debLines) == 0 {
-		fmt.Fprintf(os.Stderr, "Error: no deb sources found\n")
-		os.Exit(1)
-	}
-
-	// Match keys to sources
-	matches, err := finder.MatchKeysToSources(gpgURLs, debLines)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
-		os.Exit(1)
-	}
-
-	// Use first match
-	match := matches[0]
-
+	url = result.url
 	if verbose {
-		fmt.Fprintf(os.Stderr, "Found GPG key: %s\n", match.GPGURL)
-		fmt.Fprintf(os.Stderr, "Found source: %s\n", match.DebLine)
-	}
-
-	// Fetch package list
-	if verbose {
-		fmt.Fprintf(os.Stderr, "Fetching package list...\n")
-	}
-
-	packages, err := finder.FetchPackageList(match.DebLine)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error fetching packages: %v\n", err)
-		os.Exit(1)
-	}
-
-	// Validate package glob matches at least one package
-	matched, matchedPackages := validatePackageGlob(packageGlob, packages)
-	if !matched {
-		fmt.Fprintf(os.Stderr, "Error: no packages matching '%s' found in repository\n", packageGlob)
-		fmt.Fprintf(os.Stderr, "Available packages: %s\n", strings.Join(packages, ", "))
-		os.Exit(1)
-	}
-
-	if verbose {
-		fmt.Fprintf(os.Stderr, "Matched packages: %s\n", strings.Join(matchedPackages, ", "))
+		fmt.Fprintf(os.Stderr, "Found GPG key: %s\n", result.gpgURL)
+		fmt.Fprintf(os.Stderr, "Found source: %s\n", result.debLine)
+		fmt.Fprintf(os.Stderr, "Matched packages: %s\n", strings.Join(result.matchedPackages, ", "))
 	}
 
 	// Generate paths
 	repoName := extractRepoName(url)
-	keyPath, _ := finder.GenerateKeyPath(match.GPGURL, repoName)
-	sourcesEntry, sourcesFilename := finder.GenerateSourcesEntry(match.DebLine, keyPath)
+	keyPath, _ := finder.GenerateKeyPath(result.gpgURL, repoName)
+	sourcesEntry, sourcesFilename := finder.GenerateSourcesEntry(result.debLine, keyPath)
 
 	// Check conflicts
 	keyExists, sourceExists := finder.CheckConflicts(keyPath, sourcesFilename)
@@ -206,9 +254,9 @@ func main() {
 
 	// Fetch key
 	if verbose {
-		fmt.Fprintf(os.Stderr, "Fetching key from %s\n", match.GPGURL)
+		fmt.Fprintf(os.Stderr, "Fetching key from %s\n", result.gpgURL)
 	}
-	keyData, err := finder.FetchKey(match.GPGURL)
+	keyData, err := finder.FetchKey(result.gpgURL)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error fetching key: %v\n", err)
 		os.Exit(1)
@@ -245,7 +293,7 @@ func main() {
 	}
 
 	if verbose {
-		fmt.Fprintf(os.Stderr, "Configured repository for: %s\n", strings.Join(matchedPackages, ", "))
+		fmt.Fprintf(os.Stderr, "Configured repository for: %s\n", strings.Join(result.matchedPackages, ", "))
 	}
 }
 
