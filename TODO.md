@@ -1,17 +1,56 @@
 # TODO
 
-- [ ] Omit Ubuntu maybe from search terms
-- [ ] Tighten how we match on install script
-      and don't follow arbitrarily deep. just once
-- [ ] Filter out a bunch of crummy tutoril sotes
-- [ ] Make aure we actually have enough results left to iterate over
-- [ ] What happens with actual glob characyers?
-- [ ] Can we try to match source against our running system?
-      "noble" and "and64" or whatever
-      when would we reject a source that otherwise matches?
-- [ ] Make sure we have microtests for all these edges
-- [ ] Does it simplify our code if we first reduce HTML to Markdown?
-- [ ] Handle a bunch more examples
-- [ ] Rewrite in C with CMake, libcheck, freely taking library dependencies to avoid reinventing any wheels (json, regex, markdown, even a vendored copy of ddgr if that's how we can use it as a library)
-- [ ] Create Debian packages with OpenBuildService
-- [ ] Publish a Homebrew tap
+## 1. Broaden search "enough"
+
+- Iterate over search results, blocklisting more and more crummy tutorial sites until results look decent
+   - deepwiki.com
+   - learnubuntumate.weebly.com
+   - ubuntuhandbook.org
+   - www.nom.one
+- Tweak search terms: omit Ubuntu? or add Mint?
+- Fetch "too many" results so we probably still have "enough"
+
+## 2. Narrow results "enough"
+
+- Try to match source against our running system? ("noble" and "amd64", or whatever)
+    - What if there are multiple source entries to choose from?
+    - What if there's only one source entry to choose from?
+    - When should we reject a source that otherwise matches?
+
+## 3. Test existing behavior "completely"
+
+- Make sure all the edges are microtested
+- Investigate:
+    - Do some of our example webpages change every fetch?
+    - Do some of our example webpages have JavaScript that make them useless if we don't execute it? (We won't, and maybe we should error meaningfully)
+
+## 4. Get realer
+
+- Launchpad PPAs
+- GitHub (if this is somehow generically meaningful)
+- Other popular packages
+- Less popular packages whose webpages we can't parse yet
+
+## 5. Prepare for maintenance
+
+- GitHub Actions workflow:
+    - On every push: build and microtest
+    - On tags: integration-test/build/microtest/release
+    - By manual request: integration-test (fetch fresh testdata, fail if any diffs)
+- Packaging:
+    - Debian with OpenBuildService (so there's a repo!)
+        - Also available from GitHub Releases, with GPG key and source list included? (Because they don't have `apt-find-repo` yet!)
+    - Homebrew tap
+    - pkgsrc (of course of course)
+- Rewrite in C:
+    - CMake
+    - libcheck
+    - program dependency on `ddgr`
+    - library dependencies for json, regex, whatever else
+- Experimental cleanups:
+    - If we reduce HTML to Markdown before parsing, does that simplify our code?
+    - Where else is there duplication or other opportunity for confusion?
+    - Where else can we get smaller and simpler?
+- Docs:
+    - Tighten manpage and `README.md`
+    - Remove this `TODO.md`, maybe also `CLAUDE.md` and `TESTING.md`

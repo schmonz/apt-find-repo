@@ -160,8 +160,19 @@ func main() {
 			continue
 		}
 
-		// Try to match keys to sources
-		matches, err := finder.MatchKeysToSources(gpgURLs, debLines)
+		// Detect system for source filtering
+		sysInfo, err := finder.DetectSystem()
+		if err != nil && verbose {
+			fmt.Fprintf(os.Stderr, "  Warning: could not detect system: %v\n", err)
+		}
+
+		// Try to match keys to sources (with system-aware filtering)
+		var matches []finder.Match
+		if sysInfo != nil {
+			matches, err = finder.MatchKeysToSourcesWithSystem(gpgURLs, debLines, sysInfo)
+		} else {
+			matches, err = finder.MatchKeysToSources(gpgURLs, debLines)
+		}
 		if err != nil {
 			if verbose {
 				fmt.Fprintf(os.Stderr, "  %v\n", err)
@@ -235,9 +246,8 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Matched packages: %s\n", strings.Join(result.matchedPackages, ", "))
 	}
 
-	// Generate paths
-	repoName := extractRepoName(url)
-	keyPath, _ := finder.GenerateKeyPath(result.gpgURL, repoName)
+	// Generate paths based on the package name the user searched for
+	keyPath, _ := finder.GenerateKeyPath(result.gpgURL, packageGlob)
 	sourcesEntry, sourcesFilename := finder.GenerateSourcesEntry(result.debLine, keyPath)
 
 	// Check conflicts
@@ -331,7 +341,12 @@ func validatePackageGlob(glob string, packages []string) (bool, []string) {
 
 // searchForRepo searches for repository URLs using ddgr or googler
 func searchForRepo(packageName string) []string {
-	query := fmt.Sprintf("%s debian ubuntu apt repository install", packageName)
+	// Strip glob wildcards for web search (they're for package matching, not search)
+	searchTerm := strings.ReplaceAll(packageName, "*", "")
+	searchTerm = strings.ReplaceAll(searchTerm, "?", "")
+	searchTerm = strings.TrimSpace(searchTerm)
+
+	query := fmt.Sprintf("%s debian ubuntu apt repository install", searchTerm)
 
 	if verbose {
 		fmt.Fprintf(os.Stderr, "Searching: %s\n", query)

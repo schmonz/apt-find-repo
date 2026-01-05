@@ -168,6 +168,20 @@ func TestGenerateKeyPath(t *testing.T) {
 			wantPath:   "/etc/apt/keyrings/my-repo-unofficial.gpg",
 			wantFormat: "binary",
 		},
+		{
+			name:       "package-glob-with-wildcard",
+			gpgURL:     "https://example.com/key.gpg",
+			repoName:   "tailscale*",
+			wantPath:   "/etc/apt/keyrings/tailscale.gpg",
+			wantFormat: "binary",
+		},
+		{
+			name:       "package-glob-simple",
+			gpgURL:     "https://example.com/key.asc",
+			repoName:   "zoom-client",
+			wantPath:   "/etc/apt/keyrings/zoom-client.asc",
+			wantFormat: "armored",
+		},
 	}
 
 	for _, tc := range tests {

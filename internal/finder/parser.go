@@ -36,10 +36,41 @@ func findGPGKeys(doc *goquery.Document) []string {
 	for _, pattern := range patterns {
 		re := regexp.MustCompile(pattern)
 		matches := re.FindAllString(text, -1)
-		urls = append(urls, matches...)
+		for _, url := range matches {
+			// Filter out false positives
+			if isValidGPGURL(url) {
+				urls = append(urls, url)
+			}
+		}
 	}
 
 	return urls
+}
+
+// isValidGPGURL filters out false positive GPG key URLs
+func isValidGPGURL(url string) bool {
+	// Filter bash brace expansions like "install.sh{,.asc"
+	if strings.Contains(url, "{") || strings.Contains(url, "}") {
+		return false
+	}
+
+	// Filter multi-line configs (yum repos, etc.)
+	if strings.Contains(url, "\n") || strings.Contains(url, "\r") {
+		return false
+	}
+
+	// Filter URLs with config-like syntax (=, [, ])
+	if strings.Contains(url, "=") || strings.Contains(url, "[") {
+		return false
+	}
+
+	// Filter URLs that look like install scripts with extensions
+	// e.g., "install.sh.asc" is likely referring to a script signature, not a key
+	if strings.Contains(url, "install.sh") {
+		return false
+	}
+
+	return true
 }
 
 // FindDebLines extracts deb source lines from a goquery document

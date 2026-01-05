@@ -18,8 +18,18 @@ type Match struct {
 
 // MatchKeysToSources pairs GPG keys with deb sources by domain matching
 func MatchKeysToSources(gpgURLs, debLines []string) ([]Match, error) {
+	return MatchKeysToSourcesWithSystem(gpgURLs, debLines, nil)
+}
+
+// MatchKeysToSourcesWithSystem pairs GPG keys with deb sources, preferring sources that match the system
+func MatchKeysToSourcesWithSystem(gpgURLs, debLines []string, sysInfo *SystemInfo) ([]Match, error) {
 	if len(gpgURLs) == 0 || len(debLines) == 0 {
 		return nil, fmt.Errorf("no keys or sources found")
+	}
+
+	// Filter and rank sources by system match if system info provided
+	if sysInfo != nil {
+		debLines = FilterSourcesForSystem(debLines, sysInfo)
 	}
 
 	// Simple case: exactly one of each
@@ -269,4 +279,119 @@ func CheckConflicts(keyPath, sourcesFilename string) (keyExists, sourceExists bo
 	sourceExists = err == nil
 
 	return keyExists, sourceExists
+}
+
+// FilterSourcesForSystem filters deb sources to prefer those matching the running system
+func FilterSourcesForSystem(sources []string, sysInfo *SystemInfo) []string {
+	if sysInfo == nil || len(sources) == 0 {
+		return sources
+	}
+
+	type scoredSource struct {
+		source string
+		score  int
+	}
+
+	scored := make([]scoredSource, 0, len(sources))
+
+	for _, source := range sources {
+		score := scoreSource(source, sysInfo)
+		// Only include sources with non-negative scores
+		if score >= 0 {
+			scored = append(scored, scoredSource{source, score})
+		}
+	}
+
+	// Sort by score (highest first)
+	sort.Slice(scored, func(i, j int) bool {
+		return scored[i].score > scored[j].score
+	})
+
+	// Return sorted sources
+	result := make([]string, len(scored))
+	for i, s := range scored {
+		result[i] = s.source
+	}
+
+	return result
+}
+
+// scoreSource assigns a score to a deb source based on system match
+// Higher score = better match
+func scoreSource(source string, sysInfo *SystemInfo) int {
+	score := 0
+
+	// Parse the source line
+	_, dist, _, err := parseDebLine(source)
+	if err != nil {
+		return -1000 // Invalid source
+	}
+
+	sourceLower := strings.ToLower(source)
+	dist = strings.ToLower(dist)
+
+	// Check architecture match
+	if strings.Contains(sourceLower, "arch="+sysInfo.Architecture) ||
+		strings.Contains(sourceLower, "$(dpkg --print-architecture)") {
+		score += 100
+	} else if strings.Contains(sourceLower, "arch=") {
+		// Has arch specified but doesn't match ours
+		archPattern := regexp.MustCompile(`arch=([a-z0-9]+)`)
+		if match := archPattern.FindStringSubmatch(sourceLower); len(match) > 1 {
+			if match[1] != sysInfo.Architecture && match[1] != "all" {
+				return -1000 // Wrong architecture, skip
+			}
+		}
+	}
+
+	// Check distribution/codename match
+	if dist == sysInfo.Codename {
+		score += 1000 // Exact codename match (highest priority)
+	} else if dist == sysInfo.OSName {
+		score += 500 // OS name match (ubuntu, debian)
+	} else if dist == "stable" || dist == "any" {
+		score += 100 // Generic stable/any
+	} else if dist == "testing" || dist == "unstable" || dist == "sid" {
+		// Debian suite names - valid but not preferred
+		if sysInfo.OSName == "debian" {
+			score += 50 // Valid for debian
+		} else {
+			return -1000 // These are debian-only
+		}
+	} else {
+		// Check if it's a different codename for same OS
+		knownCodenames := map[string]string{
+			"jammy":     "ubuntu",
+			"focal":     "ubuntu",
+			"noble":     "ubuntu",
+			"mantic":    "ubuntu",
+			"bookworm":  "debian",
+			"bullseye":  "debian",
+			"buster":    "debian",
+			"trixie":    "debian",
+		}
+		if knownOS, ok := knownCodenames[dist]; ok {
+			if knownOS == sysInfo.OSName {
+				score += 50 // Same OS but different version
+			} else {
+				return -1000 // Different OS, skip
+			}
+		}
+	}
+
+	// Prefer stable over testing/unstable (but don't filter out completely)
+	if strings.Contains(sourceLower, "stable") {
+		score += 20
+	}
+	if strings.Contains(sourceLower, "main") && !strings.Contains(sourceLower, "testing") {
+		score += 10
+	}
+	if strings.Contains(sourceLower, "testing") {
+		score -= 10 // Deprioritize but don't filter out
+	}
+	if strings.Contains(sourceLower, "unstable") {
+		score -= 20 // Deprioritize but don't filter out
+	}
+
+	return score
 }

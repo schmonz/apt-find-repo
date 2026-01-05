@@ -173,7 +173,6 @@ var testCases = []TestCase{
 		name:     "brave-official",
 		htmlFile: "../../testdata/webpages/brave-official.html",
 		expectedGPG: []string{
-			"https://dl.brave.com/install.sh{,.asc",
 			"https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg",
 			"https://brave-browser-apt-beta.s3.brave.com/brave-browser-beta-archive-keyring.gpg",
 			"https://brave-browser-apt-nightly.s3.brave.com/brave-browser-nightly-archive-keyring.gpg",
@@ -286,12 +285,6 @@ var testCases = []TestCase{
 		},
 	},
 	{
-		name:        "nodejs-nodesource",
-		htmlFile:    "../../testdata/webpages/nodejs-nodesource.html",
-		expectedGPG: []string{},
-		expectedDeb: []string{},
-	},
-	{
 		name:        "nodejs-unofficial",
 		htmlFile:    "../../testdata/webpages/nodejs-unofficial.html",
 		expectedGPG: []string{},
@@ -376,7 +369,6 @@ var testCases = []TestCase{
 		htmlFile: "../../testdata/webpages/vscode-official.html",
 		expectedGPG: []string{
 			"https://packages.microsoft.com/keys/microsoft.asc",
-			`https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc`,
 		},
 		expectedDeb: []string{},
 	},

@@ -44,6 +44,21 @@ var keyTestCases = []KeyTestCase{
 		inputFile: "../../testdata/keys/garbage.txt",
 		wantError: true,
 	},
+	{
+		name:       "truncated-armored",
+		inputFile:  "../../testdata/keys/truncated.asc",
+		wantFormat: "armored", // Will be detected as armored, but fail normalization
+	},
+	{
+		name:      "zero-byte",
+		inputFile: "../../testdata/keys/empty.gpg",
+		wantError: true,
+	},
+	{
+		name:       "malformed-armored",
+		inputFile:  "../../testdata/keys/malformed.asc",
+		wantFormat: "armored", // Will be detected as armored, but fail normalization
+	},
 }
 
 func TestDetectKeyFormat(t *testing.T) {
@@ -126,6 +141,55 @@ func TestExtractArmoredKey(t *testing.T) {
 
 	if !bytes.Contains(key, []byte("BEGIN PGP PUBLIC KEY BLOCK")) {
 		t.Error("Extracted data doesn't look like a key")
+	}
+}
+
+func TestNormalizeKeyEdgeCases(t *testing.T) {
+	tests := []struct {
+		name      string
+		inputFile string
+		wantError bool
+	}{
+		{
+			name:      "truncated-armored-key",
+			inputFile: "../../testdata/keys/truncated.asc",
+			wantError: true,
+		},
+		{
+			name:      "malformed-armored-key",
+			inputFile: "../../testdata/keys/malformed.asc",
+			wantError: true,
+		},
+		{
+			name:      "zero-byte-file",
+			inputFile: "../../testdata/keys/empty.gpg",
+			wantError: true,
+		},
+		{
+			name:      "garbage-text",
+			inputFile: "../../testdata/keys/garbage.txt",
+			wantError: true,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			data, err := os.ReadFile(tc.inputFile)
+			if err != nil {
+				t.Skipf("Test file not found: %s", tc.inputFile)
+			}
+
+			_, err = NormalizeKey(data)
+			if tc.wantError {
+				if err == nil {
+					t.Errorf("Expected NormalizeKey to fail, but it succeeded")
+				}
+			} else {
+				if err != nil {
+					t.Errorf("Expected NormalizeKey to succeed, but got error: %v", err)
+				}
+			}
+		})
 	}
 }
 
