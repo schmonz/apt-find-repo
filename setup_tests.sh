@@ -46,6 +46,27 @@ curl -s https://apt.syncthing.net/ > testdata/webpages/syncthing-official.html
 curl -s https://caddyserver.com/docs/install > testdata/webpages/caddy-official.html
 curl -s https://support.1password.com/install-linux/ > testdata/webpages/1password-official.html
 
+# Unofficial GitHub-hosted repos
+curl -s https://github.com/8hobbies/hugo-apt > testdata/webpages/hugo-unofficial.html
+curl -s https://github.com/allddd/headscale-apt > testdata/webpages/headscale-unofficial.html
+curl -s https://github.com/mkasberg/ghostty-ubuntu > testdata/webpages/ghostty-unofficial.html
+
+# Unofficial Launchpad PPAs
+curl -s https://launchpad.net/~savoury1/+archive/ubuntu/handbrake > testdata/webpages/handbrake-unofficial.html
+curl -s https://launchpad.net/~savoury1/+archive/ubuntu/ffmpeg5 > testdata/webpages/savoury-ffmpeg-unofficial.html
+curl -s https://launchpad.net/~savoury1/+archive/ubuntu/multimedia > testdata/webpages/savoury-multimedia-unofficial.html
+curl -s https://launchpad.net/~obsproject/+archive/ubuntu/obs-studio > testdata/webpages/obs-studio-unofficial.html
+curl -s https://launchpad.net/~lutris-team/+archive/ubuntu/lutris > testdata/webpages/lutris-unofficial.html
+curl -s https://launchpad.net/~neovim-ppa/+archive/ubuntu/stable > testdata/webpages/neovim-unofficial.html
+curl -s https://launchpad.net/~graphics-drivers/+archive/ubuntu/ppa > testdata/webpages/graphics-drivers-unofficial.html
+curl -s https://launchpad.net/~oibaf/+archive/ubuntu/graphics-drivers > testdata/webpages/oibaf-graphics-unofficial.html
+curl -s https://launchpad.net/~openshot.developers/+archive/ubuntu/ppa > testdata/webpages/openshot-unofficial.html
+curl -s https://launchpad.net/~inkscape.dev/+archive/ubuntu/stable > testdata/webpages/inkscape-unofficial.html
+curl -s https://launchpad.net/~ubuntuhandbook1/+archive/ubuntu/ffmpeg8 > testdata/webpages/ubuntuhandbook-ffmpeg-unofficial.html
+curl -s https://launchpad.net/~libreoffice/+archive/ubuntu/ppa > testdata/webpages/libreoffice-unofficial.html
+curl -s https://launchpad.net/~audacity-team/+archive/ubuntu/daily > testdata/webpages/audacity-unofficial.html
+curl -s https://launchpad.net/~kdenlive/+archive/ubuntu/kdenlive-stable > testdata/webpages/kdenlive-unofficial.html
+
 echo "Test data saved to testdata/webpages/"
 echo "Total files: $(ls -1 testdata/webpages/ | wc -l)"
 echo "Run: go test -v"

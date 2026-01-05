@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+  <head>
+<base href="https://launchpad.net/~libreoffice/+archive/ubuntu/ppa/+index" />
+
+    <meta charset="UTF-8" />
+    <title>LibreOffice Fresh : “LibreOffice Packaging” team</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/@@/apple-touch-icon.png?v=2022" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/@@/favicon-32x32.png?v=2022" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/@@/favicon-16x16.png?v=2022" />
+    <link rel="manifest" href="/@@/site.webmanifest?v=2022" />
+    <link rel="mask-icon" href="/@@/safari-pinned-tab.svg?v=2022" color="#e9531f" />
+    <link rel="shortcut icon" href="/@@/favicon.ico?v=2022" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="msapplication-config" content="/@@/browserconfig.xml?v=2022" />
+    <meta name="theme-color" content="#ffffff" />
+    
+    
+    
+
+    
+  
+  <link type="text/css" rel="stylesheet" media="screen, print" href="/+icing/rev99c00f518760bdd50fc6e353e7736d2fff8fba4a/combo.css" />
+
+
+    
+
+    
+      <meta name="description" content="LibreOffice test builds and backports
+
+This PPA will have what the Document Foundation calls &quot;LibreOffice fresh&quot;, the latest release of the newest series (but no alpha/beta releases).
+
+There is a PPA dedicated to specific LibreOffice major series which support a range of older Ubuntu releases too:
+https://launchpad.net/~libreoffice/+archive/libreoffice-still (&quot;Still&quot;)
+https://launchpad.net/~libreoffice/+archive/old-still (&quot;Old Still&quot;)
+
+Alpha and beta releases of a new major releases and the f..." />
+      <meta property="og:description" content="LibreOffice test builds and backports
+
+This PPA will have what the Document Foundation calls &quot;LibreOffice fresh&quot;, the latest release of the newest series (but no alpha/beta releases).
+
+There is a PPA dedicated to specific LibreOffice major series which support a range of older Ubuntu releases too:
+https://launchpad.net/~libreoffice/+archive/libreoffice-still (&quot;Still&quot;)
+https://launchpad.net/~libreoffice/+archive/old-still (&quot;Old Still&quot;)
+
+Alpha and beta releases of a new major releases and the f..." />
+    
+
+    
+    
+      <meta property="og:title" content="LibreOffice Fresh : “LibreOffice Packaging” team" />
+      <meta property="og:type" content="website" />
+      <meta property="og:image" content="/@@/launchpad-og-image.png" />
+      <meta property="og:url" content="https://launchpad.net/~libreoffice/+archive/ubuntu/ppa/+index" />
+      <meta property="og:site_name" content="Launchpad" />
+    
+
+    
+
+    
+  
+
+  
+  
+  <script type="text/javascript">
+    var LP = {
+        cache: {},
+        links: {}
+    };
+  </script>
+
+  
+
+  <script type="text/javascript">var cookie_scope = '; Path=/; Secure; Domain=.launchpad.net';</script>
+
+   <script type="text/javascript" src="/+combo/rev99c00f518760bdd50fc6e353e7736d2fff8fba4a/?yui/yui/yui-min.js&amp;lp/meta.js&amp;yui/loader/loader-min.js"></script>
+   <script type="text/javascript">
+        var raw = null;
+        if (LP.devmode) {
+           raw = 'raw';
+        }
+        YUI.GlobalConfig = {
+            combine: true,
+            comboBase: '/+combo/rev99c00f518760bdd50fc6e353e7736d2fff8fba4a/?',
+            root: 'yui/',
+            filter: raw,
+            debug: false,
+            fetchCSS: false,
+            maxURLLength: 2000,
+            groups: {
+                lp: {
+                    combine: true,
+                    base: '/+combo/rev99c00f518760bdd50fc6e353e7736d2fff8fba4a/?lp/',
+                    comboBase: '/+combo/rev99c00f518760bdd50fc6e353e7736d2fff8fba4a/?',
+                    root: 'lp/',
+                    // comes from including lp/meta.js
+                    modules: LP_MODULES,
+                    fetchCSS: false
+                }
+            }
+        }</script>
+
+  <script type="text/javascript">
+      // we need this to create a single YUI instance all events and code
+      // talks across. All instances of YUI().use should be based off of
+      // LPJS instead.
+      var LPJS = new YUI();
+  </script>
+
+
+
+    <script id="base-layout-load-scripts" type="text/javascript">
+        //<![CDATA[
+        LPJS.use('base', 'node', 'console', 'event',
+            'oop', 'lp', 'lp.app.foldables','lp.app.sorttable',
+            'lp.app.inlinehelp', 'lp.app.links',
+            'lp.bugs.bugtask_index', 'lp.bugs.subscribers',
+            'lp.app.ellipsis', 'lp.code.branchmergeproposal.diff',
+            'lp.views.global',
+             function(Y) {
+
+            Y.on("domready", function () {
+                var global_view = new Y.lp.views.Global();
+                global_view.render();
+
+                Y.lp.app.sorttable.SortTable.init();
+                Y.lp.app.inlinehelp.init_help();
+                Y.lp.activate_collapsibles();
+                Y.lp.app.foldables.activate();
+                Y.lp.app.links.check_valid_lp_links();
+            });
+
+            Y.on('lp:context:web_link:changed', function(e) {
+                  window.location = e.new_value;
+            });
+        });
+        //]]>
+    </script>
+    <script id="base-helper-functions" type="text/javascript">
+         //<![CDATA[
+        // This code is pulled from lp.js that needs to be available on every
+        // request. Pulling here to get it outside the scope of the YUI block.
+        function setFocusByName(name) {
+            // Focus the first element matching the given name which can be focused.
+            var nodes = document.getElementsByName(name);
+            var i, node;
+            for (i = 0; i < nodes.length; i++) {
+                node = nodes[i];
+                if (node.focus) {
+                    try {
+                        // Trying to focus a hidden element throws an error in IE8.
+                        if (node.offsetHeight !== 0) {
+                            node.focus();
+                        }
+                    } catch (e) {
+                        LPJS.use('console', function(Y) {
+                            Y.log('In setFocusByName(<' +
+                                node.tagName + ' type=' + node.type + '>): ' + e);
+                        });
+                    }
+                    break;
+                }
+            }
+        }
+
+        function selectWidget(widget_name, event) {
+          if (event && (event.keyCode === 9 || event.keyCode === 13)) {
+              // Avoid firing if user is tabbing through or simply pressing
+              // enter to submit the form.
+              return;
+          }
+          document.getElementById(widget_name).checked = true;
+        }
+        //]]>
+    </script>
+
+    
+      
+    
+  </head>
+
+  <body id="document" itemscope="" itemtype="http://schema.org/WebPage" class="tab-overview
+      main_side
+      public
+      yui3-skin-sam">
+          
+          
+          
+    <div class="yui-d0">
+      <div id="locationbar" class="login-logout">
+        
+
+<div id="logincontrol"><a href="https://launchpad.net/~libreoffice/+archive/ubuntu/ppa/+login">Log in / Register</a></div>
+
+
+
+      </div><!--id="locationbar"-->
+
+      <div id="watermark" class="watermark-apps-portlet">
+        <div>
+          <a href="https://launchpad.net/~libreoffice"><img alt="" width="64" height="64" src="https://launchpadlibrarian.net/67786822/tdf64.png" /></a>
+        </div>
+        <div class="wide">
+          <h2 id="watermark-heading"><a href="https://launchpad.net/~libreoffice">“LibreOffice Packaging” team</a></h2>
+        </div>
+        
+  <!-- Application Menu -->
+  <ul class="facetmenu">
+    
+      <li class="overview active"><a href="https://launchpad.net/~libreoffice">Overview</a></li>
+      
+      
+    
+    
+      
+      <li class="branches"><a href="https://code.launchpad.net/~libreoffice">Code</a></li>
+      
+    
+    
+      
+      <li class="bugs"><a href="https://bugs.launchpad.net/~libreoffice">Bugs</a></li>
+      
+    
+    
+      
+      <li class="specifications"><a href="https://blueprints.launchpad.net/~libreoffice">Blueprints</a></li>
+      
+    
+    
+      
+      <li class="translations"><a href="https://translations.launchpad.net/~libreoffice">Translations</a></li>
+      
+    
+    
+      
+      <li class="answers"><a href="https://answers.launchpad.net/~libreoffice">Answers</a></li>
+      
+    
+  </ul>
+
+      </div>
+
+      <div class="yui-t4">
+        <div id="maincontent" class="yui-main">
+          <div class="yui-b" dir="ltr">
+            <div class="context-publication">
+              
+    <meta itemprop="name" content="LibreOffice Fresh" />
+    <h1 id="edit-displayname">
+<span class="yui3-editable_text-text ellipsis single-line" style="max-width: 95%;">
+    LibreOffice Fresh
+</span>
+  
+</h1>
+
+
+
+    
+  
+              
+
+              <div id="registration" class="registering">
+                
+              </div>
+            </div>
+
+            
+            <div id="request-notifications">
+              
+            </div>
+
+            
+              
+
+    <div class="top-portlet" style="padding-top:0.5em;">
+      
+
+      <div>
+  <div class="lazr-multiline-edit" id="edit-description">
+  <div class="clearfix">
+    
+
+    <h3>PPA description</h3>
+  </div>
+
+  <div class="yui3-editable_text-text"><p>LibreOffice test builds and backports</p>
+<p>This PPA will have what the Document Foundation calls &quot;LibreOffice fresh&quot;, the latest release of the newest series (but no alpha/beta releases).</p>
+<p>There is a PPA dedicated to specific LibreOffice major series which support a range of older Ubuntu releases too:<br />
+<a rel="nofollow" href="https://launchpad.net/~libreoffice/+archive/libreoffice-still">https:/<wbr />/launchpad.<wbr />net/~libreoffic<wbr />e/+archive/<wbr />libreoffice-<wbr />still</a> (&quot;Still&quot;)<br />
+<a rel="nofollow" href="https://launchpad.net/~libreoffice/+archive/old-still">https:/<wbr />/launchpad.<wbr />net/~libreoffic<wbr />e/+archive/<wbr />old-still</a> (&quot;Old Still&quot;)</p>
+<p>Alpha and beta releases of a new major releases and the first release candidate of minor updates can be found at:<br />
+<a rel="nofollow" href="https://launchpad.net/~libreoffice/+archive/libreoffice-prereleases">https:/<wbr />/launchpad.<wbr />net/~libreoffic<wbr />e/+archive/<wbr />libreoffice-<wbr />prereleases</a></p>
+<p>So much for other ppas.</p>
+<p>Please file bugs for these packages on launchpad as described in:<br />
+<a rel="nofollow" href="https://lists.launchpad.net/libreoffice/msg00072.html">https:/<wbr />/lists.<wbr />launchpad.<wbr />net/libreoffice<wbr />/msg00072.<wbr />html</a></p>
+<p>This PPA might contain the release candidate that is assumed to become the final release even before it is declared so by the Document Foundation (e.g. usually release candidate 2 for minor updates).</p>
+<p>Most of the packages in this PPA have only experienced minor testing -- in fact it is the place to enable a wider audience to test packages before they are published into the distro proper. In general, this PPA is _not_ for the average user to install without a closer look (if it would be, its packages would be in the main repositories). OTOH, it is _way_ _better_ to use packages from this PPA than using the *.deb files that The Document Foundation provides upstream, which are intentionally build against a very old baseline for maximum compatibility. So, _if_ you want to be on the bleeding edge, do it here, not with upstream *.debs.</p>
+<p>In general, users are advised to take a look at the changelog for the details about a package. If there is a specific bug that is intended to be addressed by an update released into the PPA, you are encouraged to test, if the update solves that problem. Packages published after the distro release are mostly such specific fixes. Critical fixes will be SRUed into the main repositories after testing anyway (later, with more testing).</p>
+<p>To return to the LibreOffice version from the main archive, use ppa-purge. see: <a rel="nofollow" href="http://www.webupd8.org/2009/12/remove-ppa-repositories-via-command.html">http://<wbr />www.webupd8.<wbr />org/2009/<wbr />12/remove-<wbr />ppa-repositorie<wbr />s-via-command.<wbr />html</a> for details</p></div>
+  </div>
+
+  
+</div>
+
+    </div>
+
+    
+      
+    
+    
+  
+    
+
+    <div class="yui-gc">
+
+      <div class="yui-u first">
+        
+          
+    
+
+    <div id="ppa-install" class="portlet">
+      <h2>Adding this PPA to your system</h2>
+
+      
+
+        <p>You can update your system with unsupported packages from
+          this untrusted PPA by adding <strong class="ppa-reference">ppa:libreoffice/ppa</strong>
+          to your system's Software Sources.
+          (<a href="/+help-soyuz/ppa-sources-list.html" target="help">Read about installing</a>)
+        </p>
+
+        <pre class="command subordinate">
+sudo add-apt-repository ppa:libreoffice/ppa
+sudo apt update
+        </pre>
+
+        <div class="widget-header">
+          Technical details about this PPA
+        </div>
+
+        <div class="widget-body">
+          <p>This PPA can be added to your system manually by copying
+             the lines below and adding them to your system's software
+             sources. </p>
+          
+
+  <script>
+  <!--
+      function updateSeries(select) {
+          var deb = document.getElementById('series-deb');
+          deb.innerHTML = select.value;
+          var deb_src = document.getElementById('series-deb-src');
+          deb_src.innerHTML = select.value;
+      }
+  //-->
+  </script>
+
+  <div id="series-widget-div">
+    <form style="display: inline">
+    Display sources.list entries for: <select id="field.series" name="field.series" size="1" onChange='updateSeries(this);'>
+<option selected="selected" value="YOUR_UBUNTU_VERSION_HERE">Choose your Ubuntu version</option>
+<option value="questing">Questing (25.10)</option>
+<option value="plucky">Plucky (25.04)</option>
+<option value="noble">Noble (24.04)</option>
+<option value="jammy">Jammy (22.04)</option>
+<option value="focal">Focal (20.04)</option>
+<option value="bionic">Bionic (18.04)</option>
+</select>
+    </form>
+  </div>
+
+  
+
+  <pre id="sources-list-entries" class="wrap">
+deb <a href="https://ppa.launchpadcontent.net/libreoffice/ppa/ubuntu">https://ppa.launchpadcontent.net/libreoffice/ppa/ubuntu</a> <span id="series-deb">YOUR_UBUNTU_VERSION_HERE</span> main 
+deb-src <a href="https://ppa.launchpadcontent.net/libreoffice/ppa/ubuntu">https://ppa.launchpadcontent.net/libreoffice/ppa/ubuntu</a> <span id="series-deb-src">YOUR_UBUNTU_VERSION_HERE</span> main </pre>
+
+
+
+          <dl id="signing-key">
+            <dt>Signing key:</dt>
+            <dd>
+              <a href="https://keyserver.ubuntu.com/pks/lookup?fingerprint=on&amp;op=index&amp;search=0xCDDE43BA4DE3F09D7CE7016673AEE920AD55F5A0">
+                <code>4096R/CDDE43BA4DE3F09D7CE7016673AEE920AD55F5A0</code>
+              </a>
+              (<a href="/+help-soyuz/ppa-sources-list.html" target="help">What is this?</a>)
+            </dd>
+            <dt>Fingerprint:</dt>
+            <dd>CDDE43BA4DE3F09D7CE7016673AEE920AD55F5A0</dd>
+          </dl>
+          <div id="archive-dependencies">
+            <h3>Dependencies:</h3>
+            <ul>
+              <li>
+                <a href="/~libreoffice/+archive/ubuntu/build-support">Build support PPA for Libreoffice packages (DO NOT USE)</a>
+                
+                
+                (included <time title="2021-05-18 11:49:56 UTC" datetime="2021-05-18T11:49:56.020949+00:00">on 2021-05-18</time>)
+              </li>
+            </ul>
+          </div> <!--archive-dependencies -->
+        </div> <!-- widget-body -->
+
+        <p>For questions and bugs with software in this PPA please contact
+          <a href="/~libreoffice" class="bg-image" style="background-image: url(https://launchpadlibrarian.net/71060002/tdf14.png)">LibreOffice Packaging</a>.</p>
+
+        <script type="text/javascript">
+          LPJS.use('lp.app.widgets.expander', function(Y) {
+              var widget_header = Y.one('#ppa-install .widget-header');
+              var content = Y.one('.widget-body');
+              var expander = new Y.lp.app.widgets.expander.Expander(
+                  widget_header, content);
+              expander.setUp(true);
+          });
+        </script>
+      
+
+      
+
+    </div> <!-- ppa-install -->
+  
+        
+        
+      </div>
+
+      <div class="yui-u">
+        
+    
+    <div class="portlet">
+      <h2>PPA statistics</h2>
+      <dl>
+        <dt>Activity</dt>
+        <dd>3
+          updates
+          added during the past month.</dd>
+        
+      </dl>
+    </div>
+  
+      </div>
+    </div><!-- yui-gc -->
+
+    
+    
+    <div class="portlet" id="packages">
+      <span class="see-all"><a class="menu-link-packages sprite info" href="https://launchpad.net/~libreoffice/+archive/ubuntu/ppa/+packages">View package details</a></span>
+      <h2>Overview of published packages</h2>
+
+      <form class="package-search-filter" action="" method="GET">
+        <label for="field.series_filter">Published in:</label>
+        <select id="field.series_filter" name="field.series_filter" size="1" >
+<option value="">Any series</option>
+<option value="questing">Questing</option>
+<option value="plucky">Plucky</option>
+<option value="noble">Noble</option>
+<option value="jammy">Jammy</option>
+<option value="focal">Focal</option>
+<option value="bionic">Bionic</option>
+</select>
+        <input type="submit" value="Filter" />
+      </form>
+
+      <div>
+
+        <table style="width: 100%;" class="upper-batch-nav">
+  <tbody>
+    <tr>
+      <td style="white-space: nowrap" class="batch-navigation-index">
+        
+            <strong>1</strong>
+            
+              &rarr;
+              <strong>8</strong>
+            
+            of
+            8
+            results
+        
+      </td>
+      <td style="text-align: right; white-space: nowrap" class="batch-navigation-links">
+        
+        <span class="first inactive">First</span>
+        &bull;
+        
+        <span class="previous inactive">Previous</span>
+        &bull;
+        
+        <span class="next inactive"><strong>Next</strong></span>
+        
+          &bull;
+          
+          <span class="last inactive">Last</span>
+        
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+        <table class="listing sortable" id="packages_list">
+          <thead>
+            <tr>
+              <th>Package</th>
+              <th>Version</th>
+              <th>Uploaded by</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                harfbuzz
+              </td>
+              <td>
+                2.6.4-1ubuntu4.2~bpo18.04.1~lo1
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2022-09-15 11:43:21 UTC" datetime="2022-09-15T11:43:21.826875+00:00">2022-09-15</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                libreoffice
+              </td>
+              <td>
+                4:25.8.4~rc2-0ubuntu0.25.10.1~lo1
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2025-12-18 12:35:47 UTC" datetime="2025-12-18T12:35:47.479638+00:00">2025-12-18</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                libreoffice
+              </td>
+              <td>
+                4:25.8.4~rc2-0ubuntu0.25.04.1~lo1
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2025-12-18 12:35:47 UTC" datetime="2025-12-18T12:35:47.479638+00:00">2025-12-18</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                libreoffice
+              </td>
+              <td>
+                4:25.8.4~rc2-0ubuntu0.24.04.1~lo1
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2025-12-18 12:35:47 UTC" datetime="2025-12-18T12:35:47.479638+00:00">2025-12-18</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="superseded">
+              <td>
+                <img src="/@@/package-source" />
+                libreoffice
+              </td>
+              <td>
+                4:25.2.6~rc2-0ubuntu0.22.04.1~lo1
+                
+                  (<a href="/ubuntu/+source/libreoffice/4:25.2.7-0ubuntu0.25.04.1~bpo22.04.1">Newer version</a>
+                  available)
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2025-09-09 18:38:39 UTC" datetime="2025-09-09T18:38:39.827095+00:00">2025-09-09</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                libreoffice
+              </td>
+              <td>
+                4:7.6.7-0ubuntu0.20.04.1~lo1
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2024-06-04 13:33:13 UTC" datetime="2024-06-04T13:33:13.122467+00:00">2024-06-04</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                libreoffice
+              </td>
+              <td>
+                4:7.6.7-0ubuntu0.18.04.1~lo1
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2024-06-04 13:33:13 UTC" datetime="2024-06-04T13:33:13.122467+00:00">2024-06-04</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                node-normalize.css
+              </td>
+              <td>
+                8.0.0-3
+                
+              </td>
+              <td>
+                  no signer
+                  
+                  (<time title="2019-08-14 16:00:08 UTC" datetime="2019-08-14T16:00:08.926465+00:00">2019-08-14</time>)
+                  
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+
+        <table style="width: 100%;" class="lower-batch-nav">
+  <tbody>
+    <tr>
+      <td style="white-space: nowrap" class="batch-navigation-index">
+        
+            <strong>1</strong>
+            
+              &rarr;
+              <strong>8</strong>
+            
+            of
+            8
+            results
+        
+      </td>
+      <td style="text-align: right; white-space: nowrap" class="batch-navigation-links">
+        
+        <span class="first inactive">First</span>
+        &bull;
+        
+        <span class="previous inactive">Previous</span>
+        &bull;
+        
+        <span class="next inactive"><strong>Next</strong></span>
+        
+          &bull;
+          
+          <span class="last inactive">Last</span>
+        
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+        
+
+      </div>
+    </div>
+  
+ 
+            
+            
+          </div><!-- yui-b -->
+        </div><!-- yui-main -->
+
+        
+          <div id="side-portlets" class="yui-b side">
+            
+    <div id="global-actions" class="portlet vertical">
+  <ul>
+    <li>
+      <a class="menu-link-packages sprite info" href="https://launchpad.net/~libreoffice/+archive/ubuntu/ppa/+packages">View package details</a>
+    </li>
+  </ul>
+</div>
+
+    
+  
+
+  
+  <div id="portlet-latest-updates" class="portlet">
+    <h2>Latest updates</h2>
+
+    
+    
+      <ul class="latest-ppa-updates">
+        <li class="FULLYBUILT">
+          <strong>libreoffice</strong>
+          <span class="duration">
+            2 weeks
+            ago
+          </span><br />
+          Successfully built
+          
+        </li>
+        <li class="FULLYBUILT">
+          <strong>libreoffice</strong>
+          <span class="duration">
+            2 weeks
+            ago
+          </span><br />
+          Successfully built
+          
+        </li>
+        <li class="FULLYBUILT">
+          <strong>libreoffice</strong>
+          <span class="duration">
+            2 weeks
+            ago
+          </span><br />
+          Successfully built
+          
+        </li>
+        <li class="FULLYBUILT">
+          <strong>libreoffice</strong>
+          <span class="duration">
+            17 weeks
+            ago
+          </span><br />
+          Successfully built
+          
+        </li>
+        <li class="FULLYBUILT">
+          <strong>libreoffice</strong>
+          <span class="duration">
+            83 weeks
+            ago
+          </span><br />
+          Successfully built
+          
+        </li>
+      </ul>
+    
+    </div>
+  
+
+  
+          </div><!-- yui-b side -->
+        
+      </div><!-- yui-t4 -->
+
+      
+  <div id="footer" class="footer">
+    <div class="lp-arcana">
+        <div class="lp-branding">
+          <a href="https://launchpad.net/"><img src="/@@/launchpad-footer-logo.svg" alt="Launchpad" width="65" height="18" /></a>
+          &nbsp;&bull;&nbsp;
+          <a href="https://launchpad.net/+tour">Take the tour</a>
+          &nbsp;&bull;&nbsp;
+          <a href="https://help.launchpad.net/">Read the guide</a>
+          &nbsp;
+          <form id="globalsearch" method="get" accept-charset="UTF-8" action="https://launchpad.net/+search">
+            <input type="search" id="search-text" name="field.text" />
+            <input type="image" src="/@@/search" style="vertical-align:5%" alt="Search Launchpad" />
+          </form>
+        </div>
+        
+  
+
+    </div>
+
+    <div class="colophon">
+      &copy; 2004
+      <a href="http://canonical.com/">Canonical&nbsp;Ltd.</a>
+      &nbsp;&bull;&nbsp;
+      <a href="https://ubuntu.com/legal/launchpad-terms-of-service">Terms of use</a>
+      &nbsp;&bull;&nbsp;
+      <a href="https://www.ubuntu.com/legal/dataprivacy">Data privacy</a>
+      &nbsp;&bull;&nbsp;
+      <a href="/feedback">Contact Launchpad Support</a>
+      
+      &nbsp;&bull;&nbsp;
+      <a href="http://blog.launchpad.net/">Blog</a>
+      
+	&nbsp;&bull;&nbsp;
+	<a href="https://canonical.com/careers">Careers</a>
+      
+      &nbsp;&bull;&nbsp;
+      <a href="https://ubuntu.social/@launchpadstatus">System status</a>
+      <span id="lp-version">
+      &nbsp;&bull;&nbsp;
+        99c00f5
+        
+        
+        (<a href="https://documentation.ubuntu.com/launchpad/">Get the code!</a>)
+      </span>
+    </div>
+  </div>
+
+    </div><!-- yui-d0-->
+
+    
+  
+  
+  <script id="json-cache-script">LP.cache = {"related_features": {}, "context": {"self_link": "https://launchpad.net/api/devel/~libreoffice/+archive/ubuntu/ppa", "web_link": "https://launchpad.net/~libreoffice/+archive/ubuntu/ppa", "resource_type_link": "https://launchpad.net/api/devel/#archive", "webhooks_collection_link": "https://launchpad.net/api/devel/~libreoffice/+archive/ubuntu/ppa/webhooks", "owner_link": "https://launchpad.net/api/devel/~libreoffice", "name": "ppa", "displayname": "LibreOffice Fresh", "reference": "~libreoffice/ubuntu/ppa", "distribution_link": "https://launchpad.net/api/devel/ubuntu", "private": false, "suppress_subscription_notifications": false, "dependencies_collection_link": "https://launchpad.net/api/devel/~libreoffice/+archive/ubuntu/ppa/dependencies", "description": "LibreOffice test builds and backports\n\nThis PPA will have what the Document Foundation calls \"LibreOffice fresh\", the latest release of the newest series (but no alpha/beta releases).\n\nThere is a PPA dedicated to specific LibreOffice major series which support a range of older Ubuntu releases too:\nhttps://launchpad.net/~libreoffice/+archive/libreoffice-still (\"Still\")\nhttps://launchpad.net/~libreoffice/+archive/old-still (\"Old Still\")\n\nAlpha and beta releases of a new major releases and the first release candidate of minor updates can be found at:\nhttps://launchpad.net/~libreoffice/+archive/libreoffice-prereleases\n\nSo much for other ppas.\n\nPlease file bugs for these packages on launchpad as described in:\nhttps://lists.launchpad.net/libreoffice/msg00072.html\n\nThis PPA might contain the release candidate that is assumed to become the final release even before it is declared so by the Document Foundation (e.g. usually release candidate 2 for minor updates).\n\nMost of the packages in this PPA have only experienced minor testing -- in fact it is the place to enable a wider audience to test packages before they are published into the distro proper. In general, this PPA is _not_ for the average user to install without a closer look (if it would be, its packages would be in the main repositories). OTOH, it is _way_ _better_ to use packages from this PPA than using the *.deb files that The Document Foundation provides upstream, which are intentionally build against a very old baseline for maximum compatibility. So, _if_ you want to be on the bleeding edge, do it here, not with upstream *.debs.\n\nIn general, users are advised to take a look at the changelog for the details about a package. If there is a specific bug that is intended to be addressed by an update released into the PPA, you are encouraged to test, if the update solves that problem. Packages published after the distro release are mostly such specific fixes. Critical fixes will be SRUed into the main repositories after testing anyway (later, with more testing).\n\nTo return to the LibreOffice version from the main archive, use ppa-purge. see: http://www.webupd8.org/2009/12/remove-ppa-repositories-via-command.html for details", "signing_key_fingerprint": "CDDE43BA4DE3F09D7CE7016673AEE920AD55F5A0", "require_virtualized": true, "build_debug_symbols": true, "publish_debug_symbols": true, "permit_obsolete_series_uploads": false, "authorized_size": 61440, "status": "Active", "external_dependencies": null, "metadata_overrides": null, "processors_collection_link": "https://launchpad.net/api/devel/~libreoffice/+archive/ubuntu/ppa/processors", "enabled_restricted_processors_collection_link": "https://launchpad.net/api/devel/~libreoffice/+archive/ubuntu/ppa/enabled_restricted_processors", "publishing_method": "Local", "repository_format": "Debian", "publish": true, "relative_build_score": 0, "http_etag": "\"71609340d3caea9b04a2568fa4413d5caa3524b6-5c5bd36a4cf8de89b9b6a459eb97470390782a2e\""}};</script>
+
+    
+  
+
+    
+  </body>
+
+
+  <!--
+    Facet name: overview
+    Page type: main_side
+    Has global search: True
+    Has application tabs: True
+    Has side portlets: True
+
+    At least 42 queries/external actions issued in 0.74 seconds
+
+    Features: {'profiling.enabled': None, 'hard_timeout': '5000', 'js.yui_version': None, 'app.mainsite_only.canonical_url': None, 'app.maintenance_message': None, 'archive.webhooks.enabled': 'on', 'baselayout.careers_link.disabled': None, 'visible_render_time': None}
+
+    r99c00f5
+
+    -->
+
+</html>
+

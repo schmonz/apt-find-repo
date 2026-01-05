@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+  <head>
+<base href="https://launchpad.net/~obsproject/+archive/ubuntu/obs-studio/+index" />
+
+    <meta charset="UTF-8" />
+    <title>OBS Studio : obsproject</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/@@/apple-touch-icon.png?v=2022" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/@@/favicon-32x32.png?v=2022" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/@@/favicon-16x16.png?v=2022" />
+    <link rel="manifest" href="/@@/site.webmanifest?v=2022" />
+    <link rel="mask-icon" href="/@@/safari-pinned-tab.svg?v=2022" color="#e9531f" />
+    <link rel="shortcut icon" href="/@@/favicon.ico?v=2022" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="msapplication-config" content="/@@/browserconfig.xml?v=2022" />
+    <meta name="theme-color" content="#ffffff" />
+    
+    
+    
+
+    
+  
+  <link type="text/css" rel="stylesheet" media="screen, print" href="/+icing/rev99c00f518760bdd50fc6e353e7736d2fff8fba4a/combo.css" />
+
+
+    
+
+    
+      <meta name="description" content="Latest stable release of OBS Studio" />
+      <meta property="og:description" content="Latest stable release of OBS Studio" />
+    
+
+    
+    
+      <meta property="og:title" content="OBS Studio : obsproject" />
+      <meta property="og:type" content="website" />
+      <meta property="og:image" content="/@@/launchpad-og-image.png" />
+      <meta property="og:url" content="https://launchpad.net/~obsproject/+archive/ubuntu/obs-studio/+index" />
+      <meta property="og:site_name" content="Launchpad" />
+    
+
+    
+
+    
+  
+
+  
+  
+  <script type="text/javascript">
+    var LP = {
+        cache: {},
+        links: {}
+    };
+  </script>
+
+  
+
+  <script type="text/javascript">var cookie_scope = '; Path=/; Secure; Domain=.launchpad.net';</script>
+
+   <script type="text/javascript" src="/+combo/rev99c00f518760bdd50fc6e353e7736d2fff8fba4a/?yui/yui/yui-min.js&amp;lp/meta.js&amp;yui/loader/loader-min.js"></script>
+   <script type="text/javascript">
+        var raw = null;
+        if (LP.devmode) {
+           raw = 'raw';
+        }
+        YUI.GlobalConfig = {
+            combine: true,
+            comboBase: '/+combo/rev99c00f518760bdd50fc6e353e7736d2fff8fba4a/?',
+            root: 'yui/',
+            filter: raw,
+            debug: false,
+            fetchCSS: false,
+            maxURLLength: 2000,
+            groups: {
+                lp: {
+                    combine: true,
+                    base: '/+combo/rev99c00f518760bdd50fc6e353e7736d2fff8fba4a/?lp/',
+                    comboBase: '/+combo/rev99c00f518760bdd50fc6e353e7736d2fff8fba4a/?',
+                    root: 'lp/',
+                    // comes from including lp/meta.js
+                    modules: LP_MODULES,
+                    fetchCSS: false
+                }
+            }
+        }</script>
+
+  <script type="text/javascript">
+      // we need this to create a single YUI instance all events and code
+      // talks across. All instances of YUI().use should be based off of
+      // LPJS instead.
+      var LPJS = new YUI();
+  </script>
+
+
+
+    <script id="base-layout-load-scripts" type="text/javascript">
+        //<![CDATA[
+        LPJS.use('base', 'node', 'console', 'event',
+            'oop', 'lp', 'lp.app.foldables','lp.app.sorttable',
+            'lp.app.inlinehelp', 'lp.app.links',
+            'lp.bugs.bugtask_index', 'lp.bugs.subscribers',
+            'lp.app.ellipsis', 'lp.code.branchmergeproposal.diff',
+            'lp.views.global',
+             function(Y) {
+
+            Y.on("domready", function () {
+                var global_view = new Y.lp.views.Global();
+                global_view.render();
+
+                Y.lp.app.sorttable.SortTable.init();
+                Y.lp.app.inlinehelp.init_help();
+                Y.lp.activate_collapsibles();
+                Y.lp.app.foldables.activate();
+                Y.lp.app.links.check_valid_lp_links();
+            });
+
+            Y.on('lp:context:web_link:changed', function(e) {
+                  window.location = e.new_value;
+            });
+        });
+        //]]>
+    </script>
+    <script id="base-helper-functions" type="text/javascript">
+         //<![CDATA[
+        // This code is pulled from lp.js that needs to be available on every
+        // request. Pulling here to get it outside the scope of the YUI block.
+        function setFocusByName(name) {
+            // Focus the first element matching the given name which can be focused.
+            var nodes = document.getElementsByName(name);
+            var i, node;
+            for (i = 0; i < nodes.length; i++) {
+                node = nodes[i];
+                if (node.focus) {
+                    try {
+                        // Trying to focus a hidden element throws an error in IE8.
+                        if (node.offsetHeight !== 0) {
+                            node.focus();
+                        }
+                    } catch (e) {
+                        LPJS.use('console', function(Y) {
+                            Y.log('In setFocusByName(<' +
+                                node.tagName + ' type=' + node.type + '>): ' + e);
+                        });
+                    }
+                    break;
+                }
+            }
+        }
+
+        function selectWidget(widget_name, event) {
+          if (event && (event.keyCode === 9 || event.keyCode === 13)) {
+              // Avoid firing if user is tabbing through or simply pressing
+              // enter to submit the form.
+              return;
+          }
+          document.getElementById(widget_name).checked = true;
+        }
+        //]]>
+    </script>
+
+    
+      
+    
+  </head>
+
+  <body id="document" itemscope="" itemtype="http://schema.org/WebPage" class="tab-overview
+      main_side
+      public
+      yui3-skin-sam">
+          
+          
+          
+    <div class="yui-d0">
+      <div id="locationbar" class="login-logout">
+        
+
+<div id="logincontrol"><a href="https://launchpad.net/~obsproject/+archive/ubuntu/obs-studio/+login">Log in / Register</a></div>
+
+
+
+      </div><!--id="locationbar"-->
+
+      <div id="watermark" class="watermark-apps-portlet">
+        <div>
+          <a href="https://launchpad.net/~obsproject"><img alt="" width="64" height="64" src="https://launchpadlibrarian.net/198286323/obs64.png" /></a>
+        </div>
+        <div class="wide">
+          <h2 id="watermark-heading"><a href="https://launchpad.net/~obsproject">obsproject</a></h2>
+        </div>
+        
+  <!-- Application Menu -->
+  <ul class="facetmenu">
+    
+      <li class="overview active"><a href="https://launchpad.net/~obsproject">Overview</a></li>
+      
+      
+    
+    
+      
+      <li class="branches"><a href="https://code.launchpad.net/~obsproject">Code</a></li>
+      
+    
+    
+      
+      <li class="bugs"><a href="https://bugs.launchpad.net/~obsproject">Bugs</a></li>
+      
+    
+    
+      
+      <li class="specifications"><a href="https://blueprints.launchpad.net/~obsproject">Blueprints</a></li>
+      
+    
+    
+      
+      <li class="translations"><a href="https://translations.launchpad.net/~obsproject">Translations</a></li>
+      
+    
+    
+      
+      <li class="answers"><a href="https://answers.launchpad.net/~obsproject">Answers</a></li>
+      
+    
+  </ul>
+
+      </div>
+
+      <div class="yui-t4">
+        <div id="maincontent" class="yui-main">
+          <div class="yui-b" dir="ltr">
+            <div class="context-publication">
+              
+    <meta itemprop="name" content="OBS Studio" />
+    <h1 id="edit-displayname">
+<span class="yui3-editable_text-text ellipsis single-line" style="max-width: 95%;">
+    OBS Studio
+</span>
+  
+</h1>
+
+
+
+    
+  
+              
+
+              <div id="registration" class="registering">
+                
+              </div>
+            </div>
+
+            
+            <div id="request-notifications">
+              
+            </div>
+
+            
+              
+
+    <div class="top-portlet" style="padding-top:0.5em;">
+      
+
+      <div>
+  <div class="lazr-multiline-edit" id="edit-description">
+  <div class="clearfix">
+    
+
+    <h3>PPA description</h3>
+  </div>
+
+  <div class="yui3-editable_text-text"><p>Latest stable release of OBS Studio</p></div>
+  </div>
+
+  
+</div>
+
+    </div>
+
+    
+      
+    
+    
+  
+    
+
+    <div class="yui-gc">
+
+      <div class="yui-u first">
+        
+          
+    
+
+    <div id="ppa-install" class="portlet">
+      <h2>Adding this PPA to your system</h2>
+
+      
+
+        <p>You can update your system with unsupported packages from
+          this untrusted PPA by adding <strong class="ppa-reference">ppa:obsproject/obs-studio</strong>
+          to your system's Software Sources.
+          (<a href="/+help-soyuz/ppa-sources-list.html" target="help">Read about installing</a>)
+        </p>
+
+        <pre class="command subordinate">
+sudo add-apt-repository ppa:obsproject/obs-studio
+sudo apt update
+        </pre>
+
+        <div class="widget-header">
+          Technical details about this PPA
+        </div>
+
+        <div class="widget-body">
+          <p>This PPA can be added to your system manually by copying
+             the lines below and adding them to your system's software
+             sources. </p>
+          
+
+  <script>
+  <!--
+      function updateSeries(select) {
+          var deb = document.getElementById('series-deb');
+          deb.innerHTML = select.value;
+          var deb_src = document.getElementById('series-deb-src');
+          deb_src.innerHTML = select.value;
+      }
+  //-->
+  </script>
+
+  <div id="series-widget-div">
+    <form style="display: inline">
+    Display sources.list entries for: <select id="field.series" name="field.series" size="1" onChange='updateSeries(this);'>
+<option selected="selected" value="YOUR_UBUNTU_VERSION_HERE">Choose your Ubuntu version</option>
+<option value="plucky">Plucky (25.04)</option>
+<option value="oracular">Oracular (24.10)</option>
+<option value="noble">Noble (24.04)</option>
+<option value="mantic">Mantic (23.10)</option>
+<option value="lunar">Lunar (23.04)</option>
+<option value="kinetic">Kinetic (22.10)</option>
+<option value="jammy">Jammy (22.04)</option>
+<option value="impish">Impish (21.10)</option>
+<option value="hirsute">Hirsute (21.04)</option>
+<option value="groovy">Groovy (20.10)</option>
+<option value="focal">Focal (20.04)</option>
+<option value="eoan">Eoan (19.10)</option>
+<option value="disco">Disco (19.04)</option>
+<option value="cosmic">Cosmic (18.10)</option>
+<option value="bionic">Bionic (18.04)</option>
+<option value="artful">Artful (17.10)</option>
+<option value="zesty">Zesty (17.04)</option>
+<option value="yakkety">Yakkety (16.10)</option>
+<option value="xenial">Xenial (16.04)</option>
+<option value="wily">Wily (15.10)</option>
+<option value="vivid">Vivid (15.04)</option>
+<option value="utopic">Utopic (14.10)</option>
+<option value="trusty">Trusty (14.04)</option>
+</select>
+    </form>
+  </div>
+
+  
+
+  <pre id="sources-list-entries" class="wrap">
+deb <a href="https://ppa.launchpadcontent.net/obsproject/obs-studio/ubuntu">https://ppa.launchpadcontent.net/obsproject/obs-studio/ubuntu</a> <span id="series-deb">YOUR_UBUNTU_VERSION_HERE</span> main 
+deb-src <a href="https://ppa.launchpadcontent.net/obsproject/obs-studio/ubuntu">https://ppa.launchpadcontent.net/obsproject/obs-studio/ubuntu</a> <span id="series-deb-src">YOUR_UBUNTU_VERSION_HERE</span> main </pre>
+
+
+
+          <dl id="signing-key">
+            <dt>Signing key:</dt>
+            <dd>
+              <a href="https://keyserver.ubuntu.com/pks/lookup?fingerprint=on&amp;op=index&amp;search=0xBC7345F522079769F5BBE987EFC71127F425E228">
+                <code>4096R/BC7345F522079769F5BBE987EFC71127F425E228</code>
+              </a>
+              (<a href="/+help-soyuz/ppa-sources-list.html" target="help">What is this?</a>)
+            </dd>
+            <dt>Fingerprint:</dt>
+            <dd>BC7345F522079769F5BBE987EFC71127F425E228</dd>
+          </dl>
+           <!--archive-dependencies -->
+        </div> <!-- widget-body -->
+
+        <p>For questions and bugs with software in this PPA please contact
+          <a href="/~obsproject" class="sprite person">obsproject</a>.</p>
+
+        <script type="text/javascript">
+          LPJS.use('lp.app.widgets.expander', function(Y) {
+              var widget_header = Y.one('#ppa-install .widget-header');
+              var content = Y.one('.widget-body');
+              var expander = new Y.lp.app.widgets.expander.Expander(
+                  widget_header, content);
+              expander.setUp(true);
+          });
+        </script>
+      
+
+      
+
+    </div> <!-- ppa-install -->
+  
+        
+        
+      </div>
+
+      <div class="yui-u">
+        
+    
+    <div class="portlet">
+      <h2>PPA statistics</h2>
+      <dl>
+        <dt>Activity</dt>
+        <dd>0
+          updates
+          added during the past month.</dd>
+        
+      </dl>
+    </div>
+  
+      </div>
+    </div><!-- yui-gc -->
+
+    
+    
+    <div class="portlet" id="packages">
+      <span class="see-all"><a class="menu-link-packages sprite info" href="https://launchpad.net/~obsproject/+archive/ubuntu/obs-studio/+packages">View package details</a></span>
+      <h2>Overview of published packages</h2>
+
+      <form class="package-search-filter" action="" method="GET">
+        <label for="field.series_filter">Published in:</label>
+        <select id="field.series_filter" name="field.series_filter" size="1" >
+<option value="">Any series</option>
+<option value="plucky">Plucky</option>
+<option value="oracular">Oracular</option>
+<option value="noble">Noble</option>
+<option value="mantic">Mantic</option>
+<option value="lunar">Lunar</option>
+<option value="kinetic">Kinetic</option>
+<option value="jammy">Jammy</option>
+<option value="impish">Impish</option>
+<option value="hirsute">Hirsute</option>
+<option value="groovy">Groovy</option>
+<option value="focal">Focal</option>
+<option value="eoan">Eoan</option>
+<option value="disco">Disco</option>
+<option value="cosmic">Cosmic</option>
+<option value="bionic">Bionic</option>
+<option value="artful">Artful</option>
+<option value="zesty">Zesty</option>
+<option value="yakkety">Yakkety</option>
+<option value="xenial">Xenial</option>
+<option value="wily">Wily</option>
+<option value="vivid">Vivid</option>
+<option value="utopic">Utopic</option>
+<option value="trusty">Trusty</option>
+</select>
+        <input type="submit" value="Filter" />
+      </form>
+
+      <div>
+
+        <table style="width: 100%;" class="upper-batch-nav">
+  <tbody>
+    <tr>
+      <td style="white-space: nowrap" class="batch-navigation-index">
+        
+            <strong>1</strong>
+            
+              &rarr;
+              <strong>23</strong>
+            
+            of
+            23
+            results
+        
+      </td>
+      <td style="text-align: right; white-space: nowrap" class="batch-navigation-links">
+        
+        <span class="first inactive">First</span>
+        &bull;
+        
+        <span class="previous inactive">Previous</span>
+        &bull;
+        
+        <span class="next inactive"><strong>Next</strong></span>
+        
+          &bull;
+          
+          <span class="last inactive">Last</span>
+        
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+        <table class="listing sortable" id="packages_list">
+          <thead>
+            <tr>
+              <th>Package</th>
+              <th>Version</th>
+              <th>Uploaded by</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                obs-studio
+              </td>
+              <td>
+                32.0.2-0obsproject1~plucky
+                
+              </td>
+              <td>
+                  <a href="/~gol-d-ace" class="sprite person">Gol D. Ace</a>
+                  
+                  (<time title="2025-10-29 19:18:05 UTC" datetime="2025-10-29T19:18:05.197652+00:00">2025-10-29</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                obs-studio
+              </td>
+              <td>
+                32.0.2-0obsproject1~noble
+                
+              </td>
+              <td>
+                  <a href="/~gol-d-ace" class="sprite person">Gol D. Ace</a>
+                  
+                  (<time title="2025-10-29 19:18:05 UTC" datetime="2025-10-29T19:18:05.197652+00:00">2025-10-29</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                obs-studio
+              </td>
+              <td>
+                31.1.0-0obsproject1~oracular
+                
+              </td>
+              <td>
+                  <a href="/~gol-d-ace" class="sprite person">Gol D. Ace</a>
+                  
+                  (<time title="2025-07-08 18:08:58 UTC" datetime="2025-07-08T18:08:58.431876+00:00">2025-07-08</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                obs-studio
+              </td>
+              <td>
+                30.2.3-0obsproject1~jammy
+                
+              </td>
+              <td>
+                  <a href="/~gol-d-ace" class="sprite person">Gol D. Ace</a>
+                  
+                  (<time title="2024-08-16 18:04:05 UTC" datetime="2024-08-16T18:04:05.297264+00:00">2024-08-16</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                obs-studio
+              </td>
+              <td>
+                30.1.2-0obsproject1~mantic
+                
+              </td>
+              <td>
+                  <a href="/~gol-d-ace" class="sprite person">Gol D. Ace</a>
+                  
+                  (<time title="2024-04-06 01:27:47 UTC" datetime="2024-04-06T01:27:47.881922+00:00">2024-04-06</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                obs-studio
+              </td>
+              <td>
+                30.0.1-0obsproject1~lunar
+                
+              </td>
+              <td>
+                  <a href="/~gol-d-ace" class="sprite person">Gol D. Ace</a>
+                  
+                  (<time title="2023-12-10 19:28:53 UTC" datetime="2023-12-10T19:28:53.025222+00:00">2023-12-10</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                obs-studio
+              </td>
+              <td>
+                29.1.3-0obsproject1~kinetic
+                
+              </td>
+              <td>
+                  <a href="/~gol-d-ace" class="sprite person">Gol D. Ace</a>
+                  
+                  (<time title="2023-06-19 11:18:38 UTC" datetime="2023-06-19T11:18:38.945312+00:00">2023-06-19</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                obs-studio
+              </td>
+              <td>
+                29.1.3-0obsproject1~focal
+                
+              </td>
+              <td>
+                  <a href="/~gol-d-ace" class="sprite person">Gol D. Ace</a>
+                  
+                  (<time title="2023-06-19 11:18:38 UTC" datetime="2023-06-19T11:18:38.945312+00:00">2023-06-19</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                obs-studio
+              </td>
+              <td>
+                27.2.4-0obsproject1~impish
+                
+              </td>
+              <td>
+                  <a href="/~gol-d-ace" class="sprite person">Gol D. Ace</a>
+                  
+                  (<time title="2022-03-30 10:46:44 UTC" datetime="2022-03-30T10:46:44.731972+00:00">2022-03-30</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                obs-studio
+              </td>
+              <td>
+                27.2.4-0obsproject1~bionic
+                
+              </td>
+              <td>
+                  <a href="/~gol-d-ace" class="sprite person">Gol D. Ace</a>
+                  
+                  (<time title="2022-03-30 10:46:44 UTC" datetime="2022-03-30T10:46:44.731972+00:00">2022-03-30</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                obs-studio
+              </td>
+              <td>
+                27.1.3-0obsproject1~hirsute
+                
+              </td>
+              <td>
+                  <a href="/~gol-d-ace" class="sprite person">Gol D. Ace</a>
+                  
+                  (<time title="2021-10-04 20:08:15 UTC" datetime="2021-10-04T20:08:15.175978+00:00">2021-10-04</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                obs-studio
+              </td>
+              <td>
+                27.0.1-0obsproject1~groovy
+                
+              </td>
+              <td>
+                  <a href="/~gol-d-ace" class="sprite person">Gol D. Ace</a>
+                  
+                  (<time title="2021-06-12 03:59:32 UTC" datetime="2021-06-12T03:59:32.868981+00:00">2021-06-12</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                obs-studio
+              </td>
+              <td>
+                25.0.8-0obsproject1~xenial
+                
+              </td>
+              <td>
+                  <a href="/~gol-d-ace" class="sprite person">Gol D. Ace</a>
+                  
+                  (<time title="2020-04-27 03:27:47 UTC" datetime="2020-04-27T03:27:47.572166+00:00">2020-04-27</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                obs-studio
+              </td>
+              <td>
+                25.0.8-0obsproject1~eoan
+                
+              </td>
+              <td>
+                  <a href="/~gol-d-ace" class="sprite person">Gol D. Ace</a>
+                  
+                  (<time title="2020-04-27 03:27:47 UTC" datetime="2020-04-27T03:27:47.572166+00:00">2020-04-27</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                obs-studio
+              </td>
+              <td>
+                24.0.3-0obsproject1~disco
+                
+              </td>
+              <td>
+                  <a href="/~gol-d-ace" class="sprite person">Gol D. Ace</a>
+                  
+                  (<time title="2019-10-15 14:29:07 UTC" datetime="2019-10-15T14:29:07.602536+00:00">2019-10-15</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                obs-studio
+              </td>
+              <td>
+                23.2.1-0obsproject1~cosmic
+                
+              </td>
+              <td>
+                  <a href="/~gol-d-ace" class="sprite person">Gol D. Ace</a>
+                  
+                  (<time title="2019-06-15 21:28:59 UTC" datetime="2019-06-15T21:28:59.652252+00:00">2019-06-15</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                obs-studio
+              </td>
+              <td>
+                23.1.0-0obsproject2~trusty
+                
+              </td>
+              <td>
+                  <a href="/~gol-d-ace" class="sprite person">Gol D. Ace</a>
+                  
+                  (<time title="2019-04-06 21:44:44 UTC" datetime="2019-04-06T21:44:44.297394+00:00">2019-04-06</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                obs-studio
+              </td>
+              <td>
+                21.1.0-0obsproject1~artful
+                
+              </td>
+              <td>
+                  <a href="/~gol-d-ace" class="sprite person">Gol D. Ace</a>
+                  
+                  (<time title="2018-03-19 20:17:35 UTC" datetime="2018-03-19T20:17:35.907688+00:00">2018-03-19</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                obs-studio
+              </td>
+              <td>
+                20.1.0-0obsproject2~zesty
+                
+              </td>
+              <td>
+                  <a href="/~gol-d-ace" class="sprite person">Gol D. Ace</a>
+                  
+                  (<time title="2017-10-17 14:59:33 UTC" datetime="2017-10-17T14:59:33.941718+00:00">2017-10-17</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                obs-studio
+              </td>
+              <td>
+                19.0.3-0obsproject1~yakkety
+                
+              </td>
+              <td>
+                  <a href="/~gol-d-ace" class="sprite person">Gol D. Ace</a>
+                  
+                  (<time title="2017-06-22 13:41:12 UTC" datetime="2017-06-22T13:41:12.439803+00:00">2017-06-22</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                obs-studio
+              </td>
+              <td>
+                0.16.2.1-544~wily
+                
+              </td>
+              <td>
+                  <a href="/~obsproject" class="sprite person">obsproject</a>
+                  
+                  (<time title="2016-10-28 20:29:51 UTC" datetime="2016-10-28T20:29:51.851824+00:00">2016-10-28</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                obs-studio
+              </td>
+              <td>
+                0.12.0-285~vivid
+                
+              </td>
+              <td>
+                  <a href="/~obsproject" class="sprite person">obsproject</a>
+                  
+                  (<time title="2015-09-24 04:03:06 UTC" datetime="2015-09-24T04:03:06.562933+00:00">2015-09-24</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                obs-studio
+              </td>
+              <td>
+                0.11.1-197~utopic
+                
+              </td>
+              <td>
+                  <a href="/~obsproject" class="sprite person">obsproject</a>
+                  
+                  (<time title="2015-07-09 20:33:01 UTC" datetime="2015-07-09T20:33:01.911291+00:00">2015-07-09</time>)
+                  
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+
+        <table style="width: 100%;" class="lower-batch-nav">
+  <tbody>
+    <tr>
+      <td style="white-space: nowrap" class="batch-navigation-index">
+        
+            <strong>1</strong>
+            
+              &rarr;
+              <strong>23</strong>
+            
+            of
+            23
+            results
+        
+      </td>
+      <td style="text-align: right; white-space: nowrap" class="batch-navigation-links">
+        
+        <span class="first inactive">First</span>
+        &bull;
+        
+        <span class="previous inactive">Previous</span>
+        &bull;
+        
+        <span class="next inactive"><strong>Next</strong></span>
+        
+          &bull;
+          
+          <span class="last inactive">Last</span>
+        
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+        
+
+      </div>
+    </div>
+  
+ 
+            
+            
+          </div><!-- yui-b -->
+        </div><!-- yui-main -->
+
+        
+          <div id="side-portlets" class="yui-b side">
+            
+    <div id="global-actions" class="portlet vertical">
+  <ul>
+    <li>
+      <a class="menu-link-packages sprite info" href="https://launchpad.net/~obsproject/+archive/ubuntu/obs-studio/+packages">View package details</a>
+    </li>
+  </ul>
+</div>
+
+    
+  
+
+  
+  <div id="portlet-latest-updates" class="portlet">
+    <h2>Latest updates</h2>
+
+    
+    
+      <ul class="latest-ppa-updates">
+        <li class="FULLYBUILT">
+          <strong>obs-studio</strong>
+          <span class="duration">
+            10 weeks
+            ago
+          </span><br />
+          Successfully built
+          
+        </li>
+        <li class="FULLYBUILT">
+          <strong>obs-studio</strong>
+          <span class="duration">
+            10 weeks
+            ago
+          </span><br />
+          Successfully built
+          
+        </li>
+        <li class="FULLYBUILT">
+          <strong>obs-studio</strong>
+          <span class="duration">
+            26 weeks
+            ago
+          </span><br />
+          Successfully built
+          
+        </li>
+        <li class="FULLYBUILT">
+          <strong>obs-studio</strong>
+          <span class="duration">
+            72 weeks
+            ago
+          </span><br />
+          Successfully built
+          
+        </li>
+        <li class="FULLYBUILT">
+          <strong>obs-studio</strong>
+          <span class="duration">
+            91 weeks
+            ago
+          </span><br />
+          Successfully built
+          
+        </li>
+      </ul>
+    
+    </div>
+  
+
+  
+          </div><!-- yui-b side -->
+        
+      </div><!-- yui-t4 -->
+
+      
+  <div id="footer" class="footer">
+    <div class="lp-arcana">
+        <div class="lp-branding">
+          <a href="https://launchpad.net/"><img src="/@@/launchpad-footer-logo.svg" alt="Launchpad" width="65" height="18" /></a>
+          &nbsp;&bull;&nbsp;
+          <a href="https://launchpad.net/+tour">Take the tour</a>
+          &nbsp;&bull;&nbsp;
+          <a href="https://help.launchpad.net/">Read the guide</a>
+          &nbsp;
+          <form id="globalsearch" method="get" accept-charset="UTF-8" action="https://launchpad.net/+search">
+            <input type="search" id="search-text" name="field.text" />
+            <input type="image" src="/@@/search" style="vertical-align:5%" alt="Search Launchpad" />
+          </form>
+        </div>
+        
+  
+
+    </div>
+
+    <div class="colophon">
+      &copy; 2004
+      <a href="http://canonical.com/">Canonical&nbsp;Ltd.</a>
+      &nbsp;&bull;&nbsp;
+      <a href="https://ubuntu.com/legal/launchpad-terms-of-service">Terms of use</a>
+      &nbsp;&bull;&nbsp;
+      <a href="https://www.ubuntu.com/legal/dataprivacy">Data privacy</a>
+      &nbsp;&bull;&nbsp;
+      <a href="/feedback">Contact Launchpad Support</a>
+      
+      &nbsp;&bull;&nbsp;
+      <a href="http://blog.launchpad.net/">Blog</a>
+      
+	&nbsp;&bull;&nbsp;
+	<a href="https://canonical.com/careers">Careers</a>
+      
+      &nbsp;&bull;&nbsp;
+      <a href="https://ubuntu.social/@launchpadstatus">System status</a>
+      <span id="lp-version">
+      &nbsp;&bull;&nbsp;
+        99c00f5
+        
+        
+        (<a href="https://documentation.ubuntu.com/launchpad/">Get the code!</a>)
+      </span>
+    </div>
+  </div>
+
+    </div><!-- yui-d0-->
+
+    
+  
+  
+  <script id="json-cache-script">LP.cache = {"related_features": {}, "context": {"self_link": "https://launchpad.net/api/devel/~obsproject/+archive/ubuntu/obs-studio", "web_link": "https://launchpad.net/~obsproject/+archive/ubuntu/obs-studio", "resource_type_link": "https://launchpad.net/api/devel/#archive", "webhooks_collection_link": "https://launchpad.net/api/devel/~obsproject/+archive/ubuntu/obs-studio/webhooks", "owner_link": "https://launchpad.net/api/devel/~obsproject", "name": "obs-studio", "displayname": "OBS Studio", "reference": "~obsproject/ubuntu/obs-studio", "distribution_link": "https://launchpad.net/api/devel/ubuntu", "private": false, "suppress_subscription_notifications": false, "dependencies_collection_link": "https://launchpad.net/api/devel/~obsproject/+archive/ubuntu/obs-studio/dependencies", "description": "Latest stable release of OBS Studio", "signing_key_fingerprint": "BC7345F522079769F5BBE987EFC71127F425E228", "require_virtualized": true, "build_debug_symbols": false, "publish_debug_symbols": false, "permit_obsolete_series_uploads": false, "authorized_size": 2048, "status": "Active", "external_dependencies": null, "metadata_overrides": null, "processors_collection_link": "https://launchpad.net/api/devel/~obsproject/+archive/ubuntu/obs-studio/processors", "enabled_restricted_processors_collection_link": "https://launchpad.net/api/devel/~obsproject/+archive/ubuntu/obs-studio/enabled_restricted_processors", "publishing_method": "Local", "repository_format": "Debian", "publish": true, "relative_build_score": 0, "http_etag": "\"f25236bd20142981ae99e6377aedaaa1f6f0aae6-753a38ced90df7dcd6e56c3687f5ea099bfc64eb\""}};</script>
+
+    
+  
+
+    
+  </body>
+
+
+  <!--
+    Facet name: overview
+    Page type: main_side
+    Has global search: True
+    Has application tabs: True
+    Has side portlets: True
+
+    At least 58 queries/external actions issued in 0.55 seconds
+
+    Features: {'profiling.enabled': None, 'hard_timeout': '5000', 'js.yui_version': None, 'app.mainsite_only.canonical_url': None, 'app.maintenance_message': None, 'archive.webhooks.enabled': 'on', 'baselayout.careers_link.disabled': None, 'visible_render_time': None}
+
+    r99c00f5
+
+    -->
+
+</html>
+

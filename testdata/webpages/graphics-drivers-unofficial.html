@@ -1,0 +1,1818 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+  <head>
+<base href="https://launchpad.net/~graphics-drivers/+archive/ubuntu/ppa/+index" />
+
+    <meta charset="UTF-8" />
+    <title>Proprietary GPU Drivers : “Graphics Drivers” team</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/@@/apple-touch-icon.png?v=2022" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/@@/favicon-32x32.png?v=2022" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/@@/favicon-16x16.png?v=2022" />
+    <link rel="manifest" href="/@@/site.webmanifest?v=2022" />
+    <link rel="mask-icon" href="/@@/safari-pinned-tab.svg?v=2022" color="#e9531f" />
+    <link rel="shortcut icon" href="/@@/favicon.ico?v=2022" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="msapplication-config" content="/@@/browserconfig.xml?v=2022" />
+    <meta name="theme-color" content="#ffffff" />
+    
+    
+    
+
+    
+  
+  <link type="text/css" rel="stylesheet" media="screen, print" href="/+icing/rev99c00f518760bdd50fc6e353e7736d2fff8fba4a/combo.css" />
+
+
+    
+
+    
+      <meta name="description" content="Fresh drivers from upstream, currently shipping Nvidia.
+
+## Current releases
+
+Current production branch release: 570.169
+Current new feature branch release: 575.64.03
+Current beta release: 575.51.02
+
+## Legacy releases
+
+470.256.02 (x86_64) - GKxxx “Kepler” GPUs
+390.157 (x86 / x86_64 / ARM) - GF1xx “Fermi” GPUs (*​)
+340.108 (x86 / x86_64) - GeForce 8 and 9 series GPUs (*​)
+304.137 (x86 / x86_64) - GeForce 6 and 7 series GPUs (*​)
+173.14.39 (x86 / x86_64) - GeForce 5 series GPUs (*​)
+96.43.23 (..." />
+      <meta property="og:description" content="Fresh drivers from upstream, currently shipping Nvidia.
+
+## Current releases
+
+Current production branch release: 570.169
+Current new feature branch release: 575.64.03
+Current beta release: 575.51.02
+
+## Legacy releases
+
+470.256.02 (x86_64) - GKxxx “Kepler” GPUs
+390.157 (x86 / x86_64 / ARM) - GF1xx “Fermi” GPUs (*​)
+340.108 (x86 / x86_64) - GeForce 8 and 9 series GPUs (*​)
+304.137 (x86 / x86_64) - GeForce 6 and 7 series GPUs (*​)
+173.14.39 (x86 / x86_64) - GeForce 5 series GPUs (*​)
+96.43.23 (..." />
+    
+
+    
+    
+      <meta property="og:title" content="Proprietary GPU Drivers : “Graphics Drivers” team" />
+      <meta property="og:type" content="website" />
+      <meta property="og:image" content="/@@/launchpad-og-image.png" />
+      <meta property="og:url" content="https://launchpad.net/~graphics-drivers/+archive/ubuntu/ppa/+index" />
+      <meta property="og:site_name" content="Launchpad" />
+    
+
+    
+
+    
+  
+
+  
+  
+  <script type="text/javascript">
+    var LP = {
+        cache: {},
+        links: {}
+    };
+  </script>
+
+  
+
+  <script type="text/javascript">var cookie_scope = '; Path=/; Secure; Domain=.launchpad.net';</script>
+
+   <script type="text/javascript" src="/+combo/rev99c00f518760bdd50fc6e353e7736d2fff8fba4a/?yui/yui/yui-min.js&amp;lp/meta.js&amp;yui/loader/loader-min.js"></script>
+   <script type="text/javascript">
+        var raw = null;
+        if (LP.devmode) {
+           raw = 'raw';
+        }
+        YUI.GlobalConfig = {
+            combine: true,
+            comboBase: '/+combo/rev99c00f518760bdd50fc6e353e7736d2fff8fba4a/?',
+            root: 'yui/',
+            filter: raw,
+            debug: false,
+            fetchCSS: false,
+            maxURLLength: 2000,
+            groups: {
+                lp: {
+                    combine: true,
+                    base: '/+combo/rev99c00f518760bdd50fc6e353e7736d2fff8fba4a/?lp/',
+                    comboBase: '/+combo/rev99c00f518760bdd50fc6e353e7736d2fff8fba4a/?',
+                    root: 'lp/',
+                    // comes from including lp/meta.js
+                    modules: LP_MODULES,
+                    fetchCSS: false
+                }
+            }
+        }</script>
+
+  <script type="text/javascript">
+      // we need this to create a single YUI instance all events and code
+      // talks across. All instances of YUI().use should be based off of
+      // LPJS instead.
+      var LPJS = new YUI();
+  </script>
+
+
+
+    <script id="base-layout-load-scripts" type="text/javascript">
+        //<![CDATA[
+        LPJS.use('base', 'node', 'console', 'event',
+            'oop', 'lp', 'lp.app.foldables','lp.app.sorttable',
+            'lp.app.inlinehelp', 'lp.app.links',
+            'lp.bugs.bugtask_index', 'lp.bugs.subscribers',
+            'lp.app.ellipsis', 'lp.code.branchmergeproposal.diff',
+            'lp.views.global',
+             function(Y) {
+
+            Y.on("domready", function () {
+                var global_view = new Y.lp.views.Global();
+                global_view.render();
+
+                Y.lp.app.sorttable.SortTable.init();
+                Y.lp.app.inlinehelp.init_help();
+                Y.lp.activate_collapsibles();
+                Y.lp.app.foldables.activate();
+                Y.lp.app.links.check_valid_lp_links();
+            });
+
+            Y.on('lp:context:web_link:changed', function(e) {
+                  window.location = e.new_value;
+            });
+        });
+        //]]>
+    </script>
+    <script id="base-helper-functions" type="text/javascript">
+         //<![CDATA[
+        // This code is pulled from lp.js that needs to be available on every
+        // request. Pulling here to get it outside the scope of the YUI block.
+        function setFocusByName(name) {
+            // Focus the first element matching the given name which can be focused.
+            var nodes = document.getElementsByName(name);
+            var i, node;
+            for (i = 0; i < nodes.length; i++) {
+                node = nodes[i];
+                if (node.focus) {
+                    try {
+                        // Trying to focus a hidden element throws an error in IE8.
+                        if (node.offsetHeight !== 0) {
+                            node.focus();
+                        }
+                    } catch (e) {
+                        LPJS.use('console', function(Y) {
+                            Y.log('In setFocusByName(<' +
+                                node.tagName + ' type=' + node.type + '>): ' + e);
+                        });
+                    }
+                    break;
+                }
+            }
+        }
+
+        function selectWidget(widget_name, event) {
+          if (event && (event.keyCode === 9 || event.keyCode === 13)) {
+              // Avoid firing if user is tabbing through or simply pressing
+              // enter to submit the form.
+              return;
+          }
+          document.getElementById(widget_name).checked = true;
+        }
+        //]]>
+    </script>
+
+    
+      
+    
+  </head>
+
+  <body id="document" itemscope="" itemtype="http://schema.org/WebPage" class="tab-overview
+      main_side
+      public
+      yui3-skin-sam">
+          
+          
+          
+    <div class="yui-d0">
+      <div id="locationbar" class="login-logout">
+        
+
+<div id="logincontrol"><a href="https://launchpad.net/~graphics-drivers/+archive/ubuntu/ppa/+login">Log in / Register</a></div>
+
+
+
+      </div><!--id="locationbar"-->
+
+      <div id="watermark" class="watermark-apps-portlet">
+        <div>
+          <a href="https://launchpad.net/~graphics-drivers"><img alt="" width="64" height="64" src="/@@/team-logo" /></a>
+        </div>
+        <div class="wide">
+          <h2 id="watermark-heading"><a href="https://launchpad.net/~graphics-drivers">“Graphics Drivers” team</a></h2>
+        </div>
+        
+  <!-- Application Menu -->
+  <ul class="facetmenu">
+    
+      <li class="overview active"><a href="https://launchpad.net/~graphics-drivers">Overview</a></li>
+      
+      
+    
+    
+      
+      <li class="branches"><a href="https://code.launchpad.net/~graphics-drivers">Code</a></li>
+      
+    
+    
+      
+      <li class="bugs"><a href="https://bugs.launchpad.net/~graphics-drivers">Bugs</a></li>
+      
+    
+    
+      
+      <li class="specifications"><a href="https://blueprints.launchpad.net/~graphics-drivers">Blueprints</a></li>
+      
+    
+    
+      
+      <li class="translations"><a href="https://translations.launchpad.net/~graphics-drivers">Translations</a></li>
+      
+    
+    
+      
+      <li class="answers"><a href="https://answers.launchpad.net/~graphics-drivers">Answers</a></li>
+      
+    
+  </ul>
+
+      </div>
+
+      <div class="yui-t4">
+        <div id="maincontent" class="yui-main">
+          <div class="yui-b" dir="ltr">
+            <div class="context-publication">
+              
+    <meta itemprop="name" content="Proprietary GPU Drivers" />
+    <h1 id="edit-displayname">
+<span class="yui3-editable_text-text ellipsis single-line" style="max-width: 95%;">
+    Proprietary GPU Drivers
+</span>
+  
+</h1>
+
+
+
+    
+  
+              
+
+              <div id="registration" class="registering">
+                
+              </div>
+            </div>
+
+            
+            <div id="request-notifications">
+              
+            </div>
+
+            
+              
+
+    <div class="top-portlet" style="padding-top:0.5em;">
+      
+
+      <div>
+  <div class="lazr-multiline-edit" id="edit-description">
+  <div class="clearfix">
+    
+
+    <h3>PPA description</h3>
+  </div>
+
+  <div class="yui3-editable_text-text"><p>Fresh drivers from upstream, currently shipping Nvidia.</p>
+<p>## Current releases</p>
+<p>Current production branch release: 570.169<br />
+Current new feature branch release: 575.64.03<br />
+Current beta release: 575.51.02</p>
+<p>## Legacy releases</p>
+<p>470.256.02 (x86_64) - GKxxx “Kepler” GPUs<br />
+390.157 (x86 / x86_64 / ARM) - GF1xx “Fermi” GPUs (*​)<br />
+340.108 (x86 / x86_64) - GeForce 8 and 9 series GPUs (*​)<br />
+304.137 (x86 / x86_64) - GeForce 6 and 7 series GPUs (*​)<br />
+173.14.39 (x86 / x86_64) - GeForce 5 series GPUs (*​)<br />
+96.43.23 (x86 / x86_64) - GeForce 2 through GeForce 4 series GPUs (*​)<br />
+71.86.15 (x86 / x86_64) - Riva TNT, TNT2, GeForce, and some GeForce 2 GPUs (*​)<br />
+(*​) These releases are no longer being maintained. Please see Support timeframes for Unix legacy GPU releases for more details. <a rel="nofollow" href="https://nvidia.custhelp.com/app/answers/detail/a_id/3142">https:/<wbr />/nvidia.<wbr />custhelp.<wbr />com/app/<wbr />answers/<wbr />detail/<wbr />a_id/3142</a></p>
+<p>## What we&#x27;re working on right now:</p>
+<p>- Normal driver updates<br />
+- Help Wanted: Mesa Updates for Intel/AMD users, ping us if you want to help do this work, we&#x27;re shorthanded.</p>
+<p>## WARNINGS:</p>
+<p>This PPA is currently in testing, you should be experienced with packaging before you dive in here:</p>
+<p>Volunteers welcome!</p>
+<p>### How you can help:</p>
+<p>## Install PTS and benchmark your gear:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;sudo apt-get install phoronix-test-suite</p>
+<p>Run the benchmark:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;phoronix-<wbr />test-suite default-benchmark openarena xonotic tesseract gputest unigine-valley</p>
+<p>and then say yes when it asks you to submit your results to openbenchmarkin<wbr />g.org. Then grab a cup of coffee, it takes a bit for the benchmarks to run. Depending on the version of Ubuntu you&#x27;re using it might preferable for you to grabs PTS from upstream directly: <a rel="nofollow" href="http://www.phoronix-test-suite.com/?k=downloads">http://<wbr />www.phoronix-<wbr />test-suite.<wbr />com/?k=<wbr />downloads</a></p>
+<p>## Share your results with the community:</p>
+<p>Post a link to your results (or any other feedback to): <a rel="nofollow" href="https://launchpad.net/~graphics-drivers-testers">https:/<wbr />/launchpad.<wbr />net/~graphics-<wbr />drivers-<wbr />testers</a></p>
+<p>Remember to rerun and resubmit the benchmarks after driver upgrades, this will allow us to gather a bunch of data on performance that we can share with everybody.</p>
+<p>If you run into old documentation referring to other PPAs, you can help us by consolidating references to this PPA.</p>
+<p>If someone wants to go ahead and start prototyping on `software-<wbr />properties-<wbr />gtk` on what the GUI should look like, please start hacking!</p>
+<p>## Help us Help You!</p>
+<p>We use the donation funds to get the developers hardware to test and upload these drivers, please consider donating to the &quot;community&quot; slider on the donation page if you&#x27;re loving this PPA:</p>
+<p><a rel="nofollow" href="http://www.ubuntu.com/download/desktop/contribute">http://<wbr />www.ubuntu.<wbr />com/download/<wbr />desktop/<wbr />contribute</a></p></div>
+  </div>
+
+  
+</div>
+
+    </div>
+
+    
+      
+    
+    
+  
+    
+
+    <div class="yui-gc">
+
+      <div class="yui-u first">
+        
+          
+    
+
+    <div id="ppa-install" class="portlet">
+      <h2>Adding this PPA to your system</h2>
+
+      
+
+        <p>You can update your system with unsupported packages from
+          this untrusted PPA by adding <strong class="ppa-reference">ppa:graphics-drivers/ppa</strong>
+          to your system's Software Sources.
+          (<a href="/+help-soyuz/ppa-sources-list.html" target="help">Read about installing</a>)
+        </p>
+
+        <pre class="command subordinate">
+sudo add-apt-repository ppa:graphics-drivers/ppa
+sudo apt update
+        </pre>
+
+        <div class="widget-header">
+          Technical details about this PPA
+        </div>
+
+        <div class="widget-body">
+          <p>This PPA can be added to your system manually by copying
+             the lines below and adding them to your system's software
+             sources. </p>
+          
+
+  <script>
+  <!--
+      function updateSeries(select) {
+          var deb = document.getElementById('series-deb');
+          deb.innerHTML = select.value;
+          var deb_src = document.getElementById('series-deb-src');
+          deb_src.innerHTML = select.value;
+      }
+  //-->
+  </script>
+
+  <div id="series-widget-div">
+    <form style="display: inline">
+    Display sources.list entries for: <select id="field.series" name="field.series" size="1" onChange='updateSeries(this);'>
+<option selected="selected" value="YOUR_UBUNTU_VERSION_HERE">Choose your Ubuntu version</option>
+<option value="questing">Questing (25.10)</option>
+<option value="plucky">Plucky (25.04)</option>
+<option value="noble">Noble (24.04)</option>
+<option value="jammy">Jammy (22.04)</option>
+<option value="focal">Focal (20.04)</option>
+<option value="bionic">Bionic (18.04)</option>
+<option value="xenial">Xenial (16.04)</option>
+</select>
+    </form>
+  </div>
+
+  
+
+  <pre id="sources-list-entries" class="wrap">
+deb <a href="https://ppa.launchpadcontent.net/graphics-drivers/ppa/ubuntu">https://ppa.launchpadcontent.net/graphics-drivers/ppa/ubuntu</a> <span id="series-deb">YOUR_UBUNTU_VERSION_HERE</span> main 
+deb-src <a href="https://ppa.launchpadcontent.net/graphics-drivers/ppa/ubuntu">https://ppa.launchpadcontent.net/graphics-drivers/ppa/ubuntu</a> <span id="series-deb-src">YOUR_UBUNTU_VERSION_HERE</span> main </pre>
+
+
+
+          <dl id="signing-key">
+            <dt>Signing key:</dt>
+            <dd>
+              <a href="https://keyserver.ubuntu.com/pks/lookup?fingerprint=on&amp;op=index&amp;search=0x2388FF3BE10A76F638F80723FCAE110B1118213C">
+                <code>4096R/2388FF3BE10A76F638F80723FCAE110B1118213C</code>
+              </a>
+              (<a href="/+help-soyuz/ppa-sources-list.html" target="help">What is this?</a>)
+            </dd>
+            <dt>Fingerprint:</dt>
+            <dd>2388FF3BE10A76F638F80723FCAE110B1118213C</dd>
+          </dl>
+           <!--archive-dependencies -->
+        </div> <!-- widget-body -->
+
+        <p>For questions and bugs with software in this PPA please contact
+          <a href="/~graphics-drivers" class="sprite team">Graphics Drivers</a>.</p>
+
+        <script type="text/javascript">
+          LPJS.use('lp.app.widgets.expander', function(Y) {
+              var widget_header = Y.one('#ppa-install .widget-header');
+              var content = Y.one('.widget-body');
+              var expander = new Y.lp.app.widgets.expander.Expander(
+                  widget_header, content);
+              expander.setUp(true);
+          });
+        </script>
+      
+
+      
+
+    </div> <!-- ppa-install -->
+  
+        
+        
+      </div>
+
+      <div class="yui-u">
+        
+    
+    <div class="portlet">
+      <h2>PPA statistics</h2>
+      <dl>
+        <dt>Activity</dt>
+        <dd>0
+          updates
+          added during the past month.</dd>
+        
+      </dl>
+    </div>
+  
+      </div>
+    </div><!-- yui-gc -->
+
+    
+    
+    <div class="portlet" id="packages">
+      <span class="see-all"><a class="menu-link-packages sprite info" href="https://launchpad.net/~graphics-drivers/+archive/ubuntu/ppa/+packages">View package details</a></span>
+      <h2>Overview of published packages</h2>
+
+      <form class="package-search-filter" action="" method="GET">
+        <label for="field.series_filter">Published in:</label>
+        <select id="field.series_filter" name="field.series_filter" size="1" >
+<option value="">Any series</option>
+<option value="questing">Questing</option>
+<option value="plucky">Plucky</option>
+<option value="noble">Noble</option>
+<option value="jammy">Jammy</option>
+<option value="focal">Focal</option>
+<option value="bionic">Bionic</option>
+<option value="xenial">Xenial</option>
+</select>
+        <input type="submit" value="Filter" />
+      </form>
+
+      <div>
+
+        <table style="width: 100%;" class="upper-batch-nav">
+  <tbody>
+    <tr>
+      <td style="white-space: nowrap" class="batch-navigation-index">
+        
+            <strong>1</strong>
+            
+              &rarr;
+              <strong>58</strong>
+            
+            of
+            58
+            results
+        
+      </td>
+      <td style="text-align: right; white-space: nowrap" class="batch-navigation-links">
+        
+        <span class="first inactive">First</span>
+        &bull;
+        
+        <span class="previous inactive">Previous</span>
+        &bull;
+        
+        <span class="next inactive"><strong>Next</strong></span>
+        
+          &bull;
+          
+          <span class="last inactive">Last</span>
+        
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+        <table class="listing sortable" id="packages_list">
+          <thead>
+            <tr>
+              <th>Package</th>
+              <th>Version</th>
+              <th>Uploaded by</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                bumblebee
+              </td>
+              <td>
+                3.2.1-16~gpu16.04.1
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2017-09-26 09:51:33 UTC" datetime="2017-09-26T09:51:33.273166+00:00">2017-09-26</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                egl-wayland
+              </td>
+              <td>
+                1:1.1.17-0ubuntu0~gpu24.04.1
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2025-02-09 08:47:35 UTC" datetime="2025-02-09T08:47:35.242030+00:00">2025-02-09</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                egl-wayland
+              </td>
+              <td>
+                1:1.1.17-0ubuntu0~gpu22.04.1
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2025-02-09 09:51:51 UTC" datetime="2025-02-09T09:51:51.521397+00:00">2025-02-09</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                glslang
+              </td>
+              <td>
+                7.8.2853-2~gpu18.04.1
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2018-10-14 12:59:27 UTC" datetime="2018-10-14T12:59:27.304671+00:00">2018-10-14</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                libvdpau
+              </td>
+              <td>
+                1.4-3build2
+                
+              </td>
+              <td>
+                  <a href="/~juliank" class="sprite person">Julian Andres Klode</a>
+                  
+                  (<time title="2023-03-02 19:56:52 UTC" datetime="2023-03-02T19:56:52.756907+00:00">2023-03-02</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                libvdpau
+              </td>
+              <td>
+                1.3-1ubuntu2
+                
+              </td>
+              <td>
+                  <a href="/~doko" class="sprite person">Matthias Klose</a>
+                  
+                  (<time title="2021-01-08 13:18:03 UTC" datetime="2021-01-08T13:18:03.325934+00:00">2021-01-08</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                libvdpau
+              </td>
+              <td>
+                1.3-0ubuntu0~gpu18.04.2
+                
+              </td>
+              <td>
+                  <a href="/~mamarley" class="sprite person">Michael Marley</a>
+                  
+                  (<time title="2019-09-18 13:27:12 UTC" datetime="2019-09-18T13:27:12.663495+00:00">2019-09-18</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                libvdpau
+              </td>
+              <td>
+                1.2-0ubuntu0~gpu16.04.1
+                
+              </td>
+              <td>
+                  <a href="/~mamarley" class="sprite person">Michael Marley</a>
+                  
+                  (<time title="2019-03-07 13:34:18 UTC" datetime="2019-03-07T13:34:18.455688+00:00">2019-03-07</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-304
+              </td>
+              <td>
+                304.137-0ubuntu2
+                
+              </td>
+              <td>
+                  <a href="/~albertomilone" class="sprite person">Alberto Milone</a>
+                  
+                  (<time title="2017-11-25 14:01:32 UTC" datetime="2017-11-25T14:01:32.511557+00:00">2017-11-25</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-304
+              </td>
+              <td>
+                304.137-0ubuntu0~gpu16.04.1
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2017-09-26 06:20:44 UTC" datetime="2017-09-26T06:20:44.767377+00:00">2017-09-26</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-340
+              </td>
+              <td>
+                340.108-0ubuntu5.20.04.2
+                
+              </td>
+              <td>
+                  <a href="/~xnox" class="sprite person">Dimitri John Ledkov</a>
+                  
+                  (<time title="2021-08-26 08:02:24 UTC" datetime="2021-08-26T08:02:24.603406+00:00">2021-08-26</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-340
+              </td>
+              <td>
+                340.108-0ubuntu0.18.04.1
+                
+              </td>
+              <td>
+                  <a href="/~albertomilone" class="sprite person">Alberto Milone</a>
+                  
+                  (<time title="2020-02-03 19:08:08 UTC" datetime="2020-02-03T19:08:08.741748+00:00">2020-02-03</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-340
+              </td>
+              <td>
+                340.107-0ubuntu0.16.04.2
+                
+              </td>
+              <td>
+                  <a href="/~albertomilone" class="sprite person">Alberto Milone</a>
+                  
+                  (<time title="2019-09-18 13:27:12 UTC" datetime="2019-09-18T13:27:12.663495+00:00">2019-09-18</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-384
+              </td>
+              <td>
+                384.130-0ubuntu0.16.04.2
+                
+              </td>
+              <td>
+                  <a href="/~albertomilone" class="sprite person">Alberto Milone</a>
+                  
+                  (<time title="2019-12-03 17:23:35 UTC" datetime="2019-12-03T17:23:35.753624+00:00">2019-12-03</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-390
+              </td>
+              <td>
+                390.157-0ubuntu7
+                
+              </td>
+              <td>
+                  <a href="/~albertomilone" class="sprite person">Alberto Milone</a>
+                  
+                  (<time title="2023-11-03 13:33:55 UTC" datetime="2023-11-03T13:33:55.212499+00:00">2023-11-03</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-390
+              </td>
+              <td>
+                390.157-0ubuntu0.22.04.2
+                
+              </td>
+              <td>
+                  <a href="/~albertomilone" class="sprite person">Alberto Milone</a>
+                  
+                  (<time title="2023-06-21 11:04:21 UTC" datetime="2023-06-21T11:04:21.328921+00:00">2023-06-21</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-390
+              </td>
+              <td>
+                390.157-0ubuntu0.20.04.1
+                
+              </td>
+              <td>
+                  <a href="/~albertomilone" class="sprite person">Alberto Milone</a>
+                  
+                  (<time title="2022-12-02 15:34:53 UTC" datetime="2022-12-02T15:34:53.561462+00:00">2022-12-02</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-390
+              </td>
+              <td>
+                390.157-0ubuntu0.18.04.1
+                
+              </td>
+              <td>
+                  <a href="/~albertomilone" class="sprite person">Alberto Milone</a>
+                  
+                  (<time title="2022-12-02 15:34:53 UTC" datetime="2022-12-02T15:34:53.561462+00:00">2022-12-02</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="superseded">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-470
+              </td>
+              <td>
+                470.256.02-0ubuntu0.24.04.1
+                
+                  (<a href="/ubuntu/+source/nvidia-graphics-drivers-470/470.256.02-0ubuntu0.24.04.5">Newer version</a>
+                  available)
+                
+              </td>
+              <td>
+                  <a href="/~eduarddv" class="sprite person">Eduard de Vidal Flores</a>
+                  
+                  (<time title="2024-12-18 20:47:50 UTC" datetime="2024-12-18T20:47:50.155262+00:00">2024-12-18</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="superseded">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-470
+              </td>
+              <td>
+                470.256.02-0ubuntu0.22.04.1
+                
+                  (<a href="/ubuntu/+source/nvidia-graphics-drivers-470/470.256.02-0ubuntu0.22.04.5">Newer version</a>
+                  available)
+                
+              </td>
+              <td>
+                  <a href="/~eduarddv" class="sprite person">Eduard de Vidal Flores</a>
+                  
+                  (<time title="2024-12-18 20:47:50 UTC" datetime="2024-12-18T20:47:50.155262+00:00">2024-12-18</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-470
+              </td>
+              <td>
+                470.256.02-0ubuntu0.20.04.1
+                
+              </td>
+              <td>
+                  <a href="/~eduarddv" class="sprite person">Eduard de Vidal Flores</a>
+                  
+                  (<time title="2024-12-18 20:47:50 UTC" datetime="2024-12-18T20:47:50.155262+00:00">2024-12-18</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-470
+              </td>
+              <td>
+                470.223.02-0ubuntu0~gpu18.04.1
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2023-11-02 19:34:20 UTC" datetime="2023-11-02T19:34:20.836067+00:00">2023-11-02</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-550
+              </td>
+              <td>
+                550.144.03-0ubuntu0~gpu25.04.1
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2025-01-22 09:41:32 UTC" datetime="2025-01-22T09:41:32.941754+00:00">2025-01-22</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="superseded">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-550
+              </td>
+              <td>
+                550.144.03-0ubuntu0~gpu24.04.1
+                
+                  (<a href="/ubuntu/+source/nvidia-graphics-drivers-550/550.163.01-0ubuntu0.24.04.2">Newer version</a>
+                  available)
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2025-01-22 11:44:00 UTC" datetime="2025-01-22T11:44:00.524172+00:00">2025-01-22</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="superseded">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-550
+              </td>
+              <td>
+                550.144.03-0ubuntu0~gpu22.04.1
+                
+                  (<a href="/ubuntu/+source/nvidia-graphics-drivers-550/550.163.01-0ubuntu0.22.04.2">Newer version</a>
+                  available)
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2025-01-22 11:44:00 UTC" datetime="2025-01-22T11:44:00.524172+00:00">2025-01-22</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-550
+              </td>
+              <td>
+                550.144.03-0ubuntu0~gpu20.04.1
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2025-01-22 11:44:00 UTC" datetime="2025-01-22T11:44:00.524172+00:00">2025-01-22</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-565
+              </td>
+              <td>
+                565.77-0ubuntu0~gpu25.04.1
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2024-12-18 20:47:50 UTC" datetime="2024-12-18T20:47:50.155262+00:00">2024-12-18</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-565
+              </td>
+              <td>
+                565.77-0ubuntu0~gpu24.04.1
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2024-12-18 20:47:50 UTC" datetime="2024-12-18T20:47:50.155262+00:00">2024-12-18</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-565
+              </td>
+              <td>
+                565.77-0ubuntu0~gpu22.04.1
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2024-12-18 20:47:50 UTC" datetime="2024-12-18T20:47:50.155262+00:00">2024-12-18</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-570
+              </td>
+              <td>
+                570.195.03-0ubuntu0.25.04.1
+                
+              </td>
+              <td>
+                  <a href="/~kuba-t-pawlak" class="sprite person">Kuba Pawlak</a>
+                  
+                  (<time title="2025-10-08 19:17:37 UTC" datetime="2025-10-08T19:17:37.565208+00:00">2025-10-08</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-570
+              </td>
+              <td>
+                570.195.03-0ubuntu0.24.04.1
+                
+              </td>
+              <td>
+                  <a href="/~kuba-t-pawlak" class="sprite person">Kuba Pawlak</a>
+                  
+                  (<time title="2025-10-08 19:17:37 UTC" datetime="2025-10-08T19:17:37.565208+00:00">2025-10-08</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-570
+              </td>
+              <td>
+                570.195.03-0ubuntu0.22.04.1
+                
+              </td>
+              <td>
+                  <a href="/~kuba-t-pawlak" class="sprite person">Kuba Pawlak</a>
+                  
+                  (<time title="2025-10-08 19:17:37 UTC" datetime="2025-10-08T19:17:37.565208+00:00">2025-10-08</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-570
+              </td>
+              <td>
+                570.181-0ubuntu0~gpu25.10.3
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2025-08-07 19:36:38 UTC" datetime="2025-08-07T19:36:38.929468+00:00">2025-08-07</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-570
+              </td>
+              <td>
+                570.181-0ubuntu0~gpu20.04.3
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2025-08-07 19:36:38 UTC" datetime="2025-08-07T19:36:38.929468+00:00">2025-08-07</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="superseded">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-575
+              </td>
+              <td>
+                575.64.03-0ubuntu0~gpu25.10.1
+                
+                  (<a href="/ubuntu/+source/nvidia-graphics-drivers-575/575.64.03-0ubuntu4">Newer version</a>
+                  available)
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2025-07-02 13:53:14 UTC" datetime="2025-07-02T13:53:14.752733+00:00">2025-07-02</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="superseded">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-575
+              </td>
+              <td>
+                575.64.03-0ubuntu0~gpu25.04.1
+                
+                  (<a href="/ubuntu/+source/nvidia-graphics-drivers-575/575.64.03-0ubuntu0.25.04.3">Newer version</a>
+                  available)
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2025-07-02 13:53:14 UTC" datetime="2025-07-02T13:53:14.752733+00:00">2025-07-02</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="superseded">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-575
+              </td>
+              <td>
+                575.64.03-0ubuntu0~gpu24.04.1
+                
+                  (<a href="/ubuntu/+source/nvidia-graphics-drivers-575/575.64.03-0ubuntu0.24.04.3">Newer version</a>
+                  available)
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2025-07-02 13:53:14 UTC" datetime="2025-07-02T13:53:14.752733+00:00">2025-07-02</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="superseded">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-575
+              </td>
+              <td>
+                575.64.03-0ubuntu0~gpu22.04.1
+                
+                  (<a href="/ubuntu/+source/nvidia-graphics-drivers-575/575.64.03-0ubuntu0.22.04.3">Newer version</a>
+                  available)
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2025-07-02 13:53:14 UTC" datetime="2025-07-02T13:53:14.752733+00:00">2025-07-02</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="superseded">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-580
+              </td>
+              <td>
+                580.95.05-0ubuntu0.25.04.1
+                
+                  (<a href="/ubuntu/+source/nvidia-graphics-drivers-580/580.95.05-0ubuntu0.25.04.2">Newer version</a>
+                  available)
+                
+              </td>
+              <td>
+                  <a href="/~kuba-t-pawlak" class="sprite person">Kuba Pawlak</a>
+                  
+                  (<time title="2025-10-08 19:17:37 UTC" datetime="2025-10-08T19:17:37.565208+00:00">2025-10-08</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="superseded">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-580
+              </td>
+              <td>
+                580.95.05-0ubuntu0.24.04.2
+                
+                  (<a href="/ubuntu/+source/nvidia-graphics-drivers-580/580.95.05-0ubuntu0.24.04.3">Newer version</a>
+                  available)
+                
+              </td>
+              <td>
+                  <a href="/~kuba-t-pawlak" class="sprite person">Kuba Pawlak</a>
+                  
+                  (<time title="2025-10-08 19:17:37 UTC" datetime="2025-10-08T19:17:37.565208+00:00">2025-10-08</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="superseded">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-580
+              </td>
+              <td>
+                580.95.05-0ubuntu0.22.04.1
+                
+                  (<a href="/ubuntu/+source/nvidia-graphics-drivers-580/580.95.05-0ubuntu0.22.04.2">Newer version</a>
+                  available)
+                
+              </td>
+              <td>
+                  <a href="/~kuba-t-pawlak" class="sprite person">Kuba Pawlak</a>
+                  
+                  (<time title="2025-10-08 19:17:37 UTC" datetime="2025-10-08T19:17:37.565208+00:00">2025-10-08</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="superseded">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-580
+              </td>
+              <td>
+                580.82.09-0ubuntu0~gpu25.10.1
+                
+                  (<a href="/ubuntu/+source/nvidia-graphics-drivers-580/580.95.05-0ubuntu2">Newer version</a>
+                  available)
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2025-09-11 19:34:28 UTC" datetime="2025-09-11T19:34:28.279425+00:00">2025-09-11</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-580
+              </td>
+              <td>
+                580.82.09-0ubuntu0~gpu20.04.1
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2025-09-11 20:36:02 UTC" datetime="2025-09-11T20:36:02.947966+00:00">2025-09-11</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-graphics-drivers-580
+              </td>
+              <td>
+                580.82.09-0ubuntu0~gpu18.04.1
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2025-09-11 20:36:02 UTC" datetime="2025-09-11T20:36:02.947966+00:00">2025-09-11</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-settings
+              </td>
+              <td>
+                510.47.03-0ubuntu1
+                
+              </td>
+              <td>
+                  <a href="/~albertomilone" class="sprite person">Alberto Milone</a>
+                  
+                  (<time title="2022-02-21 06:46:29 UTC" datetime="2022-02-21T06:46:29.523611+00:00">2022-02-21</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-settings
+              </td>
+              <td>
+                470.57.01-0ubuntu0.20.04.3
+                
+              </td>
+              <td>
+                  <a href="/~albertomilone" class="sprite person">Alberto Milone</a>
+                  
+                  (<time title="2022-02-21 06:46:29 UTC" datetime="2022-02-21T06:46:29.523611+00:00">2022-02-21</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-settings
+              </td>
+              <td>
+                470.57.01-0ubuntu0.18.04.1
+                
+              </td>
+              <td>
+                  <a href="/~albertomilone" class="sprite person">Alberto Milone</a>
+                  
+                  (<time title="2021-08-26 08:02:24 UTC" datetime="2021-08-26T08:02:24.603406+00:00">2021-08-26</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                nvidia-settings
+              </td>
+              <td>
+                418.56-0ubuntu0~gpu16.04.1
+                
+              </td>
+              <td>
+                  <a href="/~mamarley" class="sprite person">Michael Marley</a>
+                  
+                  (<time title="2019-03-25 15:30:54 UTC" datetime="2019-03-25T15:30:54.391209+00:00">2019-03-25</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                spirv-headers
+              </td>
+              <td>
+                1.3-1~gpu18.04.1
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2018-10-14 12:59:27 UTC" datetime="2018-10-14T12:59:27.304671+00:00">2018-10-14</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                vulkan
+              </td>
+              <td>
+                1.1.73+dfsg-1~gpu18.04.1
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2018-05-04 12:27:09 UTC" datetime="2018-05-04T12:27:09.341731+00:00">2018-05-04</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                vulkan
+              </td>
+              <td>
+                1.1.73+dfsg-1~gpu16.04.1
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2018-05-04 12:27:09 UTC" datetime="2018-05-04T12:27:09.341731+00:00">2018-05-04</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                vulkan-loader
+              </td>
+              <td>
+                1.2.131.2-1
+                
+              </td>
+              <td>
+                  no signer
+                  
+                  (<time title="2021-06-22 16:19:48 UTC" datetime="2021-06-22T16:19:48.363028+00:00">2021-06-22</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                vulkan-loader
+              </td>
+              <td>
+                1.1.126.0-2~gpu18.04.1
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2019-12-12 13:54:57 UTC" datetime="2019-12-12T13:54:57.293839+00:00">2019-12-12</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                vulkan-tools
+              </td>
+              <td>
+                1.2.131.1+dfsg1-1
+                
+              </td>
+              <td>
+                  no signer
+                  
+                  (<time title="2021-06-22 16:19:48 UTC" datetime="2021-06-22T16:19:48.363028+00:00">2021-06-22</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                vulkan-tools
+              </td>
+              <td>
+                1.1.126.0+dfsg1-1~gpu18.04.1
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2019-12-12 14:42:54 UTC" datetime="2019-12-12T14:42:54.910109+00:00">2019-12-12</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                vulkan-validationlayers
+              </td>
+              <td>
+                1.2.131.2-1
+                
+              </td>
+              <td>
+                  no signer
+                  
+                  (<time title="2021-06-22 16:19:48 UTC" datetime="2021-06-22T16:19:48.363028+00:00">2021-06-22</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                vulkan-validationlayers
+              </td>
+              <td>
+                1.1.126.0-1~gpu18.04.1
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2019-12-12 14:42:54 UTC" datetime="2019-12-12T14:42:54.910109+00:00">2019-12-12</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                wayland-protocols
+              </td>
+              <td>
+                1.34-0ubuntu0~gpu22.04.1
+                
+              </td>
+              <td>
+                  <a href="/~ricotz" class="sprite person">Rico Tzschichholz</a>
+                  
+                  (<time title="2024-10-01 10:30:13 UTC" datetime="2024-10-01T10:30:13.080005+00:00">2024-10-01</time>)
+                  
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+
+        <table style="width: 100%;" class="lower-batch-nav">
+  <tbody>
+    <tr>
+      <td style="white-space: nowrap" class="batch-navigation-index">
+        
+            <strong>1</strong>
+            
+              &rarr;
+              <strong>58</strong>
+            
+            of
+            58
+            results
+        
+      </td>
+      <td style="text-align: right; white-space: nowrap" class="batch-navigation-links">
+        
+        <span class="first inactive">First</span>
+        &bull;
+        
+        <span class="previous inactive">Previous</span>
+        &bull;
+        
+        <span class="next inactive"><strong>Next</strong></span>
+        
+          &bull;
+          
+          <span class="last inactive">Last</span>
+        
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+        
+
+      </div>
+    </div>
+  
+ 
+            
+            
+          </div><!-- yui-b -->
+        </div><!-- yui-main -->
+
+        
+          <div id="side-portlets" class="yui-b side">
+            
+    <div id="global-actions" class="portlet vertical">
+  <ul>
+    <li>
+      <a class="menu-link-packages sprite info" href="https://launchpad.net/~graphics-drivers/+archive/ubuntu/ppa/+packages">View package details</a>
+    </li>
+  </ul>
+</div>
+
+    
+  
+
+  
+  <div id="portlet-latest-updates" class="portlet">
+    <h2>Latest updates</h2>
+
+    
+    
+      <ul class="latest-ppa-updates">
+        <li class="FULLYBUILT">
+          <strong>nvidia-graphics-drivers-570</strong>
+          <span class="duration">
+            13 weeks
+            ago
+          </span><br />
+          Successfully built
+          
+        </li>
+        <li class="FULLYBUILT">
+          <strong>nvidia-graphics-drivers-570</strong>
+          <span class="duration">
+            13 weeks
+            ago
+          </span><br />
+          Successfully built
+          
+        </li>
+        <li class="FULLYBUILT">
+          <strong>nvidia-graphics-drivers-580</strong>
+          <span class="duration">
+            13 weeks
+            ago
+          </span><br />
+          Successfully built
+          
+        </li>
+        <li class="FULLYBUILT">
+          <strong>nvidia-graphics-drivers-580</strong>
+          <span class="duration">
+            13 weeks
+            ago
+          </span><br />
+          Successfully built
+          
+        </li>
+        <li class="FULLYBUILT">
+          <strong>nvidia-graphics-drivers-580</strong>
+          <span class="duration">
+            13 weeks
+            ago
+          </span><br />
+          Successfully built
+          
+        </li>
+      </ul>
+    
+    </div>
+  
+
+  
+          </div><!-- yui-b side -->
+        
+      </div><!-- yui-t4 -->
+
+      
+  <div id="footer" class="footer">
+    <div class="lp-arcana">
+        <div class="lp-branding">
+          <a href="https://launchpad.net/"><img src="/@@/launchpad-footer-logo.svg" alt="Launchpad" width="65" height="18" /></a>
+          &nbsp;&bull;&nbsp;
+          <a href="https://launchpad.net/+tour">Take the tour</a>
+          &nbsp;&bull;&nbsp;
+          <a href="https://help.launchpad.net/">Read the guide</a>
+          &nbsp;
+          <form id="globalsearch" method="get" accept-charset="UTF-8" action="https://launchpad.net/+search">
+            <input type="search" id="search-text" name="field.text" />
+            <input type="image" src="/@@/search" style="vertical-align:5%" alt="Search Launchpad" />
+          </form>
+        </div>
+        
+  
+
+    </div>
+
+    <div class="colophon">
+      &copy; 2004
+      <a href="http://canonical.com/">Canonical&nbsp;Ltd.</a>
+      &nbsp;&bull;&nbsp;
+      <a href="https://ubuntu.com/legal/launchpad-terms-of-service">Terms of use</a>
+      &nbsp;&bull;&nbsp;
+      <a href="https://www.ubuntu.com/legal/dataprivacy">Data privacy</a>
+      &nbsp;&bull;&nbsp;
+      <a href="/feedback">Contact Launchpad Support</a>
+      
+      &nbsp;&bull;&nbsp;
+      <a href="http://blog.launchpad.net/">Blog</a>
+      
+	&nbsp;&bull;&nbsp;
+	<a href="https://canonical.com/careers">Careers</a>
+      
+      &nbsp;&bull;&nbsp;
+      <a href="https://ubuntu.social/@launchpadstatus">System status</a>
+      <span id="lp-version">
+      &nbsp;&bull;&nbsp;
+        99c00f5
+        
+        
+        (<a href="https://documentation.ubuntu.com/launchpad/">Get the code!</a>)
+      </span>
+    </div>
+  </div>
+
+    </div><!-- yui-d0-->
+
+    
+  
+  
+  <script id="json-cache-script">LP.cache = {"related_features": {}, "context": {"self_link": "https://launchpad.net/api/devel/~graphics-drivers/+archive/ubuntu/ppa", "web_link": "https://launchpad.net/~graphics-drivers/+archive/ubuntu/ppa", "resource_type_link": "https://launchpad.net/api/devel/#archive", "webhooks_collection_link": "https://launchpad.net/api/devel/~graphics-drivers/+archive/ubuntu/ppa/webhooks", "owner_link": "https://launchpad.net/api/devel/~graphics-drivers", "name": "ppa", "displayname": "Proprietary GPU Drivers", "reference": "~graphics-drivers/ubuntu/ppa", "distribution_link": "https://launchpad.net/api/devel/ubuntu", "private": false, "suppress_subscription_notifications": false, "dependencies_collection_link": "https://launchpad.net/api/devel/~graphics-drivers/+archive/ubuntu/ppa/dependencies", "description": "Fresh drivers from upstream, currently shipping Nvidia.\n\n## Current releases\n\nCurrent production branch release: 570.169\nCurrent new feature branch release: 575.64.03\nCurrent beta release: 575.51.02\n\n## Legacy releases\n\n470.256.02 (x86_64) - GKxxx \u201cKepler\u201d GPUs\n390.157 (x86 / x86_64 / ARM) - GF1xx \u201cFermi\u201d GPUs (*\u200b)\n340.108 (x86 / x86_64) - GeForce 8 and 9 series GPUs (*\u200b)\n304.137 (x86 / x86_64) - GeForce 6 and 7 series GPUs (*\u200b)\n173.14.39 (x86 / x86_64) - GeForce 5 series GPUs (*\u200b)\n96.43.23 (x86 / x86_64) - GeForce 2 through GeForce 4 series GPUs (*\u200b)\n71.86.15 (x86 / x86_64) - Riva TNT, TNT2, GeForce, and some GeForce 2 GPUs (*\u200b)\n(*\u200b) These releases are no longer being maintained. Please see Support timeframes for Unix legacy GPU releases for more details. https://nvidia.custhelp.com/app/answers/detail/a_id/3142\n\n## What we're working on right now:\n\n- Normal driver updates\n- Help Wanted: Mesa Updates for Intel/AMD users, ping us if you want to help do this work, we're shorthanded.\n\n## WARNINGS:\n\nThis PPA is currently in testing, you should be experienced with packaging before you dive in here:\n\nVolunteers welcome!\n\n### How you can help:\n\n## Install PTS and benchmark your gear:\n\n\u00a0\u00a0\u00a0\u00a0sudo apt-get install phoronix-test-suite\n\nRun the benchmark:\n\n\u00a0\u00a0\u00a0\u00a0phoronix-test-suite default-benchmark openarena xonotic tesseract gputest unigine-valley\n\nand then say yes when it asks you to submit your results to openbenchmarking.org. Then grab a cup of coffee, it takes a bit for the benchmarks to run. Depending on the version of Ubuntu you're using it might preferable for you to grabs PTS from upstream directly: http://www.phoronix-test-suite.com/?k=downloads\n\n## Share your results with the community:\n\nPost a link to your results (or any other feedback to): https://launchpad.net/~graphics-drivers-testers\n\nRemember to rerun and resubmit the benchmarks after driver upgrades, this will allow us to gather a bunch of data on performance that we can share with everybody.\n\nIf you run into old documentation referring to other PPAs, you can help us by consolidating references to this PPA.\n\nIf someone wants to go ahead and start prototyping on `software-properties-gtk` on what the GUI should look like, please start hacking!\n\n## Help us Help You!\n\nWe use the donation funds to get the developers hardware to test and upload these drivers, please consider donating to the \"community\" slider on the donation page if you're loving this PPA:\n\nhttp://www.ubuntu.com/download/desktop/contribute", "signing_key_fingerprint": "2388FF3BE10A76F638F80723FCAE110B1118213C", "require_virtualized": true, "build_debug_symbols": true, "publish_debug_symbols": true, "permit_obsolete_series_uploads": false, "authorized_size": 32768, "status": "Active", "external_dependencies": null, "metadata_overrides": null, "processors_collection_link": "https://launchpad.net/api/devel/~graphics-drivers/+archive/ubuntu/ppa/processors", "enabled_restricted_processors_collection_link": "https://launchpad.net/api/devel/~graphics-drivers/+archive/ubuntu/ppa/enabled_restricted_processors", "publishing_method": "Local", "repository_format": "Debian", "publish": true, "relative_build_score": 0, "http_etag": "\"7b79c9a174bcce20675e6dc8415cc01554d8f51f-6ec6afd4cfc9602d7ade35f5f40e603bd8df0025\""}};</script>
+
+    
+  
+
+    
+  </body>
+
+
+  <!--
+    Facet name: overview
+    Page type: main_side
+    Has global search: True
+    Has application tabs: True
+    Has side portlets: True
+
+    At least 46 queries/external actions issued in 1.27 seconds
+
+    Features: {'profiling.enabled': None, 'hard_timeout': '5000', 'js.yui_version': None, 'app.mainsite_only.canonical_url': None, 'app.maintenance_message': None, 'archive.webhooks.enabled': 'on', 'baselayout.careers_link.disabled': None, 'visible_render_time': None}
+
+    r99c00f5
+
+    -->
+
+</html>
+

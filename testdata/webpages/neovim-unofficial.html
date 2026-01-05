@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+  <head>
+<base href="https://launchpad.net/~neovim-ppa/+archive/ubuntu/stable/+index" />
+
+    <meta charset="UTF-8" />
+    <title>Neovim Stable : “Neovim PPA” team</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/@@/apple-touch-icon.png?v=2022" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/@@/favicon-32x32.png?v=2022" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/@@/favicon-16x16.png?v=2022" />
+    <link rel="manifest" href="/@@/site.webmanifest?v=2022" />
+    <link rel="mask-icon" href="/@@/safari-pinned-tab.svg?v=2022" color="#e9531f" />
+    <link rel="shortcut icon" href="/@@/favicon.ico?v=2022" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="msapplication-config" content="/@@/browserconfig.xml?v=2022" />
+    <meta name="theme-color" content="#ffffff" />
+    
+    
+    
+
+    
+  
+  <link type="text/css" rel="stylesheet" media="screen, print" href="/+icing/rev99c00f518760bdd50fc6e353e7736d2fff8fba4a/combo.css" />
+
+
+    
+
+    
+      <meta name="description" content="Neovim releases backported from Debian.
+
+Homepage: https://neovim.io
+Source/Issues: https://github.com/neovim/neovim
+Documentation: https://neovim.io/doc
+User Manual: https://neovim.io/doc/user
+Neovim features: https://neovim.io/doc/user/nvim.html
+Packaging: https://launchpad.net/neovim-ppa" />
+      <meta property="og:description" content="Neovim releases backported from Debian.
+
+Homepage: https://neovim.io
+Source/Issues: https://github.com/neovim/neovim
+Documentation: https://neovim.io/doc
+User Manual: https://neovim.io/doc/user
+Neovim features: https://neovim.io/doc/user/nvim.html
+Packaging: https://launchpad.net/neovim-ppa" />
+    
+
+    
+    
+      <meta property="og:title" content="Neovim Stable : “Neovim PPA” team" />
+      <meta property="og:type" content="website" />
+      <meta property="og:image" content="/@@/launchpad-og-image.png" />
+      <meta property="og:url" content="https://launchpad.net/~neovim-ppa/+archive/ubuntu/stable/+index" />
+      <meta property="og:site_name" content="Launchpad" />
+    
+
+    
+
+    
+  
+
+  
+  
+  <script type="text/javascript">
+    var LP = {
+        cache: {},
+        links: {}
+    };
+  </script>
+
+  
+
+  <script type="text/javascript">var cookie_scope = '; Path=/; Secure; Domain=.launchpad.net';</script>
+
+   <script type="text/javascript" src="/+combo/rev99c00f518760bdd50fc6e353e7736d2fff8fba4a/?yui/yui/yui-min.js&amp;lp/meta.js&amp;yui/loader/loader-min.js"></script>
+   <script type="text/javascript">
+        var raw = null;
+        if (LP.devmode) {
+           raw = 'raw';
+        }
+        YUI.GlobalConfig = {
+            combine: true,
+            comboBase: '/+combo/rev99c00f518760bdd50fc6e353e7736d2fff8fba4a/?',
+            root: 'yui/',
+            filter: raw,
+            debug: false,
+            fetchCSS: false,
+            maxURLLength: 2000,
+            groups: {
+                lp: {
+                    combine: true,
+                    base: '/+combo/rev99c00f518760bdd50fc6e353e7736d2fff8fba4a/?lp/',
+                    comboBase: '/+combo/rev99c00f518760bdd50fc6e353e7736d2fff8fba4a/?',
+                    root: 'lp/',
+                    // comes from including lp/meta.js
+                    modules: LP_MODULES,
+                    fetchCSS: false
+                }
+            }
+        }</script>
+
+  <script type="text/javascript">
+      // we need this to create a single YUI instance all events and code
+      // talks across. All instances of YUI().use should be based off of
+      // LPJS instead.
+      var LPJS = new YUI();
+  </script>
+
+
+
+    <script id="base-layout-load-scripts" type="text/javascript">
+        //<![CDATA[
+        LPJS.use('base', 'node', 'console', 'event',
+            'oop', 'lp', 'lp.app.foldables','lp.app.sorttable',
+            'lp.app.inlinehelp', 'lp.app.links',
+            'lp.bugs.bugtask_index', 'lp.bugs.subscribers',
+            'lp.app.ellipsis', 'lp.code.branchmergeproposal.diff',
+            'lp.views.global',
+             function(Y) {
+
+            Y.on("domready", function () {
+                var global_view = new Y.lp.views.Global();
+                global_view.render();
+
+                Y.lp.app.sorttable.SortTable.init();
+                Y.lp.app.inlinehelp.init_help();
+                Y.lp.activate_collapsibles();
+                Y.lp.app.foldables.activate();
+                Y.lp.app.links.check_valid_lp_links();
+            });
+
+            Y.on('lp:context:web_link:changed', function(e) {
+                  window.location = e.new_value;
+            });
+        });
+        //]]>
+    </script>
+    <script id="base-helper-functions" type="text/javascript">
+         //<![CDATA[
+        // This code is pulled from lp.js that needs to be available on every
+        // request. Pulling here to get it outside the scope of the YUI block.
+        function setFocusByName(name) {
+            // Focus the first element matching the given name which can be focused.
+            var nodes = document.getElementsByName(name);
+            var i, node;
+            for (i = 0; i < nodes.length; i++) {
+                node = nodes[i];
+                if (node.focus) {
+                    try {
+                        // Trying to focus a hidden element throws an error in IE8.
+                        if (node.offsetHeight !== 0) {
+                            node.focus();
+                        }
+                    } catch (e) {
+                        LPJS.use('console', function(Y) {
+                            Y.log('In setFocusByName(<' +
+                                node.tagName + ' type=' + node.type + '>): ' + e);
+                        });
+                    }
+                    break;
+                }
+            }
+        }
+
+        function selectWidget(widget_name, event) {
+          if (event && (event.keyCode === 9 || event.keyCode === 13)) {
+              // Avoid firing if user is tabbing through or simply pressing
+              // enter to submit the form.
+              return;
+          }
+          document.getElementById(widget_name).checked = true;
+        }
+        //]]>
+    </script>
+
+    
+      
+    
+  </head>
+
+  <body id="document" itemscope="" itemtype="http://schema.org/WebPage" class="tab-overview
+      main_side
+      public
+      yui3-skin-sam">
+          
+          
+          
+    <div class="yui-d0">
+      <div id="locationbar" class="login-logout">
+        
+
+<div id="logincontrol"><a href="https://launchpad.net/~neovim-ppa/+archive/ubuntu/stable/+login">Log in / Register</a></div>
+
+
+
+      </div><!--id="locationbar"-->
+
+      <div id="watermark" class="watermark-apps-portlet">
+        <div>
+          <a href="https://launchpad.net/~neovim-ppa"><img alt="" width="64" height="64" src="https://launchpadlibrarian.net/198448350/nvim_middle" /></a>
+        </div>
+        <div class="wide">
+          <h2 id="watermark-heading"><a href="https://launchpad.net/~neovim-ppa">“Neovim PPA” team</a></h2>
+        </div>
+        
+  <!-- Application Menu -->
+  <ul class="facetmenu">
+    
+      <li class="overview active"><a href="https://launchpad.net/~neovim-ppa">Overview</a></li>
+      
+      
+    
+    
+      
+      <li class="branches"><a href="https://code.launchpad.net/~neovim-ppa">Code</a></li>
+      
+    
+    
+      
+      <li class="bugs"><a href="https://bugs.launchpad.net/~neovim-ppa">Bugs</a></li>
+      
+    
+    
+      
+      <li class="specifications"><a href="https://blueprints.launchpad.net/~neovim-ppa">Blueprints</a></li>
+      
+    
+    
+      
+      <li class="translations"><a href="https://translations.launchpad.net/~neovim-ppa">Translations</a></li>
+      
+    
+    
+      
+      <li class="answers"><a href="https://answers.launchpad.net/~neovim-ppa">Answers</a></li>
+      
+    
+  </ul>
+
+      </div>
+
+      <div class="yui-t4">
+        <div id="maincontent" class="yui-main">
+          <div class="yui-b" dir="ltr">
+            <div class="context-publication">
+              
+    <meta itemprop="name" content="Neovim Stable" />
+    <h1 id="edit-displayname">
+<span class="yui3-editable_text-text ellipsis single-line" style="max-width: 95%;">
+    Neovim Stable
+</span>
+  
+</h1>
+
+
+
+    
+  
+              
+
+              <div id="registration" class="registering">
+                
+              </div>
+            </div>
+
+            
+            <div id="request-notifications">
+              
+            </div>
+
+            
+              
+
+    <div class="top-portlet" style="padding-top:0.5em;">
+      
+
+      <div>
+  <div class="lazr-multiline-edit" id="edit-description">
+  <div class="clearfix">
+    
+
+    <h3>PPA description</h3>
+  </div>
+
+  <div class="yui3-editable_text-text"><p>Neovim releases backported from Debian.</p>
+<p>Homepage: <a rel="nofollow" href="https://neovim.io">https:/<wbr />/neovim.<wbr />io</a><br />
+Source/Issues: <a rel="nofollow" href="https://github.com/neovim/neovim">https:/<wbr />/github.<wbr />com/neovim/<wbr />neovim</a><br />
+Documentation: <a rel="nofollow" href="https://neovim.io/doc">https:/<wbr />/neovim.<wbr />io/doc</a><br />
+User Manual: <a rel="nofollow" href="https://neovim.io/doc/user">https:/<wbr />/neovim.<wbr />io/doc/<wbr />user</a><br />
+Neovim features: <a rel="nofollow" href="https://neovim.io/doc/user/nvim.html">https:/<wbr />/neovim.<wbr />io/doc/<wbr />user/nvim.<wbr />html</a><br />
+Packaging: <a rel="nofollow" href="https://launchpad.net/neovim-ppa">https:/<wbr />/launchpad.<wbr />net/neovim-<wbr />ppa</a></p></div>
+  </div>
+
+  
+</div>
+
+    </div>
+
+    
+      
+    
+    
+  
+    
+
+    <div class="yui-gc">
+
+      <div class="yui-u first">
+        
+          
+    
+
+    <div id="ppa-install" class="portlet">
+      <h2>Adding this PPA to your system</h2>
+
+      
+
+        <p>You can update your system with unsupported packages from
+          this untrusted PPA by adding <strong class="ppa-reference">ppa:neovim-ppa/stable</strong>
+          to your system's Software Sources.
+          (<a href="/+help-soyuz/ppa-sources-list.html" target="help">Read about installing</a>)
+        </p>
+
+        <pre class="command subordinate">
+sudo add-apt-repository ppa:neovim-ppa/stable
+sudo apt update
+        </pre>
+
+        <div class="widget-header">
+          Technical details about this PPA
+        </div>
+
+        <div class="widget-body">
+          <p>This PPA can be added to your system manually by copying
+             the lines below and adding them to your system's software
+             sources. </p>
+          
+
+  <script>
+  <!--
+      function updateSeries(select) {
+          var deb = document.getElementById('series-deb');
+          deb.innerHTML = select.value;
+          var deb_src = document.getElementById('series-deb-src');
+          deb_src.innerHTML = select.value;
+      }
+  //-->
+  </script>
+
+  <div id="series-widget-div">
+    <form style="display: inline">
+    Display sources.list entries for: <select id="field.series" name="field.series" size="1" onChange='updateSeries(this);'>
+<option selected="selected" value="YOUR_UBUNTU_VERSION_HERE">Choose your Ubuntu version</option>
+<option value="noble">Noble (24.04)</option>
+<option value="mantic">Mantic (23.10)</option>
+<option value="jammy">Jammy (22.04)</option>
+<option value="focal">Focal (20.04)</option>
+</select>
+    </form>
+  </div>
+
+  
+
+  <pre id="sources-list-entries" class="wrap">
+deb <a href="https://ppa.launchpadcontent.net/neovim-ppa/stable/ubuntu">https://ppa.launchpadcontent.net/neovim-ppa/stable/ubuntu</a> <span id="series-deb">YOUR_UBUNTU_VERSION_HERE</span> main 
+deb-src <a href="https://ppa.launchpadcontent.net/neovim-ppa/stable/ubuntu">https://ppa.launchpadcontent.net/neovim-ppa/stable/ubuntu</a> <span id="series-deb-src">YOUR_UBUNTU_VERSION_HERE</span> main </pre>
+
+
+
+          <dl id="signing-key">
+            <dt>Signing key:</dt>
+            <dd>
+              <a href="https://keyserver.ubuntu.com/pks/lookup?fingerprint=on&amp;op=index&amp;search=0x9DBB0BE9366964F134855E2255F96FCF8231B6DD">
+                <code>4096R/9DBB0BE9366964F134855E2255F96FCF8231B6DD</code>
+              </a>
+              (<a href="/+help-soyuz/ppa-sources-list.html" target="help">What is this?</a>)
+            </dd>
+            <dt>Fingerprint:</dt>
+            <dd>9DBB0BE9366964F134855E2255F96FCF8231B6DD</dd>
+          </dl>
+          <div id="archive-dependencies">
+            <h3>Dependencies:</h3>
+            <ul>
+              <li>
+                <a href="/ubuntu/+archive/primary">Primary Archive for Ubuntu - BACKPORTS (main, restricted, universe, multiverse)</a>
+                
+                
+                (included <time title="2017-01-25 05:53:56 UTC" datetime="2017-01-25T05:53:56.601080+00:00">on 2017-01-25</time>)
+              </li>
+            </ul>
+          </div> <!--archive-dependencies -->
+        </div> <!-- widget-body -->
+
+        <p>For questions and bugs with software in this PPA please contact
+          <a href="/~neovim-ppa" class="bg-image" style="background-image: url(https://launchpadlibrarian.net/198448349/nvim_small)">Neovim PPA</a>.</p>
+
+        <script type="text/javascript">
+          LPJS.use('lp.app.widgets.expander', function(Y) {
+              var widget_header = Y.one('#ppa-install .widget-header');
+              var content = Y.one('.widget-body');
+              var expander = new Y.lp.app.widgets.expander.Expander(
+                  widget_header, content);
+              expander.setUp(true);
+          });
+        </script>
+      
+
+      
+
+    </div> <!-- ppa-install -->
+  
+        
+        
+      </div>
+
+      <div class="yui-u">
+        
+    
+    <div class="portlet">
+      <h2>PPA statistics</h2>
+      <dl>
+        <dt>Activity</dt>
+        <dd>0
+          updates
+          added during the past month.</dd>
+        
+      </dl>
+    </div>
+  
+      </div>
+    </div><!-- yui-gc -->
+
+    
+    
+    <div class="portlet" id="packages">
+      <span class="see-all"><a class="menu-link-packages sprite info" href="https://launchpad.net/~neovim-ppa/+archive/ubuntu/stable/+packages">View package details</a></span>
+      <h2>Overview of published packages</h2>
+
+      <form class="package-search-filter" action="" method="GET">
+        <label for="field.series_filter">Published in:</label>
+        <select id="field.series_filter" name="field.series_filter" size="1" >
+<option value="">Any series</option>
+<option value="noble">Noble</option>
+<option value="mantic">Mantic</option>
+<option value="jammy">Jammy</option>
+<option value="focal">Focal</option>
+</select>
+        <input type="submit" value="Filter" />
+      </form>
+
+      <div>
+
+        <table style="width: 100%;" class="upper-batch-nav">
+  <tbody>
+    <tr>
+      <td style="white-space: nowrap" class="batch-navigation-index">
+        
+            <strong>1</strong>
+            
+              &rarr;
+              <strong>53</strong>
+            
+            of
+            53
+            results
+        
+      </td>
+      <td style="text-align: right; white-space: nowrap" class="batch-navigation-links">
+        
+        <span class="first inactive">First</span>
+        &bull;
+        
+        <span class="previous inactive">Previous</span>
+        &bull;
+        
+        <span class="next inactive"><strong>Next</strong></span>
+        
+          &bull;
+          
+          <span class="last inactive">Last</span>
+        
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+        <table class="listing sortable" id="packages_list">
+          <thead>
+            <tr>
+              <th>Package</th>
+              <th>Version</th>
+              <th>Uploaded by</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                dh-cargo
+              </td>
+              <td>
+                28~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-24 17:49:55 UTC" datetime="2024-01-24T17:49:55.842036+00:00">2024-01-24</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="superseded">
+              <td>
+                <img src="/@@/package-source" />
+                libvterm
+              </td>
+              <td>
+                0.3.3-1~bpo24.04.1~ppa1
+                
+                  (<a href="/ubuntu/+source/libvterm/0.3.3-2build1">Newer version</a>
+                  available)
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-24 17:01:50 UTC" datetime="2024-01-24T17:01:50.462764+00:00">2024-01-24</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                libvterm
+              </td>
+              <td>
+                0.3.3-1~bpo23.10.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-24 17:01:50 UTC" datetime="2024-01-24T17:01:50.462764+00:00">2024-01-24</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                libvterm
+              </td>
+              <td>
+                0.3.3-1~bpo22.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-24 17:01:50 UTC" datetime="2024-01-24T17:01:50.462764+00:00">2024-01-24</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                libvterm
+              </td>
+              <td>
+                0.3.3-1~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-24 17:01:50 UTC" datetime="2024-01-24T17:01:50.462764+00:00">2024-01-24</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                lua-luv
+              </td>
+              <td>
+                1.43.0-0-2~bpo22.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2022-07-20 02:30:21 UTC" datetime="2022-07-20T02:30:21.414908+00:00">2022-07-20</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                lua-luv
+              </td>
+              <td>
+                1.43.0-0-2~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2022-07-20 02:30:21 UTC" datetime="2022-07-20T02:30:21.414908+00:00">2022-07-20</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                lua-nvim
+              </td>
+              <td>
+                0.2.3-1-1~bpo22.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2022-05-15 14:04:43 UTC" datetime="2022-05-15T14:04:43.014545+00:00">2022-05-15</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                lua-nvim
+              </td>
+              <td>
+                0.2.3-1-1~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2022-05-15 14:04:43 UTC" datetime="2022-05-15T14:04:43.014545+00:00">2022-05-15</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                neovim
+              </td>
+              <td>
+                0.7.2-3~bpo22.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2022-07-20 20:42:38 UTC" datetime="2022-07-20T20:42:38.620701+00:00">2022-07-20</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                neovim
+              </td>
+              <td>
+                0.7.2-3~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2022-07-20 20:42:38 UTC" datetime="2022-07-20T20:42:38.620701+00:00">2022-07-20</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-ahash
+              </td>
+              <td>
+                0.7.6-6~bpo22.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-02-03 21:55:47 UTC" datetime="2024-02-03T21:55:47.203877+00:00">2024-02-03</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-ahash
+              </td>
+              <td>
+                0.7.6-6~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-02-03 21:55:47 UTC" datetime="2024-02-03T21:55:47.203877+00:00">2024-02-03</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-autocfg
+              </td>
+              <td>
+                1.0.1-1~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-02-02 19:32:41 UTC" datetime="2024-02-02T19:32:41.896753+00:00">2024-02-02</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-cc
+              </td>
+              <td>
+                1.0.83-1~bpo22.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-30 16:58:41 UTC" datetime="2024-01-30T16:58:41.999439+00:00">2024-01-30</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-cc
+              </td>
+              <td>
+                1.0.83-1~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-30 16:58:41 UTC" datetime="2024-01-30T16:58:41.999439+00:00">2024-01-30</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-cfg-if
+              </td>
+              <td>
+                1.0.0-1~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-30 16:58:41 UTC" datetime="2024-01-30T16:58:41.999439+00:00">2024-01-30</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-compiler-builtins
+              </td>
+              <td>
+                0.1.101-1~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-25 17:22:38 UTC" datetime="2024-01-25T17:22:38.963351+00:00">2024-01-25</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-dirs
+              </td>
+              <td>
+                3.0.1-1~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-30 16:14:43 UTC" datetime="2024-01-30T16:14:43.850585+00:00">2024-01-30</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-dirs-sys
+              </td>
+              <td>
+                0.3.5-1~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-30 16:14:43 UTC" datetime="2024-01-30T16:14:43.850585+00:00">2024-01-30</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-either
+              </td>
+              <td>
+                1.6.1-1~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-24 20:10:09 UTC" datetime="2024-01-24T20:10:09.689942+00:00">2024-01-24</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-libc
+              </td>
+              <td>
+                0.2.139-1~bpo22.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-24 18:35:32 UTC" datetime="2024-01-24T18:35:32.984433+00:00">2024-01-24</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-libc
+              </td>
+              <td>
+                0.2.139-1~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-24 18:35:32 UTC" datetime="2024-01-24T18:35:32.984433+00:00">2024-01-24</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-libloading
+              </td>
+              <td>
+                0.7.2-1~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-30 21:18:06 UTC" datetime="2024-01-30T21:18:06.700816+00:00">2024-01-30</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-memchr
+              </td>
+              <td>
+                2.4.1-1~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-25 14:46:49 UTC" datetime="2024-01-25T14:46:49.367255+00:00">2024-01-25</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-proc-macro2
+              </td>
+              <td>
+                1.0.76-1~bpo23.10.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-25 02:18:48 UTC" datetime="2024-01-25T02:18:48.363976+00:00">2024-01-25</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-proc-macro2
+              </td>
+              <td>
+                1.0.76-1~bpo22.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-25 02:18:48 UTC" datetime="2024-01-25T02:18:48.363976+00:00">2024-01-25</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-proc-macro2
+              </td>
+              <td>
+                1.0.76-1~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-25 02:18:48 UTC" datetime="2024-01-25T02:18:48.363976+00:00">2024-01-25</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-quote
+              </td>
+              <td>
+                1.0.35-1~bpo23.10.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-25 11:51:07 UTC" datetime="2024-01-25T11:51:07.952892+00:00">2024-01-25</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-quote
+              </td>
+              <td>
+                1.0.35-1~bpo22.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-25 11:51:07 UTC" datetime="2024-01-25T11:51:07.952892+00:00">2024-01-25</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-quote
+              </td>
+              <td>
+                1.0.35-1~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-25 11:51:07 UTC" datetime="2024-01-25T11:51:07.952892+00:00">2024-01-25</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-seahash
+              </td>
+              <td>
+                4.1.0-1~bpo22.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-02-04 01:37:25 UTC" datetime="2024-02-04T01:37:25.359868+00:00">2024-02-04</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-seahash
+              </td>
+              <td>
+                4.1.0-1~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-02-04 01:37:25 UTC" datetime="2024-02-04T01:37:25.359868+00:00">2024-02-04</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-serde
+              </td>
+              <td>
+                1.0.171-1~bpo22.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-25 22:23:32 UTC" datetime="2024-01-25T22:23:32.054999+00:00">2024-01-25</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-serde
+              </td>
+              <td>
+                1.0.171-1~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-25 22:23:32 UTC" datetime="2024-01-25T22:23:32.054999+00:00">2024-01-25</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-serde-derive
+              </td>
+              <td>
+                1.0.171-1~bpo22.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-25 20:56:57 UTC" datetime="2024-01-25T20:56:57.442464+00:00">2024-01-25</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-serde-derive
+              </td>
+              <td>
+                1.0.171-1~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-25 20:56:57 UTC" datetime="2024-01-25T20:56:57.442464+00:00">2024-01-25</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-syn
+              </td>
+              <td>
+                2.0.48-1~bpo22.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-25 12:32:47 UTC" datetime="2024-01-25T12:32:47.032219+00:00">2024-01-25</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-syn
+              </td>
+              <td>
+                2.0.48-1~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-25 12:32:47 UTC" datetime="2024-01-25T12:32:47.032219+00:00">2024-01-25</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-thiserror
+              </td>
+              <td>
+                1.0.50-1~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-25 14:00:47 UTC" datetime="2024-01-25T14:00:47.089410+00:00">2024-01-25</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-thiserror-impl
+              </td>
+              <td>
+                1.0.50-1~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-24 21:50:31 UTC" datetime="2024-01-24T21:50:31.748748+00:00">2024-01-24</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-tree-sitter
+              </td>
+              <td>
+                0.20.10-1~bpo22.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-24 17:01:50 UTC" datetime="2024-01-24T17:01:50.462764+00:00">2024-01-24</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-tree-sitter
+              </td>
+              <td>
+                0.20.10-1~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-24 17:01:50 UTC" datetime="2024-01-24T17:01:50.462764+00:00">2024-01-24</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-tree-sitter-highlight
+              </td>
+              <td>
+                0.20.1-1~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-24 21:50:31 UTC" datetime="2024-01-24T21:50:31.748748+00:00">2024-01-24</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-tree-sitter-tags
+              </td>
+              <td>
+                0.20.2-1~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-24 21:50:31 UTC" datetime="2024-01-24T21:50:31.748748+00:00">2024-01-24</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-unicode-ident
+              </td>
+              <td>
+                1.0.12-1~bpo22.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-24 21:50:31 UTC" datetime="2024-01-24T21:50:31.748748+00:00">2024-01-24</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-unicode-ident
+              </td>
+              <td>
+                1.0.12-1~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-24 21:50:31 UTC" datetime="2024-01-24T21:50:31.748748+00:00">2024-01-24</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-webbrowser
+              </td>
+              <td>
+                0.8.10-1~bpo22.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-24 21:50:31 UTC" datetime="2024-01-24T21:50:31.748748+00:00">2024-01-24</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-webbrowser
+              </td>
+              <td>
+                0.8.10-1~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-24 21:50:31 UTC" datetime="2024-01-24T21:50:31.748748+00:00">2024-01-24</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-which
+              </td>
+              <td>
+                4.2.5-1~bpo22.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-24 20:10:09 UTC" datetime="2024-01-24T20:10:09.689942+00:00">2024-01-24</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                rust-which
+              </td>
+              <td>
+                4.2.5-1~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-24 20:10:09 UTC" datetime="2024-01-24T20:10:09.689942+00:00">2024-01-24</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                tree-sitter
+              </td>
+              <td>
+                0.20.8-2~bpo22.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-24 17:01:50 UTC" datetime="2024-01-24T17:01:50.462764+00:00">2024-01-24</time>)
+                  
+              </td>
+            </tr>
+            
+            
+            <tr class="">
+              <td>
+                <img src="/@@/package-source" />
+                tree-sitter
+              </td>
+              <td>
+                0.20.8-2~bpo20.04.1~ppa1
+                
+              </td>
+              <td>
+                  <a href="/~jamessan" class="sprite person">James McCoy</a>
+                  
+                  (<time title="2024-01-24 17:01:50 UTC" datetime="2024-01-24T17:01:50.462764+00:00">2024-01-24</time>)
+                  
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+
+        <table style="width: 100%;" class="lower-batch-nav">
+  <tbody>
+    <tr>
+      <td style="white-space: nowrap" class="batch-navigation-index">
+        
+            <strong>1</strong>
+            
+              &rarr;
+              <strong>53</strong>
+            
+            of
+            53
+            results
+        
+      </td>
+      <td style="text-align: right; white-space: nowrap" class="batch-navigation-links">
+        
+        <span class="first inactive">First</span>
+        &bull;
+        
+        <span class="previous inactive">Previous</span>
+        &bull;
+        
+        <span class="next inactive"><strong>Next</strong></span>
+        
+          &bull;
+          
+          <span class="last inactive">Last</span>
+        
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+        
+
+      </div>
+    </div>
+  
+ 
+            
+            
+          </div><!-- yui-b -->
+        </div><!-- yui-main -->
+
+        
+          <div id="side-portlets" class="yui-b side">
+            
+    <div id="global-actions" class="portlet vertical">
+  <ul>
+    <li>
+      <a class="menu-link-packages sprite info" href="https://launchpad.net/~neovim-ppa/+archive/ubuntu/stable/+packages">View package details</a>
+    </li>
+  </ul>
+</div>
+
+    
+  
+
+  
+  <div id="portlet-latest-updates" class="portlet">
+    <h2>Latest updates</h2>
+
+    
+    
+      <ul class="latest-ppa-updates">
+        <li class="FULLYBUILT">
+          <strong>rust-seahash</strong>
+          <span class="duration">
+            100 weeks
+            ago
+          </span><br />
+          Successfully built
+          
+        </li>
+        <li class="FULLYBUILT">
+          <strong>rust-seahash</strong>
+          <span class="duration">
+            100 weeks
+            ago
+          </span><br />
+          Successfully built
+          
+        </li>
+        <li class="FAILEDTOBUILD">
+          <strong>rust-ahash</strong>
+          <span class="duration">
+            100 weeks
+            ago
+          </span><br />
+          Failed to build:
+          <span class="build-details">
+            <a href="/~neovim-ppa/+archive/ubuntu/stable/+build/27746097">amd64</a>
+            <a href="/~neovim-ppa/+archive/ubuntu/stable/+build/27746098">arm64</a>
+            <a href="/~neovim-ppa/+archive/ubuntu/stable/+build/27746099">armhf</a>
+          </span>
+        </li>
+        <li class="FAILEDTOBUILD">
+          <strong>rust-ahash</strong>
+          <span class="duration">
+            100 weeks
+            ago
+          </span><br />
+          Failed to build:
+          <span class="build-details">
+            <a href="/~neovim-ppa/+archive/ubuntu/stable/+build/27746094">amd64</a>
+            <a href="/~neovim-ppa/+archive/ubuntu/stable/+build/27746095">arm64</a>
+            <a href="/~neovim-ppa/+archive/ubuntu/stable/+build/27746096">armhf</a>
+          </span>
+        </li>
+        <li class="FULLYBUILT">
+          <strong>rust-autocfg</strong>
+          <span class="duration">
+            100 weeks
+            ago
+          </span><br />
+          Successfully built
+          
+        </li>
+      </ul>
+    
+    </div>
+  
+
+  
+          </div><!-- yui-b side -->
+        
+      </div><!-- yui-t4 -->
+
+      
+  <div id="footer" class="footer">
+    <div class="lp-arcana">
+        <div class="lp-branding">
+          <a href="https://launchpad.net/"><img src="/@@/launchpad-footer-logo.svg" alt="Launchpad" width="65" height="18" /></a>
+          &nbsp;&bull;&nbsp;
+          <a href="https://launchpad.net/+tour">Take the tour</a>
+          &nbsp;&bull;&nbsp;
+          <a href="https://help.launchpad.net/">Read the guide</a>
+          &nbsp;
+          <form id="globalsearch" method="get" accept-charset="UTF-8" action="https://launchpad.net/+search">
+            <input type="search" id="search-text" name="field.text" />
+            <input type="image" src="/@@/search" style="vertical-align:5%" alt="Search Launchpad" />
+          </form>
+        </div>
+        
+  
+
+    </div>
+
+    <div class="colophon">
+      &copy; 2004
+      <a href="http://canonical.com/">Canonical&nbsp;Ltd.</a>
+      &nbsp;&bull;&nbsp;
+      <a href="https://ubuntu.com/legal/launchpad-terms-of-service">Terms of use</a>
+      &nbsp;&bull;&nbsp;
+      <a href="https://www.ubuntu.com/legal/dataprivacy">Data privacy</a>
+      &nbsp;&bull;&nbsp;
+      <a href="/feedback">Contact Launchpad Support</a>
+      
+      &nbsp;&bull;&nbsp;
+      <a href="http://blog.launchpad.net/">Blog</a>
+      
+	&nbsp;&bull;&nbsp;
+	<a href="https://canonical.com/careers">Careers</a>
+      
+      &nbsp;&bull;&nbsp;
+      <a href="https://ubuntu.social/@launchpadstatus">System status</a>
+      <span id="lp-version">
+      &nbsp;&bull;&nbsp;
+        99c00f5
+        
+        
+        (<a href="https://documentation.ubuntu.com/launchpad/">Get the code!</a>)
+      </span>
+    </div>
+  </div>
+
+    </div><!-- yui-d0-->
+
+    
+  
+  
+  <script id="json-cache-script">LP.cache = {"related_features": {}, "context": {"self_link": "https://launchpad.net/api/devel/~neovim-ppa/+archive/ubuntu/stable", "web_link": "https://launchpad.net/~neovim-ppa/+archive/ubuntu/stable", "resource_type_link": "https://launchpad.net/api/devel/#archive", "webhooks_collection_link": "https://launchpad.net/api/devel/~neovim-ppa/+archive/ubuntu/stable/webhooks", "owner_link": "https://launchpad.net/api/devel/~neovim-ppa", "name": "stable", "displayname": "Neovim Stable", "reference": "~neovim-ppa/ubuntu/stable", "distribution_link": "https://launchpad.net/api/devel/ubuntu", "private": false, "suppress_subscription_notifications": false, "dependencies_collection_link": "https://launchpad.net/api/devel/~neovim-ppa/+archive/ubuntu/stable/dependencies", "description": "Neovim releases backported from Debian.\n\nHomepage: https://neovim.io\nSource/Issues: https://github.com/neovim/neovim\nDocumentation: https://neovim.io/doc\nUser Manual: https://neovim.io/doc/user\nNeovim features: https://neovim.io/doc/user/nvim.html\nPackaging: https://launchpad.net/neovim-ppa", "signing_key_fingerprint": "9DBB0BE9366964F134855E2255F96FCF8231B6DD", "require_virtualized": true, "build_debug_symbols": true, "publish_debug_symbols": true, "permit_obsolete_series_uploads": false, "authorized_size": 2048, "status": "Active", "external_dependencies": null, "metadata_overrides": null, "processors_collection_link": "https://launchpad.net/api/devel/~neovim-ppa/+archive/ubuntu/stable/processors", "enabled_restricted_processors_collection_link": "https://launchpad.net/api/devel/~neovim-ppa/+archive/ubuntu/stable/enabled_restricted_processors", "publishing_method": "Local", "repository_format": "Debian", "publish": true, "relative_build_score": 0, "http_etag": "\"2358a343f9e8e850cfab7c5bfec8312edd4fa9e4-dfff35191244d483e130718218a747c9c1b830d5\""}};</script>
+
+    
+  
+
+    
+  </body>
+
+
+  <!--
+    Facet name: overview
+    Page type: main_side
+    Has global search: True
+    Has application tabs: True
+    Has side portlets: True
+
+    At least 41 queries/external actions issued in 0.61 seconds
+
+    Features: {'profiling.enabled': None, 'hard_timeout': '5000', 'js.yui_version': None, 'app.mainsite_only.canonical_url': None, 'app.maintenance_message': None, 'archive.webhooks.enabled': 'on', 'baselayout.careers_link.disabled': None, 'visible_render_time': None}
+
+    r99c00f5
+
+    -->
+
+</html>
+

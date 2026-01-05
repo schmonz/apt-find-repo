@@ -137,6 +137,30 @@ var testCases = []TestCase{
 			"deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/amd64 stable main",
 		},
 	},
+	{
+		name:     "headscale-unofficial",
+		htmlFile: "testdata/webpages/headscale-unofficial.html",
+		expectedGPG: []string{
+			"https://allddd.github.io/headscale-apt/headscale-apt.gpg",
+		},
+		expectedDeb: []string{
+			"deb [arch=amd64 signed-by=/etc/apt/keyrings/headscale-apt.gpg] https://allddd.github.io/headscale-apt/ stable main",
+		},
+	},
+	{
+		name:     "hugo-unofficial",
+		htmlFile: "testdata/webpages/hugo-unofficial.html",
+		expectedGPG: []string{},
+		expectedDeb: []string{
+			"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/hugo.gpg] https://hugo-apt.8hob.io latest main",
+		},
+	},
+	{
+		name:        "ghostty-unofficial",
+		htmlFile:    "testdata/webpages/ghostty-unofficial.html",
+		expectedGPG: []string{},
+		expectedDeb: []string{},
+	},
 }
 
 func TestParseRepoPage(t *testing.T) {
