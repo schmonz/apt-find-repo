@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Syncthing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="shortcut icon" href="images/favicon.png" type="image/png" />
+
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="images/favicons/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/favicons/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/favicons/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="images/favicons/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/favicons/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="images/favicons/apple-touch-icon-152x152.png" />
+    <link rel="icon" type="image/png" href="images/favicons/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="images/favicons/favicon-16x16.png" sizes="16x16" />
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="images/favicons/mstile-144x144.png" />
+    <meta name="theme-color" content="#FFFFFF" />
+
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/raleway.css" />
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+    <div id="main">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1><a href="https://syncthing.net"><img alt="Syncthing" id="syncthing-logo" title="Syncthing" src="images/logo-horizontal.svg"
+                                width="600" /></a></h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>Debian/Ubuntu Packages</h1>
+
+                    <p>To allow the system to check the packages authenticity, you need to provide the release key.</p>
+                    <pre># Add the release PGP keys:
+<b>sudo mkdir -p /etc/apt/keyrings
+sudo curl -L -o /etc/apt/keyrings/syncthing-archive-keyring.gpg https://syncthing.net/release-key.gpg</b></pre>
+
+                    <p>The <code>stable-v2</code> channel is updated with stable release builds, usually every first
+                        Tuesday of the month.</p>
+                    <pre># Add the "stable-v2" channel to your APT sources:
+<b>echo "deb [signed-by=/etc/apt/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing stable-v2" | sudo tee /etc/apt/sources.list.d/syncthing.list</b></pre>
+
+                    <p>The <code>candidate</code> channel is updated with release candidate builds, usually every
+                        second Tuesday of the month. These predate the corresponding stable builds by about three
+                        weeks.</p>
+                    <pre># Add the "candidate" channel to your APT sources:
+<b>echo "deb [signed-by=/etc/apt/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing candidate" | sudo tee /etc/apt/sources.list.d/syncthing.list</b></pre>
+
+                    <p>And finally.</p>
+                    <pre># Update and install syncthing:
+<b>sudo apt-get update
+sudo apt-get install syncthing</b></pre>
+
+                </div>
+            </div>
+            <hr />
+            <h1>Troubleshooting</h1>
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Distribution Package Preferred Over This Version</h2>
+                    <p>To make sure the system packages do not take preference over those in this repository, you need to adjust the priority/preference.</p>
+                    <pre># Increase preference of Syncthing's packages ("pinning")
+<b>printf "Package: *\nPin: origin apt.syncthing.net\nPin-Priority: 990\n" | sudo tee /etc/apt/preferences.d/syncthing.pref</b></pre>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>HTTPS Method Driver Missing</h2>
+                    <p>Depending on your distribution, you may see an error similar to the following when running <code>apt-get</code>:</p>
+                    <pre>E: The method driver /usr/lib/apt/methods/https could not be found.
+N: Is the package apt-transport-https installed?
+E: Failed to fetch https://apt.syncthing.net/dists/syncthing/InRelease
+</pre>
+                    <p>If so, please install the <code>apt-transport-https</code> package and try again:</p>
+                    <pre><b>sudo apt-get install apt-transport-https</b></pre>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Server Certificate Verification Failed</h2>
+                    <p>Especially for older distributions, your system TLS certificate store might be outdated.  Since October 2021, a newer Let's Encrypt root certificate must be installed, or you may see an error similar to the following when running <code>apt-get</code>:</p>
+                    <pre>E: Failed to fetch https://apt.syncthing.net/dists/syncthing/stable/binary-armhf/Packages
+server certificate verification failed. CAfile: /etc/ssl/certs/ca-certificates.crt CRLfile: none
+E: Some index files failed to download. They have been ignored, or old ones used instead.</pre>
+                    <p>Please make sure you have the latest version of the <code>ca-certificates</code> package and try again:</p>
+                    <pre><b>sudo apt-get update
+sudo apt-get install ca-certificates</b></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

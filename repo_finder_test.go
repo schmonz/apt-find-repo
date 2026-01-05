@@ -51,6 +51,92 @@ var testCases = []TestCase{
 			"deb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/ubuntu focal main",
 		},
 	},
+	{
+		name:     "postgresql-official",
+		htmlFile: "testdata/webpages/postgresql-official.html",
+		expectedGPG: []string{
+			"https://www.postgresql.org/media/keys/ACCC4CF8.asc",
+		},
+		expectedDeb: []string{},
+	},
+	{
+		name:     "nginx-official",
+		htmlFile: "testdata/webpages/nginx-official.html",
+		expectedGPG: []string{
+			"https://nginx.org/keys/nginx_signing.key",
+		},
+		expectedDeb: []string{},
+	},
+	{
+		name:     "sublime-official",
+		htmlFile: "testdata/webpages/sublime-official.html",
+		expectedGPG: []string{
+			"https://download.sublimetext.com/sublimehq-pub.gpg",
+			"https://download.sublimetext.com/sublimehq-rpm-pub.gpg",
+		},
+		expectedDeb: []string{},
+	},
+	{
+		name:     "signal-official",
+		htmlFile: "testdata/webpages/signal-official.html",
+		expectedGPG: []string{
+			"https://updates.signal.org/desktop/apt/keys.asc",
+		},
+		expectedDeb: []string{},
+	},
+	{
+		name:     "grafana-official",
+		htmlFile: "testdata/webpages/grafana-official.html",
+		expectedGPG: []string{
+			"https://apt.grafana.com/gpg.key",
+			"https://apt.grafana.com/gpg",
+		},
+		expectedDeb: []string{
+			"deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main",
+			"deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com beta main",
+		},
+	},
+	{
+		name:     "github-cli-official",
+		htmlFile: "testdata/webpages/github-cli-official.html",
+		expectedGPG: []string{
+			"https://cli.github.com/packages/githubcli-archive-keyring.gpg",
+		},
+		expectedDeb: []string{
+			"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main",
+			`deb [arch=\u003cspan class=\"pl-s\"\u003e\u003cspan class=\"pl-pds\"\u003e$(\u003c/span\u003edpkg --print-architecture\u003cspan class=\"pl-pds\"\u003e)\u003c/span\u003e\u003c/span\u003e signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main`,
+		},
+	},
+	{
+		name:     "syncthing-official",
+		htmlFile: "testdata/webpages/syncthing-official.html",
+		expectedGPG: []string{
+			"https://syncthing.net/release-key.gpg",
+		},
+		expectedDeb: []string{
+			"deb [signed-by=/etc/apt/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing stable",
+			"deb [signed-by=/etc/apt/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing candidate",
+		},
+	},
+	{
+		name:     "kubernetes-official",
+		htmlFile: "testdata/webpages/kubernetes-official.html",
+		expectedGPG: []string{
+			"https://pkgs.k8s.io/core:/stable:/v1.35/deb/Release.key",
+			"https://pkgs.k8s.io/core:/stable:/v1.35/rpm/repodata/repomd.xml.key",
+		},
+		expectedDeb: []string{},
+	},
+	{
+		name:     "1password-official",
+		htmlFile: "testdata/webpages/1password-official.html",
+		expectedGPG: []string{
+			"https://downloads.1password.com/linux/keys/1password.asc",
+		},
+		expectedDeb: []string{
+			"deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/amd64 stable main",
+		},
+	},
 }
 
 func TestParseRepoPage(t *testing.T) {

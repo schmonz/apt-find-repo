@@ -1,0 +1,417 @@
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Install &mdash; Caddy Documentation</title>
+		
+		
+	
+	
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="preconnect" href="https://BH4D9OD16A-dsn.algolia.net" crossorigin />
+
+<link rel="icon" href="/old/resources/images/favicon.png?v=a9076d4">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:400,700|Maven+Pro:400,700,900|Montserrat:400,700|PT+Mono&display=swap">
+<link rel="stylesheet" href="/old/resources/css/common.css?v=a9076d4">
+<script src="/old/resources/js/common.js?v=a9076d4"></script>
+
+<!-- General metatags -->
+<meta name="author" content="Caddy Web Server">
+<meta name="description" content="Caddy is a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go">
+<meta name="theme-color" content="#5ea9a2">
+
+<!-- Open Graph tags -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://caddyserver.com/">
+<meta property="og:description" content="Caddy is a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go">
+<meta property="og:image" content="https://caddyserver.com/old/resources/images/caddy-open-graph.jpg">
+
+<!-- Twitter card tags additive with the og: tags -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" value="caddyserver.com">
+<meta name="twitter:description" value="Caddy is a powerful, enterprise-ready, open source web server with automatic HTTPS written in Go">
+<meta name="twitter:image" content="https://caddyserver.com/old/resources/images/caddy-open-graph.jpg">
+<meta name="twitter:url" value="https://caddyserver.com/">
+
+<!-- Algolia DocSearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+
+<!-- Global site tag (gtag.js) - Google Analytics (Stack Holdings) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2DLB04LK4P"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-2DLB04LK4P');
+</script>
+
+<!-- Alpine.js to augment markdown docs -->
+<script src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+<!-- TODO: These don't work -- color values need to be tweaked if they do work -- I think because background-color is set on the body. -->
+<meta name="theme-color" content="#123245" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#123245" media="(prefers-color-scheme: dark)">
+
+
+	<link rel="stylesheet" href="/old/resources/css/docs.css?v=a9076d4">
+	<link rel="stylesheet" href="/old/resources/css/chroma.css?v=a9076d4">
+	
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+	<script type="text/javascript">window.CaddyfileDirectives = ["reverse_proxy","handle","uri","file_server","acme_server","import","vars","log_append","method","tracing","rewrite","intercept","handle_path","forward_auth","log_skip","redir","invoke","root","handle_errors","push","log_name","metrics","abort","basic_auth","bind","templates","respond","php_fastcgi","log","error","request_header","tls","request_body","encode","header","route","fs","map","try_files"];</script>
+	<script src="/old/resources/js/jquery-4.0.0-beta.min.js"></script>
+	<script src="/old/resources/js/docs.js?v=a9076d4"></script>
+
+		<meta property="og:title" content="Install - Caddy Documentation">
+		<meta name="twitter:title" value="Install - Caddy Documentation">
+	</head>
+	<body>
+		<header>
+	<div id="logo-container">
+		<div id="logo-docs-container">
+			<a href="/"><img src="/old/resources/images/caddy-logo.svg" id="logo" alt="Caddy"></a>
+			<div id="logo-docs">Documentation</div>
+		</div>
+		<div id="zerossl-project">
+			a <a href="https://zerossl.com"><img src="/old/resources/images/zerossl-logo.svg" id="zerossl-logo"></a> project
+		</div>
+	</div>
+	<!--TODO: add class="current" to the current link-->
+<nav>
+	<div id="search"></div>
+	<a href="/download">Download</a>
+	<a href="/docs/">Documentation</a>
+	<a href="https://caddy.community">Forum</a>
+	<a href="https://github.com/caddyserver/caddy">GitHub</a>
+	<a href="/account/">Account</a>
+	<a href="/support"><b>Support</b></a>
+	<a href="/sponsor" class="red button">Sponsor</a>
+</nav>
+
+</header>
+		<main>
+			<nav class="sidebar">
+	<ul>
+		<li><a href="/docs/">Welcome</a></li>
+		<li><a href="https://caddy.community/c/wiki/13">Wiki <img src="/old/resources/images/external-link.svg"></a></li>
+
+		<li class="heading">Get Caddy</li>
+		<li><a href="/docs/install">Install</a></li>
+		<li><a href="/docs/build">Build from source</a></li>
+
+		<li class="heading">Tutorials</li>
+		<li><a href="/docs/getting-started">Getting Started</a></li>
+		<li>
+			<a href="/docs/quick-starts">Quick-starts</a>
+			<ul>
+				<li><a href="/docs/quick-starts/api">Using the API</a></li>
+				<li><a href="/docs/quick-starts/caddyfile">Using a Caddyfile</a></li>
+				<li><a href="/docs/quick-starts/static-files">Static files</a></li>
+				<li><a href="/docs/quick-starts/reverse-proxy">Reverse proxy</a></li>
+				<li><a href="/docs/quick-starts/https">HTTPS</a></li>
+			</ul>
+		</li>
+		<li><a href="/docs/api-tutorial">Caddy API</a></li>
+		<li><a href="/docs/caddyfile-tutorial">Caddyfile</a></li>
+
+		<li class="heading">Reference</li>
+		<li><a href="/docs/command-line">Command Line</a></li>
+		<li><a href="/docs/api">API</a></li>
+		<li>
+			<a href="/docs/caddyfile">Caddyfile</a>
+			<ul>
+				<li><a href="/docs/caddyfile/concepts">Concepts</a></li>
+				<li><a href="/docs/caddyfile/options">Global options</a></li>
+				<li><a href="/docs/caddyfile/directives">Directives</a></li>
+				<li><a href="/docs/caddyfile/matchers">Request matchers</a></li>
+				<li><a href="/docs/caddyfile/response-matchers">Response matchers</a></li>
+				<li><a href="/docs/caddyfile/patterns">Common patterns</a></li>
+			</ul>
+		</li>
+		<li><a href="/docs/modules/">Modules</a></li>
+		<li><a href="/docs/json/">JSON Config Structure</a></li>
+		<li><a href="/docs/automatic-https">Automatic HTTPS</a></li>
+
+		<li class="heading">Articles</li>
+		<li><a href="/docs/architecture">Caddy Architecture</a></li>
+		<li><a href="/docs/conventions">Conventions</a></li>
+		<li><a href="/docs/config-adapters">Config Adapters</a></li>
+		<li><a href="/docs/running">Keep Caddy Running</a></li>
+		<li><a href="/docs/logging">How Logging Works</a></li>
+		<li><a href="/docs/metrics">Monitoring Caddy</a></li>
+		<li><a href="/docs/profiling">Profiling Caddy</a></li>
+		<li><a href="/docs/signature-verification">Verifying Asset Signatures</a></li>
+		<li><a href="/docs/v2-upgrade">Upgrading to Caddy 2</a></li>
+
+		<li class="heading">Developers</li>
+		<li>
+			<a href="/docs/extending-caddy">Extending Caddy</a>
+			<ul>
+				<li><a href="/docs/extending-caddy/caddyfile">Caddyfile Support</a></li>
+				<li><a href="/docs/extending-caddy/config-adapters">Config Adapters</a></li>
+				<li><a href="/docs/extending-caddy/placeholders">Placeholders</a></li>
+			</ul>
+		</li>
+		<li><a href="/docs/extending-caddy/namespaces">Module Namespaces</a></li>
+		<br>
+		<li><a href="/caddy-v1-docs-archive.tar.gz">v1 Docs <img src="/old/resources/images/external-link.svg"></a></li>
+	</ul>
+</nav>
+
+			<div class="article-container">
+				<div class="paper" id="paper1"></div>
+				<div class="paper" id="paper2"></div>
+				<div class="paper paper3">
+					<article><h1 id="install">Install</h1>
+<p>This page describes various methods for installing Caddy on your system.</p>
+<p><strong>Official:</strong></p>
+<ul>
+<li><a href="#static-binaries">Static binaries</a></li>
+<li><a href="#debian-ubuntu-raspbian">Debian, Ubuntu, Raspbian packages</a></li>
+<li><a href="#fedora-redhat-centos">Fedora, RedHat, CentOS packages</a></li>
+<li><a href="#arch-linux-manjaro-parabola">Arch Linux, Manjaro, Parabola packages</a></li>
+<li><a href="#docker">Docker image</a></li>
+</ul>
+<aside class="tip">
+<p>Our <a href="https://github.com/caddyserver/dist">official packages</a> come only with the standard modules. If you need third-party plugins, <a href="/docs/build#xcaddy">build from source with <code>xcaddy</code></a> or use <a href="/download">our download page</a>.</p>
+</aside>
+<p><strong>Community-maintained:</strong></p>
+<ul>
+<li><a href="#gentoo">Gentoo</a></li>
+<li><a href="#homebrew-mac">Homebrew (Mac)</a></li>
+<li><a href="#chocolatey-windows">Chocolatey (Windows)</a></li>
+<li><a href="#scoop-windows">Scoop (Windows)</a></li>
+<li><a href="#webi">Webi</a></li>
+<li><a href="#ansible">Ansible</a></li>
+<li><a href="#termux">Termux</a></li>
+<li><a href="#nixnixpkgsnixos">Nix/Nixpkgs/NixOS</a></li>
+<li><a href="#unikraft">Unikraft</a></li>
+<li><a href="#opnsense">OPNsense</a></li>
+</ul>
+<h2 id="static-binaries">Static binaries</h2>
+<p><strong>If installing onto a production system, we recommend using our official package for your distro if available below.</strong></p>
+<ol>
+<li>Obtain a Caddy binary:
+<ul>
+<li><a href="https://github.com/caddyserver/caddy/releases">from releases on GitHub</a> (expand &quot;Assets&quot;)
+<ul>
+<li>Refer to <a href="/docs/signature-verification">Verifying Asset Signatures</a> for how to verify the asset signature</li>
+</ul>
+</li>
+<li><a href="/download">from our download page</a></li>
+<li><a href="/docs/build">by building from source</a> (either with <code>go</code> or <code>xcaddy</code>)</li>
+</ul>
+</li>
+<li><a href="/docs/running#manual-installation">Install Caddy as a system service.</a> This is strongly recommended, especially for production servers.</li>
+</ol>
+<p>Place the binary in one of your <code>$PATH</code> (or <code>%PATH%</code> on Windows) directories so you can run <code>caddy</code> without typing the full path of the executable file. (Run <code>echo $PATH</code> to see the list of directories that qualify.)</p>
+<p>You can upgrade static binaries by replacing them with newer versions and restarting Caddy. The <a href="/docs/command-line#caddy-upgrade"><code>caddy upgrade</code> command</a> can make this easy.</p>
+<h2 id="debian-ubuntu-raspbian">Debian, Ubuntu, Raspbian</h2>
+<p>Installing this package automatically starts and runs Caddy as a <a href="/docs/running#linux-service">systemd service</a> named <code>caddy</code>. It also comes with an optional <code>caddy-api</code> service which is <em>not</em> enabled by default, but should be used if you primarily configure Caddy via its API instead of config files.</p>
+<p>After installing, please read the <a href="/docs/running#using-the-service">service usage instructions</a>.</p>
+<p><strong>Stable releases:</strong></p>
+<pre><code class="cmd"><span class="bash">sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https curl</span>
+<span class="bash">curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg</span>
+<span class="bash">curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list</span>
+<span class="bash">chmod o+r /usr/share/keyrings/caddy-stable-archive-keyring.gpg</span>
+<span class="bash">chmod o+r /etc/apt/sources.list.d/caddy-stable.list</span>
+<span class="bash">sudo apt update</span>
+<span class="bash">sudo apt install caddy</span></code></pre>
+<p><strong>Testing releases</strong> (includes betas and release candidates):</p>
+<pre><code class="cmd"><span class="bash">sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https curl</span>
+<span class="bash">curl -1sLf 'https://dl.cloudsmith.io/public/caddy/testing/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-testing-archive-keyring.gpg</span>
+<span class="bash">curl -1sLf 'https://dl.cloudsmith.io/public/caddy/testing/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-testing.list</span>
+<span class="bash">chmod o+r /usr/share/keyrings/caddy-testing-archive-keyring.gpg</span>
+<span class="bash">chmod o+r /etc/apt/sources.list.d/caddy-testing.list</span>
+<span class="bash">sudo apt update</span>
+<span class="bash">sudo apt install caddy</span></code></pre>
+<p><a href="https://cloudsmith.io/~caddy/repos/"><strong>View the Cloudsmith repos</strong></a></p>
+<p>If you wish to use the packaged support files (systemd services, bash completion and default configuration) with a custom Caddy build, instructions can be <a href="/docs/build#package-support-files-for-custom-builds-for-debianubunturaspbian">found here</a>.</p>
+<h2 id="fedora-redhat-centos">Fedora, RedHat, CentOS</h2>
+<p>This package comes with both of Caddy's <a href="/docs/running#linux-service">systemd service</a> unit files, but does not enable them by default. Using the service is recommended. If you do, please read the <a href="/docs/running#using-the-service">service usage instructions</a>.</p>
+<p>Fedora:</p>
+<pre><code class="cmd"><span class="bash">dnf install dnf5-plugins</span>
+<span class="bash">dnf copr enable @caddy/caddy</span>
+<span class="bash">dnf install caddy</span></code></pre>
+<p>CentOS/RHEL:</p>
+<pre><code class="cmd"><span class="bash">dnf install dnf-plugins-core</span>
+<span class="bash">dnf copr enable @caddy/caddy</span>
+<span class="bash">dnf install caddy</span></code></pre>
+<p><a href="https://copr.fedorainfracloud.org/coprs/g/caddy/caddy/"><strong>View the Caddy COPR</strong></a></p>
+<h2 id="arch-linux-manjaro-parabola">Arch Linux, Manjaro, Parabola</h2>
+<p>This package comes with heavily modified versions of both of Caddy's <a href="/docs/running#linux-service">systemd service</a> unit files, but does not enable them by default.
+Those modifications include a custom start/stop behavior and additional sandboxing flags which are explained in <a href="https://www.freedesktop.org/software/systemd/man/systemd.exec.html#Sandboxing">systemd's exec documentation</a>, which may lead to certain host directories not being available to the Caddy process.</p>
+<pre><code class="cmd"><span class="bash">pacman -Syu caddy</span></code></pre>
+<p><a href="https://archlinux.org/packages/extra/x86_64/caddy/"><strong>View Caddy in the Arch Linux repositories</strong></a> and <a href="https://wiki.archlinux.org/title/Caddy"><strong>the Arch Linux Wiki</strong></a></p>
+<h2 id="docker">Docker</h2>
+<pre><code class="cmd bash">docker pull caddy</code></pre>
+<p><a href="https://hub.docker.com/_/caddy"><strong>View on Docker Hub</strong></a></p>
+<p>See our <a href="/docs/running#docker-compose">recommended Docker Compose configuration</a> and usage instructions.</p>
+<h2 id="gentoo">Gentoo</h2>
+<p><em>Note: This is a community-maintained installation method.</em></p>
+<pre><code class="cmd">emerge www-servers/caddy</code></pre>
+<p><a href="https://packages.gentoo.org/packages/www-servers/caddy"><strong>View Gentoo Package</strong></a></p>
+<h2 id="homebrew-mac">Homebrew (Mac)</h2>
+<p><em>Note: This is a community-maintained installation method.</em></p>
+<pre><code class="cmd bash">brew install caddy</code></pre>
+<p><a href="https://formulae.brew.sh/formula/caddy"><strong>View the Homebrew formula</strong></a></p>
+<h2 id="chocolatey-windows">Chocolatey (Windows)</h2>
+<p><em>Note: This is a community-maintained installation method.</em></p>
+<pre><code class="cmd">choco install caddy</code></pre>
+<p><a href="https://chocolatey.org/packages/caddy"><strong>View the Chocolatey package</strong></a></p>
+<h2 id="scoop-windows">Scoop (Windows)</h2>
+<p><em>Note: This is a community-maintained installation method.</em></p>
+<pre><code class="cmd">scoop install caddy</code></pre>
+<p><a href="https://github.com/ScoopInstaller/Main/blob/master/bucket/caddy.json"><strong>View the Scoop manifest</strong></a></p>
+<h2 id="webi">Webi</h2>
+<p><em>Note: This is a community-maintained installation method.</em></p>
+<p>Linux and macOS:</p>
+<pre><code class="cmd bash">curl -sS https://webi.sh/caddy | sh</code></pre>
+<p>Windows:</p>
+<pre><code class="cmd">curl.exe https://webi.ms/caddy | powershell</code></pre>
+<p>You may need to adjust the Windows firewall rules to allow non-localhost incoming connections.</p>
+<p><a href="https://webinstall.dev/caddy"><strong>View on Webi</strong></a></p>
+<h2 id="ansible">Ansible</h2>
+<p><em>Note: This is a community-maintained installation method.</em></p>
+<pre><code class="cmd bash">ansible-galaxy install nvjacobo.caddy</code></pre>
+<p><a href="https://github.com/nvjacobo/caddy"><strong>View the Ansible role repository</strong></a></p>
+<h2 id="termux">Termux</h2>
+<p><em>Note: This is a community-maintained installation method.</em></p>
+<pre><code class="cmd">pkg install caddy</code></pre>
+<p><a href="https://github.com/termux/termux-packages/blob/master/packages/caddy/build.sh"><strong>View the Termux build.sh file</strong></a></p>
+<h2 id="nixnixpkgsnixos">Nix/Nixpkgs/NixOS</h2>
+<p><em>Note: This is a community-maintained installation method.</em></p>
+<ul>
+<li>Package name: <a href="https://search.nixos.org/packages?channel=unstable&amp;show=caddy&amp;query=caddy"><code>caddy</code></a></li>
+<li>NixOS module: <a href="https://search.nixos.org/options?channel=unstable&amp;show=services.caddy.enable&amp;query=services.caddy"><code>services.caddy</code></a></li>
+</ul>
+<p><a href="https://search.nixos.org/packages?channel=unstable&amp;show=caddy&amp;query=caddy"><strong>View Caddy in the Nixpkgs search</strong></a> and <a href="https://search.nixos.org/options?channel=unstable&amp;show=services.caddy.enable&amp;query=services.caddy"><strong>the NixOS options search</strong></a></p>
+<h2 id="unikraft">Unikraft</h2>
+<p><em>Note: This is a community-maintained installation method.</em></p>
+<p>First install Unikraft's companion tool, <a href="https://unikraft.org/docs/cli"><code>kraft</code></a>:</p>
+<pre><code class="cmd">curl --proto '=https' --tlsv1.2 -sSf https://get.kraftkit.sh | sh</code></pre>
+<p>Then run Caddy with Unikraft using:</p>
+<pre><code class="cmd">kraft run --rm -p 2015:2015 --plat qemu --arch x86_64 -M 256M caddy:2.7</code></pre>
+<p>To allow non-localhost incoming connections, you need to <a href="https://unikraft.org/docs/cli/running#connecting-a-unikernel-instance-to-a-network">connect the unikernel instance to a network</a>.</p>
+<p><a href="https://github.com/unikraft/catalog/tree/main/examples/caddy"><strong>View the Unikraft application catalog</strong></a> and <a href="https://github.com/kraftcloud/examples/tree/main/caddy"><strong>the KraftCloud platform examples (powered by Unikraft)</strong></a>.</p>
+<h2 id="opnsense">OPNsense</h2>
+<p><em>Note: This is a community-maintained installation method.</em></p>
+<pre><code class="cmd">pkg install os-caddy</code></pre>
+<p><a href="https://github.com/opnsense/ports/blob/master/www/caddy-custom/Makefile"><strong>View the FreeBSD caddy-custom makefile</strong></a> and <a href="https://github.com/opnsense/plugins/tree/master/www/caddy"><strong>the os-caddy plugin source</strong></a></p>
+</article>
+				</div>
+			</div>
+			<div class="sidebar"></div>
+		</main>
+		<div class="wrapper">
+	<footer>
+		<div>
+			<img src="/old/resources/images/caddy-logo.svg" alt="Caddy" id="footer-logo">
+			An <a href="https://github.com/caddyserver/caddy">open source</a> Go community project
+			<br>
+			in partnership with <a href="https://www.ardanlabs.com/">Ardan Labs</a>
+			<br>
+			<small><a href="https://usefathom.com/ref/AUKNWU">Privacy-respecting analytics by Fathom</a></small>
+		</div>
+		<div class="copyright">
+			&copy; 2026 ZeroSSL. All rights reserved.
+			<br>
+			Caddy&reg; is a registered trademark of ZeroSSL GmbH.
+		</div>
+	</footer>
+</div>
+
+<!-- Fathom - beautiful, simple website analytics -->
+<script src="https://cdn.usefathom.com/script.js" site="GVMGKAKP" honor-dnt="true" defer></script>
+<!-- / Fathom -->
+
+<!-- Algolia DocSearch -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
+
+	</body>
+</html>

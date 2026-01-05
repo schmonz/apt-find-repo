@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <title>PostgreSQL: Linux downloads (Ubuntu)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="Content-Type" content="text/xhtml; charset=utf-8" />
+   
+  <meta name="theme-color" content="#336791"/>
+  <meta name="copyright" content="The PostgreSQL Global Development Group" />
+  <link href="/media/css/fontawesome.css?59ea4c82" rel="stylesheet">
+  <link rel="stylesheet" href="/media/css/bootstrap-4.4.1.min.css">
+  <link rel="shortcut icon" href="/favicon.ico" />
+  
+  <link rel="stylesheet" type="text/css" href="/dyncss/base.css?59ea4c82">
+
+  <script src="/media/js/theme.js?59ea4c82"></script>
+
+  
+<script type="text/javascript" src="/media/js/download.js?59ea4c82"></script>
+
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row justify-content-md-center">
+        <div class="col">
+          <!-- Header -->
+          <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand p-0" href="/">
+              <img class="logo" src="/media/img/about/press/elephant.png" alt="PostgreSQL Elephant Logo">
+            </a>
+            <input type="checkbox" id="navbar-toggler" aria-controls="pgNavbar" aria-expanded="false" aria-label="Toggle navigation">
+            <label for="navbar-toggler" id="navbar-toggler-label" class="navbar-toggler" tabindex="0"><span class="navbar-toggler-icon"></span></label>
+            <div class="navbar-collapse" id="pgNavbar">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item p-2"><a href="/" title="Home">Home</a></li>
+                <li class="nav-item p-2"><a href="/about/" title="About">About</a></li>
+                <li class="nav-item p-2"><a href="/download/" title="Download">Download</a></li>
+                <li class="nav-item p-2"><a href="/docs/" title="Documentation">Documentation</a></li>
+                <li class="nav-item p-2"><a href="/community/" title="Community">Community</a></li>
+                <li class="nav-item p-2"><a href="/developer/" title="Developers">Developers</a></li>
+                <li class="nav-item p-2"><a href="/support/" title="Support">Support</a></li>
+                <li class="nav-item p-2"><a href="/about/donate/" title="Donate">Donate</a></li>
+                <li class="nav-item p-2"><a href="/account/" title="Your account">Your account</a></li>
+              </ul>
+              <form role="search" method="get" action="/search/">
+                <div class="input-group">
+                  <input id="q" name="q" type="text" size="20" maxlength="255" accesskey="s"  class="form-control" placeholder="Search for...">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit"><i class="fas fa-search"></i></button>
+                  </span>
+                </div><!-- /input-group -->
+              </form>
+              <form id="form-theme" class="form-inline d-none">
+                <button id="btn-theme" class="btn btn-default ml-1" type="button"></button>
+              </form>
+            </div>
+          </nav>
+        </div>
+      </div>
+      <div class="row justify-content-center pg-shout-box">
+        <div class="col text-white text-center">November 13, 2025: <a href="/about/news/postgresql-181-177-1611-1515-1420-and-1323-released-3171/">
+  PostgreSQL 18.1, 17.7, 16.11, 15.15, 14.20, and 13.23 Released!
+</a>
+</div>
+      </div>
+    </div>
+    
+<div class="container-fluid margin">
+  <div class="row">
+    <div class="col-lg-2">
+      <div id="pgSideWrap">
+       
+       <div id="pgSideNav">
+         <h2>Quick Links</h2>
+
+         <ul>
+           
+           
+           <li><a href="/download/">Downloads</a>
+            
+             <ul>
+             
+              <li><a href="/download/">Packages</a></li>
+             
+              <li class="last-child"><a href="/ftp/source/">Source</a></li>
+             
+             </ul>
+            
+            
+           
+           </li>
+           <li><a href="/download/product-categories/">Software Catalogue</a>
+            
+            
+           
+           </li>
+           <li class="last-child"><a href="/ftp/">File Browser</a>
+            
+            
+           </li>
+            
+           
+        </ul>
+
+       </div>
+       
+      </div> <!-- pgSideWrap -->
+    </div>
+    <div class="col-lg-10">
+      <div id="pgContentWrap">
+        
+
+<h1>Linux downloads (Ubuntu) <img class="logo" src="/media/img/ubuntu.svg" alt="Ubuntu Logo" /></h1>
+<p>
+PostgreSQL is available in all Ubuntu versions by default. However, Ubuntu
+"snapshots" a specific version of PostgreSQL that is then supported throughout
+the lifetime of that Ubuntu version.
+The PostgreSQL project maintains an <a href="#apt">Apt repository</a> with all supported
+of PostgreSQL available.
+</p>
+
+<h2>Included in Distribution</h2>
+<p>
+Ubuntu includes PostgreSQL by default. To install PostgreSQL on Ubuntu,
+use the <code>apt</code> (or other apt-driving) command:
+</p>
+<pre class="code">
+apt install postgresql
+</pre>
+
+<a name="apt"></a>
+<h2>PostgreSQL Apt Repository</h2>
+<p>
+If the version included in your version of Ubuntu is not the one you want,
+you can use the <a href="https://apt.postgresql.org" target="_blank" rel="noopener">PostgreSQL Apt Repository</a>. This repository will integrate
+with your normal systems and patch management, and provide automatic
+updates for all supported versions of PostgreSQL throughout the support
+<a href="/support/versioning/">lifetime</a> of PostgreSQL.
+</p>
+<p>
+The PostgreSQL Apt repository supports the current versions of Ubuntu:
+</p>
+<ul>
+  <li>questing (25.10, non-LTS)</li>
+  <li>plucky (25.04, non-LTS)</li>
+  <li>noble (24.04, LTS)</li>
+  <li>jammy (22.04, LTS)</li>
+</ul>
+<p>
+on the following architectures:
+</p>
+<ul>
+  <li>amd64</li>
+  <li>arm64 (LTS releases only)</li>
+  <li>ppc64el (LTS releases only)</li>
+</ul>
+
+<p>
+Automated repository configuration:
+</p>
+
+<div class="pg-script-container">
+    <pre id="script-box" class="code">sudo apt install -y postgresql-common
+sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh</pre>
+    <button id="copy-btn-root" class="pg-script-copy-btn pg-script-copy-btn-root" title="Copy to clipboard (without sudo, for root)"><i class="fas fa-terminal"></i></button>
+    <button id="copy-btn" class="pg-script-copy-btn" title="Copy to clipboard"><i class="far fa-copy"></i></button>
+</div>
+
+<p>
+To manually configure the Apt repository, follow these steps:
+</p>
+
+<div class="pg-script-container">
+    <pre id="script-box2" class="code"># Import the repository signing key:
+sudo apt install curl ca-certificates
+sudo install -d /usr/share/postgresql-common/pgdg
+sudo curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc
+
+# Create the repository configuration file:
+. /etc/os-release
+sudo sh -c "echo 'deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $VERSION_CODENAME-pgdg main' > /etc/apt/sources.list.d/pgdg.list"
+
+# Update the package lists:
+sudo apt update</pre>
+    <button id="copy-btn2-root" class="pg-script-copy-btn pg-script-copy-btn-root" title="Copy to clipboard (without sudo, for root)"><i class="fas fa-terminal"></i></button>
+    <button id="copy-btn2" class="pg-script-copy-btn" title="Copy to clipboard"><i class="far fa-copy"></i></button>
+</div>
+
+Install PostgreSQL: (replace "18" by the version you want)
+
+<div class="pg-script-container">
+    <pre id="script-box3" class="code">sudo apt install postgresql-18</pre>
+    <button id="copy-btn3-root" class="pg-script-copy-btn pg-script-copy-btn-root" title="Copy to clipboard (without sudo, for root)"><i class="fas fa-terminal"></i></button>
+    <button id="copy-btn3" class="pg-script-copy-btn" title="Copy to clipboard"><i class="far fa-copy"></i></button>
+</div>
+
+<p>
+For more information about the apt repository, including answers to frequent
+questions, please see the
+<a href="https://wiki.postgresql.org/wiki/Apt" target="_blank" rel="noopener">PostgreSQL Apt Repository wiki page</a>.
+</p>
+
+<h2>Packages</h2>
+<p>
+The repository contains many different packages including third party
+addons. The most common and important packages are (substitute the
+version number as required):
+</p>
+<table class="table table-striped">
+  <tbody>
+    <tr>
+     <th scope="row">postgresql-client-18</th>
+     <td>client libraries and client binaries</td>
+    </tr>
+    <tr>
+     <th scope="row">postgresql-18</th>
+     <td>core database server</td>
+    </tr>
+    <tr>
+     <th scope="row">postgresql-doc-18</th>
+     <td>documentation</td>
+    </tr>
+    <tr>
+     <th scope="row">libpq-dev</th>
+     <td>libraries and headers for C language frontend development</td>
+    </tr>
+    <tr>
+     <th scope="row">postgresql-server-dev-18</th>
+     <td>libraries and headers for C language backend development</td>
+    </tr>
+  </tbody>
+</table>
+
+      </div> <!-- pgContentWrap -->
+    </div>
+  </div>
+</div>
+
+    <!-- Footer -->
+    <footer id="footer">
+      <!-- Copyright -->
+      <div class="container">
+        <a href="/about/policies/">Policies</a> |
+        <a href="/about/policies/coc/">Code of Conduct</a> |
+        <a href="/about/">About PostgreSQL</a> |
+        <a href="/about/contact/">Contact</a><br/>
+        <p>Copyright &copy; 1996-2026 The PostgreSQL Global Development Group</p>
+      </div>
+    </footer>
+    <script src="/media/js/main.js?59ea4c82"></script>
+
+  </body>
+</html>

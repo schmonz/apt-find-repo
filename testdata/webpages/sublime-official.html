@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Linux Package Manager Repositories</title>
+    <script type="text/javascript" src="docs.js?v=a39adbf106ab7bd08270f5a660845d18"></script>
+    <link rel="stylesheet" type="text/css" href="docs.css?v=4100a55ba91b60ec302ae71a43d323ab">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=480, user-scalable=yes">
+    <link rel="stylesheet" type="text/css" href="/sublime_v3.css?v=6dd3f0d56104da1d5a9bb3855a6e0b0d">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="icon" size="64x64" href="/favicon.ico">
+    <link rel="icon" sizes="192x192" href="/images/icon.png">
+    <link rel="apple-touch-icon-precomposed" sizes="192x192" href="/images/icon.png">
+    <script type="text/javascript">
+    var plat = 'windows'
+    if (/Mac OS X/.test(navigator.userAgent))
+        plat = 'osx'
+    else if (/Linux|FreeBSD/.test(navigator.userAgent))
+        plat = 'linux'
+    var arch = /WOW64|Win64|x86_64/.test(navigator.userAgent) ? '64' : '32'
+    document.documentElement.className += ' plat_' + plat + ' arch_' + arch
+    function byid(x)
+    {
+        return document.getElementById(x)
+    }
+    var scale = 1
+    function res()
+    {
+        scale = window.devicePixelRatio >= 1.3 ? 2 : 1
+        return scale == 2 ? '@2x' : ''
+    }
+    </script>
+    <!--[if lt IE 9]>
+    <script>
+        var els = ['header', 'nav', 'section', 'main', 'article', 'aside', 'footer']
+        for (var i = 0; i < els.length; ++i)
+            document.createElement(els[i]);
+    </script>
+    <style>
+        header, nav, section, main, article, aside, footer {
+            display: block;
+        }
+    </style>
+    <![endif]-->
+</head>
+<body class="docs">
+    <header>
+        <section>
+            <a id="logo" href="/">
+                <img src="/images/logo.svg" alt="Sublime Text">
+            </a>
+            <nav>
+                <a href="/download">Download</a>
+                <a href="https://www.sublimehq.com/store/text">Buy</a>
+                <a href="/support">Support</a>
+                <span class="vr"></span>
+                <a href="/blog/">News</a>
+                <a href="https://forum.sublimetext.com">Forum</a>
+            </nav>
+        </section>
+    </header>
+<main>
+<section>
+<h1>
+<div class="background"></div>
+<div class="placeholder"></div>
+<span>
+    <nav>
+        <a href="/docs/index.html">Documentation</a>
+        <a class="divider"></a>
+        <a class="jump toc" href="#toc">TOC</a>
+        <a class="jump top" href="#">TOP</a>
+    </nav>
+    Linux Package Manager Repositories
+</span>
+<div class="versions">
+    Ver<span class="expanded">sion</span>:<br>
+</div>
+</h1>
+<div class="primary">
+
+  <section id="linux-package-manager-repositories"><p>Sublime Text includes an auto-upgrade mechanism on Windows and Mac to make
+upgrades a snap. Instead of going against the grain of the Linux ecosystem,
+packages and package repositories are provided for most of the major
+distributions.</p>
+<div class="admonition note">
+<p>Builds listed in the dev channel are only available to licensed users. Users
+who are evaluating Sublime Text before purchase will need to use the stable
+channel.</p>
+</div>
+<ul class="simple">
+<li><p><a class="reference internal" href="#apt">apt</a> — <i>Ubuntu, Debian</i></p></li>
+<li><p><a class="reference internal" href="#pacman">pacman</a> — <i>Arch</i></p></li>
+<li><p><a class="reference internal" href="#yum">yum</a> — <i>CentOS</i></p></li>
+<li><p><a class="reference internal" href="#dnf">dnf</a> — <i>Fedora</i></p></li>
+<li><p><a class="reference internal" href="#zypper">zypper</a> — <i>openSUSE</i></p></li>
+</ul>
+<section id="apt"><h2>apt<a class="headerlink" href="#apt" title="Permalink to this heading">🔗</a></h2>
+<p>The apt repository contains packages for both x86-64 and arm64.</p>
+<p>Install the GPG key:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>wget<span class="w"> </span>-qO<span class="w"> </span>-<span class="w"> </span>https://download.sublimetext.com/sublimehq-pub.gpg<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/apt/keyrings/sublimehq-pub.asc<span class="w"> </span>&gt;<span class="w"> </span>/dev/null
+</pre></div>
+</div>
+<p>Select the channel to use:</p>
+<ul>
+<li><p><b>Stable</b></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s1">&#39;Types: deb\nURIs: https://download.sublimetext.com/\nSuites: apt/stable/\nSigned-By: /etc/apt/keyrings/sublimehq-pub.asc&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/apt/sources.list.d/sublime-text.sources
+</pre></div>
+</div>
+</li>
+<li><p><b>Dev</b></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s1">&#39;Types: deb\nURIs: https://download.sublimetext.com/\nSuites: apt/dev/\nSigned-By: /etc/apt/keyrings/sublimehq-pub.asc&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/apt/sources.list.d/sublime-text.sources
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Update apt sources and install Sublime Text:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt-get<span class="w"> </span>update
+sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>sublime-text
+</pre></div>
+</div>
+</section><section id="pacman"><h2>pacman<a class="headerlink" href="#pacman" title="Permalink to this heading">🔗</a></h2>
+<p>Install the GPG key:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-O<span class="w"> </span>https://download.sublimetext.com/sublimehq-pub.gpg<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>pacman-key<span class="w"> </span>--add<span class="w"> </span>sublimehq-pub.gpg<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>pacman-key<span class="w"> </span>--lsign-key<span class="w"> </span>8A8F901A<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>rm<span class="w"> </span>sublimehq-pub.gpg
+</pre></div>
+</div>
+<p>Select the channel to use:</p>
+<ul>
+<li><p><b>Stable x86_64</b></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;\n[sublime-text]\nServer = https://download.sublimetext.com/arch/stable/x86_64&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>-a<span class="w"> </span>/etc/pacman.conf
+</pre></div>
+</div>
+</li>
+<li><p><b>Dev x86_64</b></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;\n[sublime-text]\nServer = https://download.sublimetext.com/arch/dev/x86_64&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>-a<span class="w"> </span>/etc/pacman.conf
+</pre></div>
+</div>
+</li>
+<li><p><b>Stable aarch64</b></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;\n[sublime-text]\nServer = https://download.sublimetext.com/arch/stable/aarch64&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>-a<span class="w"> </span>/etc/pacman.conf
+</pre></div>
+</div>
+</li>
+<li><p><b>Dev aarch64</b></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;\n[sublime-text]\nServer = https://download.sublimetext.com/arch/dev/aarch64&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>-a<span class="w"> </span>/etc/pacman.conf
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Update pacman and install Sublime Text:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>pacman<span class="w"> </span>-Syu<span class="w"> </span>sublime-text
+</pre></div>
+</div>
+</section><section id="yum"><h2>yum<a class="headerlink" href="#yum" title="Permalink to this heading">🔗</a></h2>
+<p>Install the GPG key:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>rpm<span class="w"> </span>-v<span class="w"> </span>--import<span class="w"> </span>https://download.sublimetext.com/sublimehq-rpm-pub.gpg
+</pre></div>
+</div>
+<p>Select the channel to use:</p>
+<ul>
+<li><p><b>Stable</b></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>yum-config-manager<span class="w"> </span>--add-repo<span class="w"> </span>https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo
+</pre></div>
+</div>
+</li>
+<li><p><b>Dev</b></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>yum-config-manager<span class="w"> </span>--add-repo<span class="w"> </span>https://download.sublimetext.com/rpm/dev/x86_64/sublime-text.repo
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Update yum and install Sublime Text:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>yum<span class="w"> </span>install<span class="w"> </span>sublime-text
+</pre></div>
+</div>
+<p><i>Note there are no RPM packages for ARM currently.</i></p>
+</section><section id="dnf"><h2>dnf<a class="headerlink" href="#dnf" title="Permalink to this heading">🔗</a></h2>
+<p>Install the GPG key:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>rpm<span class="w"> </span>-v<span class="w"> </span>--import<span class="w"> </span>https://download.sublimetext.com/sublimehq-rpm-pub.gpg
+</pre></div>
+</div>
+<p>Select the channel to use:</p>
+<ul>
+<li><p><b>Stable</b></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>dnf<span class="w"> </span>config-manager<span class="w"> </span>--add-repo<span class="w"> </span>https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo
+</pre></div>
+</div>
+</li>
+<li><p><b>Stable</b> for Fedora 41/dnf5 or newer</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>dnf<span class="w"> </span>config-manager<span class="w"> </span>addrepo<span class="w"> </span>--from-repofile<span class="o">=</span>https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo
+</pre></div>
+</div>
+</li>
+<li><p><b>Dev</b></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>dnf<span class="w"> </span>config-manager<span class="w"> </span>--add-repo<span class="w"> </span>https://download.sublimetext.com/rpm/dev/x86_64/sublime-text.repo
+</pre></div>
+</div>
+</li>
+<li><p><b>Dev</b> for Fedora 41/dnf5 or newer</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>dnf<span class="w"> </span>config-manager<span class="w"> </span>addrepo<span class="w"> </span>--from-repofile<span class="o">=</span>https://download.sublimetext.com/rpm/dev/x86_64/sublime-text.repo
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Update dnf and install Sublime Text:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>sublime-text
+</pre></div>
+</div>
+<p><i>Note there are no RPM packages for ARM currently.</i></p>
+</section><section id="zypper"><h2>zypper<a class="headerlink" href="#zypper" title="Permalink to this heading">🔗</a></h2>
+<p>Install the GPG key:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>rpm<span class="w"> </span>-v<span class="w"> </span>--import<span class="w"> </span>https://download.sublimetext.com/sublimehq-rpm-pub.gpg
+</pre></div>
+</div>
+<p>Select the channel to use:</p>
+<ul>
+<li><p><b>Stable</b></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>zypper<span class="w"> </span>addrepo<span class="w"> </span>-g<span class="w"> </span>-f<span class="w"> </span>https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo
+</pre></div>
+</div>
+</li>
+<li><p><b>Dev</b></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>zypper<span class="w"> </span>addrepo<span class="w"> </span>-g<span class="w"> </span>-f<span class="w"> </span>https://download.sublimetext.com/rpm/dev/x86_64/sublime-text.repo
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Update zypper and install Sublime Text:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>zypper<span class="w"> </span>install<span class="w"> </span>sublime-text
+</pre></div>
+</div>
+<p><i>Note there are no RPM packages for ARM currently.</i></p>
+</section></section>
+
+</div>
+<aside>
+<div id="callout">
+    <a href="https://www.sublimemerge.com">
+        <span class="subhead">Introducing our Git client</span><br>
+        <b><img src="/images/merge_icon.svg" class="icon"> Sublime Merge</b>
+        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" id="merge-screenshot">
+    </a>
+    <script>
+        function show_callout()
+        {
+            var callout = byid('merge-screenshot')
+            callout.src = '/images/merge_callout_' + plat + res() + '.png'
+            callout.onload = function()
+            {
+                callout.style.backgroundColor = 'transparent'
+            }
+        }
+        show_callout()
+    </script>
+</div>
+</aside>
+</section>
+</main>
+<footer>
+    <section>
+            <div class="footer_start">
+                <p>© <a href="https://www.sublimehq.com">Sublime HQ Pty Ltd</a></p>
+                <p>Woollahra, Sydney.</p>
+            </div>
+            <div class="footer_end">
+                <p>
+                    <div class="twitter_follow">
+                        <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/sublimehq?ref_src=twsrc%5Etfw">Follow @sublimehq</a>
+                    </div>
+                </p>
+            </div>
+    </section>
+</footer>
+<!--[if lt IE 9]>
+<script>
+    var logo_img = byid('logo').getElementsByTagName('IMG')[0]
+    logo_img.src = logo_img.src.replace('.svg', '.png')
+</script>
+<![endif]-->
+</body>
+</html>
