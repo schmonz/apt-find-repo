@@ -372,15 +372,45 @@ func searchForRepo(packageName string) []string {
 	var urls []string
 	seen := make(map[string]bool)
 
+	// Blacklist of low-quality tutorial sites and non-useful domains
+	blacklist := []string{
+		// Social media and general knowledge sites
+		"wikipedia.org",
+		"youtube.com",
+		"facebook.com",
+		"twitter.com",
+		"reddit.com",
+		// Generic tutorial sites (high SEO, low signal)
+		"tecadmin.net",
+		"tecmint.com",
+		"linuxize.com",
+		"linuxvox.com",
+		"computingforgeeks.com",
+		"linuxhint.com",
+		"itsfoss.com",
+		"howtogeek.com",
+		"digitalocean.com/community/tutorials",
+		// Generic documentation (not package-specific)
+		"documentation.ubuntu.com",
+		"ubuntu.com/tutorials",
+		"debian.org/doc",
+		// Corporate blogs (generic tutorials)
+		"jumpcloud.com/blog",
+		"operavps.com",
+		// Other
+		".pdf",
+	}
+
 	for _, result := range results {
 		url := result.URL
-		// Filter for useful URLs
-		if !seen[url] &&
-		   !strings.Contains(url, "wikipedia.org") &&
-		   !strings.Contains(url, "youtube.com") &&
-		   !strings.Contains(url, "facebook.com") &&
-		   !strings.Contains(url, "twitter.com") &&
-		   !strings.Contains(url, ".pdf") {
+		blacklisted := false
+		for _, domain := range blacklist {
+			if strings.Contains(url, domain) {
+				blacklisted = true
+				break
+			}
+		}
+		if !blacklisted && !seen[url] {
 			urls = append(urls, url)
 			seen[url] = true
 		}
@@ -390,15 +420,22 @@ func searchForRepo(packageName string) []string {
 }
 
 // findInstallScripts extracts URLs to shell scripts from HTML
+// Limit to 2 scripts max to avoid fetching too many false positives
 func findInstallScripts(html string) []string {
 	var scripts []string
 
 	// Look for curl/wget commands with shell script URLs
+	// Be strict: only match .sh files or /install.sh specifically
 	patterns := []string{
+		// curl/wget with .sh files
 		`(?:curl|wget)[^\n]*?(https?://[^\s'"]+\.sh)`,
-		`(?:curl|wget)[^\n]*?(https?://[^\s'"]+/install[^\s'"]*)`,
+		// Direct links to .sh files
 		`href=["'](https?://[^\s'"]+\.sh)["']`,
-		`href=["'](https?://[^\s'"]+/install[^\s'"]*)["']`,
+		// Specific /install.sh or /install (no other path components after)
+		`(?:curl|wget)[^\n]*?(https?://[^\s'"]+/install\.sh)`,
+		`(?:curl|wget)[^\n]*?(https?://[^\s'"]+/install)(?:\s|$|["'])`,
+		`href=["'](https?://[^\s'"]+/install\.sh)["']`,
+		`href=["'](https?://[^\s'"]+/install)["']`,
 	}
 
 	seen := make(map[string]bool)
@@ -407,8 +444,20 @@ func findInstallScripts(html string) []string {
 		matches := re.FindAllStringSubmatch(html, -1)
 		for _, match := range matches {
 			if len(match) > 1 && !seen[match[1]] {
-				scripts = append(scripts, match[1])
-				seen[match[1]] = true
+				// Additional validation: URL should not contain common non-script paths
+				url := match[1]
+				if strings.Contains(url, "/installer") ||
+				   strings.Contains(url, "/installation") ||
+				   strings.Contains(url, "/installing") {
+					continue // Skip false positives like /installation-guide
+				}
+				scripts = append(scripts, url)
+				seen[url] = true
+
+				// Limit to 2 scripts max
+				if len(scripts) >= 2 {
+					return scripts
+				}
 			}
 		}
 	}
