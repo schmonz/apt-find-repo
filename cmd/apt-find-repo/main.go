@@ -346,13 +346,68 @@ func searchForRepo(packageName string) []string {
 	searchTerm = strings.ReplaceAll(searchTerm, "?", "")
 	searchTerm = strings.TrimSpace(searchTerm)
 
-	query := fmt.Sprintf("%s debian ubuntu apt repository install", searchTerm)
+	// Blacklist of low-quality tutorial sites and non-useful domains
+	// Use DuckDuckGo's -site: syntax to exclude these from search results
+	blacklistedDomains := []string{
+		// Social media and general knowledge sites
+		"wikipedia.org",
+		"youtube.com",
+		"facebook.com",
+		"twitter.com",
+		"reddit.com",
+		// Generic tutorial sites (high SEO, low signal)
+		"tecadmin.net",
+		"tecmint.com",
+		"linuxize.com",
+		"linuxvox.com",
+		"computingforgeeks.com",
+		"linuxhint.com",
+		"itsfoss.com",
+		"itsfoss.gitlab.io",
+		"howtogeek.com",
+		"digitalocean.com",
+		"deepwiki.com",
+		"learnubuntumate.weebly.com",
+		"ubuntuhandbook.org",
+		"nom.one",
+		"howtouselinux.com",
+		"linuxbash.sh",
+		"geekersdigest.com",
+		"linuxcapable.com",
+		"ubuntushell.com",
+		"thelinuxvault.net",
+		"kifarunix.com",
+		"datacamp.com",
+		"dev.to",
+		"phoenixnap.com",
+		"tech2geek.net",
+		"m.ac",
+		"thelinuxcode.com",
+		"devengoratela.com",
+		"atulhost.com",
+		"zakops.com",
+		// Generic documentation (not package-specific)
+		"documentation.ubuntu.com",
+		"ubuntu.com",
+		"debian.org",
+		"wiki.debian.org",
+		// Corporate blogs (generic tutorials)
+		"jumpcloud.com",
+		"operavps.com",
+	}
+
+	// Build query with site exclusions
+	var queryParts []string
+	queryParts = append(queryParts, searchTerm, "debian ubuntu apt repository install")
+	for _, domain := range blacklistedDomains {
+		queryParts = append(queryParts, fmt.Sprintf("-site:%s", domain))
+	}
+	query := strings.Join(queryParts, " ")
 
 	if verbose {
 		fmt.Fprintf(os.Stderr, "Searching: %s\n", query)
 	}
 
-	// Search with ddgr (request more results since we filter heavily)
 	cmd := exec.Command("ddgr", "--json", "--num", "25", "--np", query)
 	output, err := cmd.Output()
 	if err != nil {
@@ -374,71 +429,17 @@ func searchForRepo(packageName string) []string {
 		return nil
 	}
 
-	// Extract and filter URLs
+	// Extract URLs (filtering PDFs only, since sites are excluded in query)
 	var urls []string
 	seen := make(map[string]bool)
 
-	// Blacklist of low-quality tutorial sites and non-useful domains
-	blacklist := []string{
-		// Social media and general knowledge sites
-		"wikipedia.org",
-		"youtube.com",
-		"facebook.com",
-		"twitter.com",
-		"reddit.com",
-		// Generic tutorial sites (high SEO, low signal)
-		"tecadmin.net",
-		"tecmint.com",
-		"linuxize.com",
-		"linuxvox.com",
-		"computingforgeeks.com",
-		"linuxhint.com",
-		"itsfoss.com",
-		"itsfoss.gitlab.io",
-		"howtogeek.com",
-		"digitalocean.com/community/tutorials",
-		"deepwiki.com",
-		"learnubuntumate.weebly.com",
-		"ubuntuhandbook.org",
-		"www.nom.one",
-		"howtouselinux.com",
-		"linuxbash.sh",
-		"geekersdigest.com",
-		"linuxcapable.com",
-		"ubuntushell.com",
-		"thelinuxvault.net",
-		"kifarunix.com",
-		"datacamp.com",
-		"dev.to",
-		"phoenixnap.com",
-		"tech2geek.net",
-		"m.ac",
-		"thelinuxcode.com",
-		"devengoratela.com",
-		"atulhost.com",
-		"zakops.com",
-		// Generic documentation (not package-specific)
-		"documentation.ubuntu.com",
-		"ubuntu.com/tutorials",
-		"debian.org/doc",
-		"wiki.debian.org",
-		// Corporate blogs (generic tutorials)
-		"jumpcloud.com/blog",
-		"operavps.com",
-		// Other
-		".pdf",
-	}
-
 	for _, result := range results {
 		url := result.URL
-		blacklisted := false
-		for _, domain := range blacklist {
-			if strings.Contains(url, domain) {
-				blacklisted = true
-				break
-			}
+		// Skip PDF files (can't exclude via -site:)
+		if strings.HasSuffix(strings.ToLower(url), ".pdf") {
+			continue
 		}
-		if !blacklisted && !seen[url] {
+		if !seen[url] {
 			urls = append(urls, url)
 			seen[url] = true
 		}
