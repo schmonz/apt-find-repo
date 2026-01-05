@@ -1,4 +1,4 @@
-package main
+package finder
 
 import (
 	"bytes"
@@ -46,9 +46,9 @@ func detectKeyFormat(data []byte) (string, error) {
 	return "", fmt.Errorf("unrecognized key format")
 }
 
-// normalizeKey ensures key is in a format apt can use
+// NormalizeKey ensures key is in a format apt can use
 // Returns the key data unchanged - we just validate it's usable
-func normalizeKey(data []byte) ([]byte, error) {
+func NormalizeKey(data []byte) ([]byte, error) {
 	format, err := detectKeyFormat(data)
 	if err != nil {
 		return nil, err
@@ -82,8 +82,8 @@ func extractArmoredKey(data []byte) []byte {
 	return match
 }
 
-// fetchKey downloads a key from a URL
-func fetchKey(url string) ([]byte, error) {
+// FetchKey downloads a key from a URL
+func FetchKey(url string) ([]byte, error) {
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, fmt.Errorf("fetch failed: %w", err)

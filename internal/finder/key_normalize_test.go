@@ -1,4 +1,4 @@
-package main
+package finder
 
 import (
 	"bytes"
@@ -16,32 +16,32 @@ type KeyTestCase struct {
 var keyTestCases = []KeyTestCase{
 	{
 		name:       "armored-with-headers",
-		inputFile:  "testdata/keys/armored-full.asc",
+		inputFile:  "../../testdata/keys/armored-full.asc",
 		wantFormat: "armored",
 	},
 	{
 		name:       "armored-no-headers",
-		inputFile:  "testdata/keys/armored-stripped.asc",
+		inputFile:  "../../testdata/keys/armored-stripped.asc",
 		wantFormat: "armored",
 	},
 	{
 		name:       "binary-gpg",
-		inputFile:  "testdata/keys/binary.gpg",
+		inputFile:  "../../testdata/keys/binary.gpg",
 		wantFormat: "binary",
 	},
 	{
 		name:       "dearmored-output",
-		inputFile:  "testdata/keys/dearmored.gpg",
+		inputFile:  "../../testdata/keys/dearmored.gpg",
 		wantFormat: "binary", // dearmored and binary are the same
 	},
 	{
 		name:       "html-wrapped",
-		inputFile:  "testdata/keys/html-wrapped.txt",
+		inputFile:  "../../testdata/keys/html-wrapped.txt",
 		wantFormat: "armored",
 	},
 	{
 		name:      "not-a-key",
-		inputFile: "testdata/keys/garbage.txt",
+		inputFile: "../../testdata/keys/garbage.txt",
 		wantError: true,
 	},
 }
@@ -93,9 +93,9 @@ func TestNormalizeKey(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			result, err := normalizeKey(tc.input)
+			result, err := NormalizeKey(tc.input)
 			if err != nil {
-				t.Fatalf("normalizeKey failed: %v", err)
+				t.Fatalf("NormalizeKey failed: %v", err)
 			}
 
 			format, _ := detectKeyFormat(result)
@@ -151,12 +151,12 @@ func TestKeyFetchAndNormalize(t *testing.T) {
 
 	for _, tc := range testURLs {
 		t.Run(tc.url, func(t *testing.T) {
-			key, err := fetchKey(tc.url)
+			key, err := FetchKey(tc.url)
 			if err != nil {
 				t.Fatalf("Failed to fetch key: %v", err)
 			}
 
-			normalized, err := normalizeKey(key)
+			normalized, err := NormalizeKey(key)
 			if err != nil {
 				t.Fatalf("Failed to normalize: %v", err)
 			}

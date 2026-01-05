@@ -1,4 +1,4 @@
-package main
+package finder
 
 import (
 	"fmt"
@@ -16,8 +16,8 @@ type Match struct {
 	DebLine string
 }
 
-// matchKeysToSources pairs GPG keys with deb sources by domain matching
-func matchKeysToSources(gpgURLs, debLines []string) ([]Match, error) {
+// MatchKeysToSources pairs GPG keys with deb sources by domain matching
+func MatchKeysToSources(gpgURLs, debLines []string) ([]Match, error) {
 	if len(gpgURLs) == 0 || len(debLines) == 0 {
 		return nil, fmt.Errorf("no keys or sources found")
 	}
@@ -145,8 +145,8 @@ func matchByPath(keys, sources []string) ([]Match, error) {
 	return matches, nil
 }
 
-// generateKeyPath creates the filesystem path for a key
-func generateKeyPath(gpgURL, repoName string) (path, format string) {
+// GenerateKeyPath creates the filesystem path for a key
+func GenerateKeyPath(gpgURL, repoName string) (path, format string) {
 	// Sanitize repo name for filesystem
 	safe := regexp.MustCompile(`[^a-z0-9-]`)
 	name := safe.ReplaceAllString(strings.ToLower(repoName), "-")
@@ -166,8 +166,8 @@ func generateKeyPath(gpgURL, repoName string) (path, format string) {
 	return path, format
 }
 
-// generateSourcesEntry creates a deb822 format sources file
-func generateSourcesEntry(debLine, keyPath string) (entry, filename string) {
+// GenerateSourcesEntry creates a deb822 format sources file
+func GenerateSourcesEntry(debLine, keyPath string) (entry, filename string) {
 	// Parse the deb line
 	debURL, dist, comp, err := parseDebLine(debLine)
 	if err != nil {
@@ -218,13 +218,13 @@ func generateSourcesEntry(debLine, keyPath string) (entry, filename string) {
 	return sb.String(), filename
 }
 
-// checkPrivileges returns true if running as root
-func checkPrivileges() bool {
+// CheckPrivileges returns true if running as root
+func CheckPrivileges() bool {
 	return os.Geteuid() == 0
 }
 
-// checkDebianSystem returns true if running on Debian or derivative
-func checkDebianSystem() bool {
+// CheckDebianSystem returns true if running on Debian or derivative
+func CheckDebianSystem() bool {
 	// Check for dpkg
 	if _, err := os.Stat("/usr/bin/dpkg"); err != nil {
 		return false
@@ -236,8 +236,8 @@ func checkDebianSystem() bool {
 	return true
 }
 
-// checkAptDirectories verifies required APT directories exist
-func checkAptDirectories() error {
+// CheckAptDirectories verifies required APT directories exist
+func CheckAptDirectories() error {
 	dirs := []string{
 		"/etc/apt/keyrings",
 		"/etc/apt/sources.list.d",
@@ -259,8 +259,8 @@ func checkAptDirectories() error {
 	return nil
 }
 
-// checkConflicts checks if key or sources file already exist
-func checkConflicts(keyPath, sourcesFilename string) (keyExists, sourceExists bool) {
+// CheckConflicts checks if key or sources file already exist
+func CheckConflicts(keyPath, sourcesFilename string) (keyExists, sourceExists bool) {
 	_, err := os.Stat(keyPath)
 	keyExists = err == nil
 

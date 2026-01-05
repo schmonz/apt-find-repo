@@ -1,0 +1,20 @@
+# Build artifacts
+apt-find-repo
+build/
+
+# Go build cache
+.cache
+.go
+
+# Editor files
+.*.swp
+.*.swo
+*~
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# Claude Code local settings
+.claude/

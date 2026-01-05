@@ -1,4 +1,4 @@
-package main
+package finder
 
 import (
 	"bufio"
@@ -35,8 +35,8 @@ func parseDebLine(debLine string) (url, dist, component string, err error) {
 	return url, dist, component, nil
 }
 
-// fetchPackageList retrieves the list of packages from a deb repository
-func fetchPackageList(debLine string) ([]string, error) {
+// FetchPackageList retrieves the list of packages from a deb repository
+func FetchPackageList(debLine string) ([]string, error) {
 	url, dist, comp, err := parseDebLine(debLine)
 	if err != nil {
 		return nil, err

@@ -1,4 +1,4 @@
-package main
+package finder
 
 import (
 	"testing"
@@ -110,7 +110,7 @@ func TestMatchKeysToSources(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			matches, err := matchKeysToSources(tc.gpgURLs, tc.debLines)
+			matches, err := MatchKeysToSources(tc.gpgURLs, tc.debLines)
 
 			if tc.wantErr {
 				if err == nil {
@@ -172,7 +172,7 @@ func TestGenerateKeyPath(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			path, format := generateKeyPath(tc.gpgURL, tc.repoName)
+			path, format := GenerateKeyPath(tc.gpgURL, tc.repoName)
 
 			if path != tc.wantPath {
 				t.Errorf("Path: got %s, want %s", path, tc.wantPath)
@@ -230,7 +230,7 @@ Signed-By: /etc/apt/keyrings/example.gpg`,
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			entry, filename := generateSourcesEntry(tc.debLine, tc.keyPath)
+			entry, filename := GenerateSourcesEntry(tc.debLine, tc.keyPath)
 
 			if entry != tc.wantEntry {
 				t.Errorf("Entry:\ngot:\n%s\n\nwant:\n%s", entry, tc.wantEntry)
@@ -243,20 +243,20 @@ Signed-By: /etc/apt/keyrings/example.gpg`,
 }
 
 func TestCheckPrivileges(t *testing.T) {
-	hasRoot := checkPrivileges()
+	hasRoot := CheckPrivileges()
 	// Just verify it returns without error
 	// Actual value depends on test environment
 	t.Logf("Running with root privileges: %v", hasRoot)
 }
 
 func TestCheckDebianSystem(t *testing.T) {
-	isDebian := checkDebianSystem()
+	isDebian := CheckDebianSystem()
 	// Log result - actual value depends on test environment
 	t.Logf("Running on Debian-based system: %v", isDebian)
 }
 
 func TestCheckAptDirectories(t *testing.T) {
-	err := checkAptDirectories()
+	err := CheckAptDirectories()
 	// Log result - actual value depends on test environment
 	if err != nil {
 		t.Logf("APT directories check failed (expected on non-Debian): %v", err)
@@ -293,7 +293,7 @@ func TestCheckConflicts(t *testing.T) {
 				defer tc.cleanupFunc()
 			}
 
-			keyExists, sourceExists := checkConflicts(tc.keyPath, tc.sourcesFilename)
+			keyExists, sourceExists := CheckConflicts(tc.keyPath, tc.sourcesFilename)
 
 			if keyExists != tc.wantKeyExists {
 				t.Errorf("Key exists: got %v, want %v", keyExists, tc.wantKeyExists)

@@ -10,6 +10,7 @@ import (
 	"regexp"
 	"strings"
 
+	"apt-find-repo/internal/finder"
 	"github.com/PuerkitoBio/goquery"
 )
 
@@ -59,7 +60,7 @@ func main() {
 	}
 
 	// Match keys to sources
-	matches, err := matchKeysToSources(gpgURLs, debLines)
+	matches, err := finder.MatchKeysToSources(gpgURLs, debLines)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 		os.Exit(1)
@@ -74,28 +75,28 @@ func main() {
 	}
 
 	if addMode {
-		if !checkPrivileges() {
+		if !finder.CheckPrivileges() {
 			fmt.Fprintf(os.Stderr, "Error: must run as root (use sudo)\n")
 			os.Exit(1)
 		}
 
-		if !checkDebianSystem() {
+		if !finder.CheckDebianSystem() {
 			fmt.Fprintf(os.Stderr, "Error: not a Debian-based system\n")
 			os.Exit(1)
 		}
 
-		if err := checkAptDirectories(); err != nil {
+		if err := finder.CheckAptDirectories(); err != nil {
 			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 			os.Exit(1)
 		}
 
 		// Generate paths
 		repoName := extractRepoName(url)
-		keyPath, _ := generateKeyPath(match.GPGURL, repoName)
-		sourcesEntry, sourcesFilename := generateSourcesEntry(match.DebLine, keyPath)
+		keyPath, _ := finder.GenerateKeyPath(match.GPGURL, repoName)
+		sourcesEntry, sourcesFilename := finder.GenerateSourcesEntry(match.DebLine, keyPath)
 
 		// Check conflicts
-		keyExists, sourceExists := checkConflicts(keyPath, sourcesFilename)
+		keyExists, sourceExists := finder.CheckConflicts(keyPath, sourcesFilename)
 		if keyExists {
 			fmt.Fprintf(os.Stderr, "Error: key already exists at %s\n", keyPath)
 			os.Exit(1)
@@ -110,14 +111,14 @@ func main() {
 		if verbose {
 			fmt.Fprintf(os.Stderr, "Fetching key from %s\n", match.GPGURL)
 		}
-		keyData, err := fetchKey(match.GPGURL)
+		keyData, err := finder.FetchKey(match.GPGURL)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error fetching key: %v\n", err)
 			os.Exit(1)
 		}
 
 		// Normalize key
-		normalizedKey, err := normalizeKey(keyData)
+		normalizedKey, err := finder.NormalizeKey(keyData)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error processing key: %v\n", err)
 			os.Exit(1)
@@ -155,7 +156,7 @@ func main() {
 			fmt.Fprintf(os.Stderr, "Fetching package list...\n")
 		}
 
-		packages, err := fetchPackageList(match.DebLine)
+		packages, err := finder.FetchPackageList(match.DebLine)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error fetching packages: %v\n", err)
 			os.Exit(1)

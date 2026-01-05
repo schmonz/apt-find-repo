@@ -1,4 +1,4 @@
-package main
+package finder
 
 import (
 	"os"
@@ -20,7 +20,7 @@ type TestCase struct {
 var testCases = []TestCase{
 	{
 		name:     "zoom-unofficial",
-		htmlFile: "testdata/webpages/zoom-unofficial.html",
+		htmlFile: "../../testdata/webpages/zoom-unofficial.html",
 		expectedGPG: []string{
 			"https://mirror.mwt.me/zoom/gpgkey",
 		},
@@ -31,7 +31,7 @@ var testCases = []TestCase{
 	},
 	{
 		name:     "jetbrains-unofficial",
-		htmlFile: "testdata/webpages/jetbrains-unofficial.html",
+		htmlFile: "../../testdata/webpages/jetbrains-unofficial.html",
 		expectedGPG: []string{
 			"https://s3.eu-central-1.amazonaws.com/jetbrains-ppa/0xA6E8698A.pub.asc",
 		},
@@ -41,7 +41,7 @@ var testCases = []TestCase{
 	},
 	{
 		name:     "tailscale-official",
-		htmlFile: "testdata/webpages/tailscale-official.html",
+		htmlFile: "../../testdata/webpages/tailscale-official.html",
 		expectedGPG: []string{
 			"https://pkgs.tailscale.com/stable/ubuntu/jammy.noarmor.gpg",
 			"https://pkgs.tailscale.com/stable/ubuntu/focal.noarmor.gpg",
@@ -53,7 +53,7 @@ var testCases = []TestCase{
 	},
 	{
 		name:     "postgresql-official",
-		htmlFile: "testdata/webpages/postgresql-official.html",
+		htmlFile: "../../testdata/webpages/postgresql-official.html",
 		expectedGPG: []string{
 			"https://www.postgresql.org/media/keys/ACCC4CF8.asc",
 		},
@@ -61,7 +61,7 @@ var testCases = []TestCase{
 	},
 	{
 		name:     "nginx-official",
-		htmlFile: "testdata/webpages/nginx-official.html",
+		htmlFile: "../../testdata/webpages/nginx-official.html",
 		expectedGPG: []string{
 			"https://nginx.org/keys/nginx_signing.key",
 		},
@@ -69,7 +69,7 @@ var testCases = []TestCase{
 	},
 	{
 		name:     "sublime-official",
-		htmlFile: "testdata/webpages/sublime-official.html",
+		htmlFile: "../../testdata/webpages/sublime-official.html",
 		expectedGPG: []string{
 			"https://download.sublimetext.com/sublimehq-pub.gpg",
 			"https://download.sublimetext.com/sublimehq-rpm-pub.gpg",
@@ -78,7 +78,7 @@ var testCases = []TestCase{
 	},
 	{
 		name:     "signal-official",
-		htmlFile: "testdata/webpages/signal-official.html",
+		htmlFile: "../../testdata/webpages/signal-official.html",
 		expectedGPG: []string{
 			"https://updates.signal.org/desktop/apt/keys.asc",
 		},
@@ -86,7 +86,7 @@ var testCases = []TestCase{
 	},
 	{
 		name:     "grafana-official",
-		htmlFile: "testdata/webpages/grafana-official.html",
+		htmlFile: "../../testdata/webpages/grafana-official.html",
 		expectedGPG: []string{
 			"https://apt.grafana.com/gpg.key",
 			"https://apt.grafana.com/gpg",
@@ -98,7 +98,7 @@ var testCases = []TestCase{
 	},
 	{
 		name:     "github-cli-official",
-		htmlFile: "testdata/webpages/github-cli-official.html",
+		htmlFile: "../../testdata/webpages/github-cli-official.html",
 		expectedGPG: []string{
 			"https://cli.github.com/packages/githubcli-archive-keyring.gpg",
 		},
@@ -109,7 +109,7 @@ var testCases = []TestCase{
 	},
 	{
 		name:     "syncthing-official",
-		htmlFile: "testdata/webpages/syncthing-official.html",
+		htmlFile: "../../testdata/webpages/syncthing-official.html",
 		expectedGPG: []string{
 			"https://syncthing.net/release-key.gpg",
 		},
@@ -120,7 +120,7 @@ var testCases = []TestCase{
 	},
 	{
 		name:     "kubernetes-official",
-		htmlFile: "testdata/webpages/kubernetes-official.html",
+		htmlFile: "../../testdata/webpages/kubernetes-official.html",
 		expectedGPG: []string{
 			"https://pkgs.k8s.io/core:/stable:/v1.35/deb/Release.key",
 			"https://pkgs.k8s.io/core:/stable:/v1.35/rpm/repodata/repomd.xml.key",
@@ -129,7 +129,7 @@ var testCases = []TestCase{
 	},
 	{
 		name:     "1password-official",
-		htmlFile: "testdata/webpages/1password-official.html",
+		htmlFile: "../../testdata/webpages/1password-official.html",
 		expectedGPG: []string{
 			"https://downloads.1password.com/linux/keys/1password.asc",
 		},
@@ -139,7 +139,7 @@ var testCases = []TestCase{
 	},
 	{
 		name:     "headscale-unofficial",
-		htmlFile: "testdata/webpages/headscale-unofficial.html",
+		htmlFile: "../../testdata/webpages/headscale-unofficial.html",
 		expectedGPG: []string{
 			"https://allddd.github.io/headscale-apt/headscale-apt.gpg",
 		},
@@ -149,7 +149,7 @@ var testCases = []TestCase{
 	},
 	{
 		name:     "hugo-unofficial",
-		htmlFile: "testdata/webpages/hugo-unofficial.html",
+		htmlFile: "../../testdata/webpages/hugo-unofficial.html",
 		expectedGPG: []string{},
 		expectedDeb: []string{
 			"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/hugo.gpg] https://hugo-apt.8hob.io latest main",
@@ -157,7 +157,7 @@ var testCases = []TestCase{
 	},
 	{
 		name:        "ghostty-unofficial",
-		htmlFile:    "testdata/webpages/ghostty-unofficial.html",
+		htmlFile:    "../../testdata/webpages/ghostty-unofficial.html",
 		expectedGPG: []string{},
 		expectedDeb: []string{},
 	},
@@ -171,7 +171,7 @@ func TestParseRepoPage(t *testing.T) {
 				t.Fatalf("Failed to read test file %s: %v", tc.htmlFile, err)
 			}
 
-			gpgURLs, debLines := parseRepoPage(string(html))
+			gpgURLs, debLines := ParseRepoPage(string(html))
 
 			// Check GPG keys
 			if !stringSlicesEqual(gpgURLs, tc.expectedGPG) {
@@ -231,7 +231,7 @@ func TestFindDebLines(t *testing.T) {
 				t.Fatalf("Failed to parse HTML: %v", err)
 			}
 
-			debs := findDebLines(doc)
+			debs := FindDebLines(doc, false, nil)
 			sort.Strings(debs)
 			sort.Strings(tc.wantDebs)
 
@@ -255,9 +255,5 @@ func stringSlicesEqual(a, b []string) bool {
 }
 
 func TestMain(m *testing.M) {
-	// Ensure testdata directory exists
-	if err := os.MkdirAll("testdata", 0755); err != nil {
-		panic(err)
-	}
 	os.Exit(m.Run())
 }

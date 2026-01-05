@@ -1,4 +1,4 @@
-package main
+package finder
 
 import (
 	"os"
@@ -16,32 +16,32 @@ type PackagesTestCase struct {
 var packagesTestCases = []PackagesTestCase{
 	{
 		name:         "simple-packages",
-		packagesFile: "testdata/packages/simple.txt",
+		packagesFile: "../../testdata/packages/simple.txt",
 		wantPackages: []string{"package-a", "package-b", "package-c"},
 	},
 	{
 		name:         "packages-with-source",
-		packagesFile: "testdata/packages/with-source.txt",
+		packagesFile: "../../testdata/packages/with-source.txt",
 		wantPackages: []string{"real-package", "another-package"},
 	},
 	{
 		name:         "multiarch",
-		packagesFile: "testdata/packages/multiarch.txt",
+		packagesFile: "../../testdata/packages/multiarch.txt",
 		wantPackages: []string{"amd64-pkg", "arm64-pkg", "all-arch-pkg"},
 	},
 	{
 		name:         "empty",
-		packagesFile: "testdata/packages/empty.txt",
+		packagesFile: "../../testdata/packages/empty.txt",
 		wantPackages: []string{},
 	},
 	{
 		name:         "zoom-real",
-		packagesFile: "testdata/packages/zoom-real.txt",
+		packagesFile: "../../testdata/packages/zoom-real.txt",
 		wantPackages: []string{"zoom"}, // actual package name in their repo
 	},
 	{
 		name:         "tailscale-real",
-		packagesFile: "testdata/packages/tailscale-real.txt",
+		packagesFile: "../../testdata/packages/tailscale-real.txt",
 		wantPackages: []string{"tailscale", "tailscale-nginx-auth"},
 	},
 }
