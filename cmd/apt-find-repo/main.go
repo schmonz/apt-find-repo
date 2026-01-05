@@ -353,7 +353,7 @@ func searchForRepo(packageName string) []string {
 	}
 
 	// Search with ddgr (request more results since we filter heavily)
-	cmd := exec.Command("ddgr", "--json", "--num", "40", "--np", query)
+	cmd := exec.Command("ddgr", "--json", "--num", "25", "--np", query)
 	output, err := cmd.Output()
 	if err != nil {
 		if verbose {
