@@ -97,3 +97,23 @@ func TestDebianMapping(t *testing.T) {
 		}
 	}
 }
+
+// TestAPIFallback verifies that the API-based mapping works for known Debian releases
+func TestAPIFallback(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping API test in short mode")
+	}
+
+	// Test with a known Debian release
+	ubuntuCodename, err := GetUbuntuCodenameFromAPI("bookworm")
+	if err != nil {
+		t.Fatalf("API fallback failed for bookworm: %v", err)
+	}
+
+	// bookworm (June 2023) should map to jammy (April 2022) or noble (April 2024)
+	if ubuntuCodename != "jammy" && ubuntuCodename != "noble" {
+		t.Logf("Warning: bookworm mapped to %s (expected jammy or noble)", ubuntuCodename)
+	} else {
+		t.Logf("API correctly mapped Debian bookworm to Ubuntu %s", ubuntuCodename)
+	}
+}

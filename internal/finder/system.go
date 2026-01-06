@@ -2,10 +2,14 @@ package finder
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
 	"os"
 	"os/exec"
 	"strings"
+	"time"
 )
 
 // SystemInfo contains information about the running system
@@ -109,8 +113,15 @@ func (s *SystemInfo) GetUbuntuCodename() (string, error) {
 		return ubuntuCodename, nil
 	}
 
-	// No fallback - unknown Debian versions must be added manually
-	return "", fmt.Errorf("unknown Debian codename '%s' - please update the mapping table", s.Codename)
+	// Static mapping failed - try API fallback
+	ubuntuCodename, err := GetUbuntuCodenameFromAPI(s.Codename)
+	if err != nil {
+		// API fallback also failed - unknown Debian version
+		return "", fmt.Errorf("unknown Debian codename '%s' - please update the mapping table (API fallback failed: %v)", s.Codename, err)
+	}
+
+	// API fallback succeeded
+	return ubuntuCodename, nil
 }
 
 // IsUbuntuLTS returns true if the Ubuntu codename is an LTS release
@@ -157,4 +168,117 @@ func GetNearestPastLTS(codename string) string {
 
 	// Unknown non-LTS, try the most recent LTS
 	return "noble"
+}
+
+// debianRelease represents a Debian release from endoflife.date API
+type debianRelease struct {
+	Cycle       string `json:"cycle"`       // "13", "12", "11", etc.
+	Codename    string `json:"codename"`    // "trixie", "bookworm", etc.
+	ReleaseDate string `json:"releaseDate"` // "2023-06-10"
+}
+
+// ubuntuSeries represents an Ubuntu series from Launchpad API
+type ubuntuSeries struct {
+	Name        string `json:"name"`         // "noble", "jammy", etc.
+	Version     string `json:"version"`      // "24.04", "22.04", etc.
+	DateReleased string `json:"datereleased"` // "2024-04-25"
+	Supported   bool   `json:"supported"`
+}
+
+type launchpadResponse struct {
+	Entries []ubuntuSeries `json:"entries"`
+}
+
+// GetUbuntuCodenameFromAPI fetches release data from APIs and maps Debian to Ubuntu
+// based on release dates. Returns the nearest Ubuntu LTS released before the Debian version.
+func GetUbuntuCodenameFromAPI(debianCodename string) (string, error) {
+	// Fetch Debian releases
+	debianResp, err := http.Get("https://endoflife.date/api/debian.json")
+	if err != nil {
+		return "", fmt.Errorf("failed to fetch Debian releases: %w", err)
+	}
+	defer debianResp.Body.Close()
+
+	debianBody, err := io.ReadAll(debianResp.Body)
+	if err != nil {
+		return "", fmt.Errorf("failed to read Debian releases: %w", err)
+	}
+
+	var debianReleases []debianRelease
+	if err := json.Unmarshal(debianBody, &debianReleases); err != nil {
+		return "", fmt.Errorf("failed to parse Debian releases: %w", err)
+	}
+
+	// Find the Debian release with matching codename
+	var debianDate time.Time
+	found := false
+	for _, rel := range debianReleases {
+		if strings.EqualFold(rel.Codename, debianCodename) {
+			debianDate, err = time.Parse("2006-01-02", rel.ReleaseDate)
+			if err != nil {
+				return "", fmt.Errorf("failed to parse Debian release date: %w", err)
+			}
+			found = true
+			break
+		}
+	}
+
+	if !found {
+		return "", fmt.Errorf("Debian codename '%s' not found in API", debianCodename)
+	}
+
+	// Fetch Ubuntu releases
+	ubuntuResp, err := http.Get("https://api.launchpad.net/1.0/ubuntu/series")
+	if err != nil {
+		return "", fmt.Errorf("failed to fetch Ubuntu releases: %w", err)
+	}
+	defer ubuntuResp.Body.Close()
+
+	ubuntuBody, err := io.ReadAll(ubuntuResp.Body)
+	if err != nil {
+		return "", fmt.Errorf("failed to read Ubuntu releases: %w", err)
+	}
+
+	var ubuntuData launchpadResponse
+	if err := json.Unmarshal(ubuntuBody, &ubuntuData); err != nil {
+		return "", fmt.Errorf("failed to parse Ubuntu releases: %w", err)
+	}
+
+	// Find nearest Ubuntu LTS released before the Debian release
+	var bestMatch string
+	minDiff := time.Duration(1<<63 - 1) // max duration
+
+	for _, series := range ubuntuData.Entries {
+		// Only consider LTS releases
+		if !IsUbuntuLTS(series.Name) {
+			continue
+		}
+
+		// Parse Ubuntu release date (RFC3339 format with timestamp)
+		ubuntuDate, err := time.Parse(time.RFC3339, series.DateReleased)
+		if err != nil {
+			continue
+		}
+
+		// Find LTS released closest to (but ideally before) the Debian release
+		diff := debianDate.Sub(ubuntuDate)
+
+		// Prefer LTS released before Debian, but allow after if no better match
+		absDiff := diff
+		if absDiff < 0 {
+			absDiff = -absDiff
+			absDiff += 180 * 24 * time.Hour // Penalize future releases
+		}
+
+		if absDiff < minDiff {
+			minDiff = absDiff
+			bestMatch = series.Name
+		}
+	}
+
+	if bestMatch == "" {
+		return "", fmt.Errorf("no suitable Ubuntu LTS found for Debian %s", debianCodename)
+	}
+
+	return bestMatch, nil
 }
