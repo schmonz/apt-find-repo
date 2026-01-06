@@ -42,9 +42,13 @@ func FetchPackageList(debLine string) ([]string, error) {
 		return nil, err
 	}
 
+	// Remove trailing slash from URL to avoid double slashes
+	url = strings.TrimSuffix(url, "/")
+
 	// Try common architectures
 	arches := []string{"amd64", "all"}
 
+	var lastErr error
 	for _, arch := range arches {
 		// Try Packages.gz first (smaller), then uncompressed
 		urls := []string{
@@ -54,10 +58,19 @@ func FetchPackageList(debLine string) ([]string, error) {
 
 		for _, pkgURL := range urls {
 			packages, err := fetchAndParsePackages(pkgURL)
-			if err == nil && len(packages) > 0 {
+			if err != nil {
+				lastErr = err
+				continue
+			}
+			if len(packages) > 0 {
 				return packages, nil
 			}
 		}
+	}
+
+	// If all attempts failed, return the last error instead of empty list
+	if lastErr != nil {
+		return nil, fmt.Errorf("failed to fetch package list: %w", lastErr)
 	}
 
 	return []string{}, nil
@@ -67,12 +80,12 @@ func FetchPackageList(debLine string) ([]string, error) {
 func fetchAndParsePackages(url string) ([]string, error) {
 	resp, err := http.Get(url)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("GET failed: %w", err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
-		return nil, fmt.Errorf("HTTP %d", resp.StatusCode)
+		return nil, fmt.Errorf("HTTP %d for %s", resp.StatusCode, url)
 	}
 
 	var reader io.Reader = resp.Body

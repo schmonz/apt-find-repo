@@ -262,6 +262,10 @@ func main() {
 			continue
 		}
 
+		if verbose {
+			fmt.Fprintf(os.Stderr, "  Found %d packages in repository\n", len(packages))
+		}
+
 		// Validate package glob matches at least one package
 		matched, matchedPackages := validatePackageGlob(packageGlob, packages)
 		if !matched {
