@@ -37,6 +37,79 @@ func MatchKeysToSourcesWithSystem(gpgURLs, debLines []string, sysInfo *SystemInf
 		return []Match{{GPGURL: gpgURLs[0], DebLine: debLines[0]}}, nil
 	}
 
+	// Special handling for PPAs: keys from keyserver.ubuntu.com match sources from ppa.launchpad.net
+	// PPAs are added in pairs, so we can match by index
+	var matches []Match
+	ppaKeyIndices := []int{}
+	ppaSourceIndices := []int{}
+
+	for i, gpgURL := range gpgURLs {
+		if strings.Contains(gpgURL, "keyserver.ubuntu.com") {
+			ppaKeyIndices = append(ppaKeyIndices, i)
+		}
+	}
+
+	for i, debLine := range debLines {
+		if strings.Contains(debLine, "ppa.launchpad.net") {
+			ppaSourceIndices = append(ppaSourceIndices, i)
+		}
+	}
+
+	// Match PPAs by index (they're added in pairs)
+	minPPA := len(ppaKeyIndices)
+	if len(ppaSourceIndices) < minPPA {
+		minPPA = len(ppaSourceIndices)
+	}
+
+	for i := 0; i < minPPA; i++ {
+		matches = append(matches, Match{
+			GPGURL:  gpgURLs[ppaKeyIndices[i]],
+			DebLine: debLines[ppaSourceIndices[i]],
+		})
+	}
+
+	// If we matched all keys and sources with PPAs, return
+	if len(matches) == len(gpgURLs) && len(matches) == len(debLines) {
+		return matches, nil
+	}
+
+	// For mixed cases, filter out already-matched PPAs and continue with domain matching
+	remainingKeys := []string{}
+	remainingSources := []string{}
+	matchedKeyIndices := make(map[int]bool)
+	matchedSourceIndices := make(map[int]bool)
+
+	for _, idx := range ppaKeyIndices[:minPPA] {
+		matchedKeyIndices[idx] = true
+	}
+	for _, idx := range ppaSourceIndices[:minPPA] {
+		matchedSourceIndices[idx] = true
+	}
+
+	for i, key := range gpgURLs {
+		if !matchedKeyIndices[i] {
+			remainingKeys = append(remainingKeys, key)
+		}
+	}
+
+	for i, source := range debLines {
+		if !matchedSourceIndices[i] {
+			remainingSources = append(remainingSources, source)
+		}
+	}
+
+	// If no remaining keys/sources, we're done
+	if len(remainingKeys) == 0 || len(remainingSources) == 0 {
+		if len(matches) > 0 {
+			return matches, nil
+		}
+		return nil, fmt.Errorf("no matching keys and sources found")
+	}
+
+	// Continue with domain-based matching for non-PPA keys/sources
+	gpgURLs = remainingKeys
+	debLines = remainingSources
+
 	// Build domain map for sources (allow multiple sources per domain)
 	sourcesByDomain := make(map[string][]string)
 	for _, deb := range debLines {
@@ -63,8 +136,7 @@ func MatchKeysToSourcesWithSystem(gpgURLs, debLines []string, sysInfo *SystemInf
 		keysByDomain[domain] = append(keysByDomain[domain], gpgURL)
 	}
 
-	// Create matches
-	var matches []Match
+	// Add domain-based matches to existing PPA matches
 	for domain, sources := range sourcesByDomain {
 		keys := keysByDomain[domain]
 		if len(keys) == 0 {
