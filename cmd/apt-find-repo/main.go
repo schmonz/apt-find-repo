@@ -336,6 +336,9 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Commit with etckeeper before making changes
+	etckeeperCommit("before", packageGlob, verbose)
+
 	// Write key
 	if verbose {
 		fmt.Fprintf(os.Stderr, "Writing %s\n", keyPath)
@@ -358,6 +361,9 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Error writing sources file: %v\n", err)
 		os.Exit(1)
 	}
+
+	// Commit with etckeeper after making changes
+	etckeeperCommit("after", packageGlob, verbose)
 
 	if verbose {
 		fmt.Fprintf(os.Stderr, "Configured repository for: %s\n", strings.Join(result.matchedPackages, ", "))
@@ -738,4 +744,50 @@ func extractRepoName(url string) string {
 	}
 
 	return "repo"
+}
+
+// etckeeperCommit creates a git commit via etckeeper if it's in use
+func etckeeperCommit(when string, packageName string, verbose bool) {
+	// Check if etckeeper is installed and initialized
+	if !isEtckeeperInUse() {
+		return
+	}
+
+	var message string
+	if when == "before" {
+		message = fmt.Sprintf("apt-find-repo: before adding repository for %s", packageName)
+	} else {
+		message = fmt.Sprintf("apt-find-repo: after adding repository for %s", packageName)
+	}
+
+	cmd := exec.Command("etckeeper", "commit", message)
+	cmd.Dir = "/etc"
+
+	if verbose {
+		fmt.Fprintf(os.Stderr, "Running etckeeper commit...\n")
+	}
+
+	// Run etckeeper commit, ignore errors (e.g., "nothing to commit")
+	output, err := cmd.CombinedOutput()
+	if err != nil && verbose {
+		// Only show if it's not a "nothing to commit" message
+		if !strings.Contains(string(output), "nothing to commit") {
+			fmt.Fprintf(os.Stderr, "etckeeper commit: %v\n", err)
+		}
+	}
+}
+
+// isEtckeeperInUse checks if etckeeper is installed and initialized
+func isEtckeeperInUse() bool {
+	// Check if etckeeper command exists
+	if _, err := exec.LookPath("etckeeper"); err != nil {
+		return false
+	}
+
+	// Check if /etc/.git exists (etckeeper initialized)
+	if _, err := os.Stat("/etc/.git"); err != nil {
+		return false
+	}
+
+	return true
 }

@@ -9,7 +9,6 @@
 
 ## 4. Get realer
 
-- if `etckeeper` is in use, commit before and after we actually add something
 - Other popular packages
 - Less popular packages whose webpages we can't parse yet
 
