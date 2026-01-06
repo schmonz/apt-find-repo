@@ -1,12 +1,5 @@
 # TODO
 
-## 2. Narrow results "enough"
-
-- Try to match source against our running system? ("noble" and "amd64", or whatever)
-    - What if there are multiple source entries to choose from?
-    - What if there's only one source entry to choose from?
-    - When should we reject a source that otherwise matches?
-
 ## 3. Test existing behavior "completely"
 
 - Make sure all the edges are microtested
@@ -16,8 +9,7 @@
 
 ## 4. Get realer
 
-- Launchpad PPAs
-- GitHub (if this is somehow generically meaningful)
+- if `etckeeper` is in use, commit before and after we actually add something
 - Other popular packages
 - Less popular packages whose webpages we can't parse yet
 

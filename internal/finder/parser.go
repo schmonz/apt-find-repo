@@ -28,10 +28,12 @@ func findGPGKeys(doc *goquery.Document) []string {
 	text := doc.Text()
 
 	// Pattern 1: URLs ending in .gpg, .asc, .key, or /gpg
+	// Also supports OpenBuildService /public_key pattern
 	patterns := []string{
 		`https?://[^\s<>"']+\.(?:gpg|asc|key)`,
 		`https?://[^\s<>"']+/gpg`,
 		`https?://[^\s<>"']+\.noarmor\.gpg`,
+		`https?://[^\s<>"']+/public_key`,
 	}
 
 	for _, pattern := range patterns {
@@ -83,8 +85,9 @@ func FindDebLines(doc *goquery.Document, verbose bool, logger io.Writer) []strin
 	doc.Find("code, pre").Each(func(i int, s *goquery.Selection) {
 		text := s.Text()
 		// Match deb line: deb [options] URL suite components
+		// Components can be alphanumeric or "./" (OBS/repository root syntax)
 		// Stop at newline, quote, pipe, or semicolon
-		re := regexp.MustCompile(`deb\s+(?:\[[^\]]+\]\s+)?https?://[^\s]+(?:\s+[a-zA-Z0-9][a-zA-Z0-9._-]*)+`)
+		re := regexp.MustCompile(`deb\s+(?:\[[^\]]+\]\s+)?https?://[^\s]+(?:\s+(?:\./|[a-zA-Z0-9][a-zA-Z0-9._-]*))+`)
 		matches := re.FindAllString(text, -1)
 		for _, match := range matches {
 			// Clean trailing punctuation that might have snuck in
@@ -101,7 +104,7 @@ func FindDebLines(doc *goquery.Document, verbose bool, logger io.Writer) []strin
 
 	// Fall back to searching full text
 	text := doc.Text()
-	re := regexp.MustCompile(`deb\s+(?:\[[^\]]+\]\s+)?https?://[^\s]+(?:\s+[a-zA-Z0-9][a-zA-Z0-9._-]*)+`)
+	re := regexp.MustCompile(`deb\s+(?:\[[^\]]+\]\s+)?https?://[^\s]+(?:\s+(?:\./|[a-zA-Z0-9][a-zA-Z0-9._-]*))+`)
 	matches := re.FindAllString(text, -1)
 
 	for _, match := range matches {
