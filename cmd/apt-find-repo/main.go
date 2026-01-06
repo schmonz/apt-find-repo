@@ -39,6 +39,12 @@ func main() {
 	}
 
 	packageGlob := args[0]
+
+	// Automatically append wildcard suffix if not already present
+	// This allows "noson" to match "noson-app", etc.
+	if !strings.Contains(packageGlob, "*") && !strings.Contains(packageGlob, "?") {
+		packageGlob = packageGlob + "*"
+	}
 	var url string
 	var candidateURLs []string
 
