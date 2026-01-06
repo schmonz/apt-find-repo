@@ -461,6 +461,7 @@ func searchForRepo(packageName string) []string {
 		"mundobytes.com",
 		"app.studyraid.com",
 		"en.libre-office.fr",
+		"imaginelinux.com",
 		// Generic documentation (not package-specific)
 		"documentation.ubuntu.com",
 		"ubuntu.com/tutorials",
@@ -476,7 +477,8 @@ func searchForRepo(packageName string) []string {
 		"hostperl.com",
 		"psb.hosting",
 		"ipv6.rs",
-		// Other
+		// Other (non-APT package sources, file types, etc.)
+		"snapcraft.io",
 		".pdf",
 	}
 
