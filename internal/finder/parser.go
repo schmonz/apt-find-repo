@@ -1,6 +1,7 @@
 package finder
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 	"regexp"
@@ -155,4 +156,126 @@ func dedup(s []string) []string {
 		}
 	}
 	return result
+}
+
+// PPAInfo contains information about a Ubuntu PPA
+type PPAInfo struct {
+	Owner       string // PPA owner (e.g., "jlbarriere68")
+	Name        string // PPA name (e.g., "noson-app")
+	Fingerprint string // GPG key fingerprint
+}
+
+// FindPPAs extracts PPA references from HTML content
+func FindPPAs(html string) []string {
+	var ppas []string
+
+	// Match ppa:owner/name pattern
+	re := regexp.MustCompile(`ppa:([a-zA-Z0-9][a-zA-Z0-9._-]*)/([a-zA-Z0-9][a-zA-Z0-9._-]*)`)
+	matches := re.FindAllStringSubmatch(html, -1)
+
+	seen := make(map[string]bool)
+	for _, match := range matches {
+		if len(match) >= 3 {
+			ppa := fmt.Sprintf("ppa:%s/%s", match[1], match[2])
+			if !seen[ppa] {
+				ppas = append(ppas, ppa)
+				seen[ppa] = true
+			}
+		}
+	}
+
+	return ppas
+}
+
+// FetchPPAInfo fetches PPA information from Launchpad and returns GPG key URL and deb source
+func FetchPPAInfo(ppa string, sysInfo *SystemInfo) (gpgURL string, debLine string, err error) {
+	// Parse PPA syntax: ppa:owner/name
+	re := regexp.MustCompile(`ppa:([^/]+)/(.+)`)
+	matches := re.FindStringSubmatch(ppa)
+	if len(matches) < 3 {
+		return "", "", fmt.Errorf("invalid PPA format: %s", ppa)
+	}
+
+	owner := matches[1]
+	name := matches[2]
+
+	// Fetch Launchpad PPA page
+	launchpadURL := fmt.Sprintf("https://launchpad.net/~%s/+archive/ubuntu/%s", owner, name)
+	resp, err := http.Get(launchpadURL)
+	if err != nil {
+		return "", "", fmt.Errorf("failed to fetch PPA page: %w", err)
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", "", fmt.Errorf("failed to read PPA page: %w", err)
+	}
+
+	// Extract key fingerprint from the page
+	// Look for patterns like "4096R/FINGERPRINT" or just the fingerprint itself
+	fingerprintRe := regexp.MustCompile(`(?:4096R?/)?([0-9A-F]{40})`)
+	fingerprintMatches := fingerprintRe.FindAllStringSubmatch(string(body), -1)
+
+	if len(fingerprintMatches) == 0 {
+		return "", "", fmt.Errorf("could not find GPG key fingerprint on PPA page")
+	}
+
+	// Use the first fingerprint found
+	fingerprint := fingerprintMatches[0][1]
+
+	// Construct GPG key URL from Ubuntu keyserver
+	gpgURL = fmt.Sprintf("https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x%s", fingerprint)
+
+	// Get Ubuntu codename (either real Ubuntu codename or mapped from Debian)
+	ubuntuCodename, err := sysInfo.GetUbuntuCodename()
+	if err != nil {
+		return "", "", err
+	}
+
+	// Construct deb source line
+	debLine = fmt.Sprintf("deb [arch=%s] http://ppa.launchpad.net/%s/%s/ubuntu %s main",
+		sysInfo.Architecture, owner, name, ubuntuCodename)
+
+	return gpgURL, debLine, nil
+}
+
+// PPAResult contains a GPG URL and deb source line from a PPA
+type PPAResult struct {
+	GPGURL  string
+	DebLine string
+}
+
+// FetchPPAInfoWithFallback tries to fetch PPA info, and if on non-LTS Ubuntu,
+// will return both the original codename version and an LTS fallback version
+func FetchPPAInfoWithFallback(ppa string, sysInfo *SystemInfo) ([]PPAResult, error) {
+	var results []PPAResult
+
+	// Try with the actual codename first
+	gpgURL, debLine, err := FetchPPAInfo(ppa, sysInfo)
+	if err != nil {
+		return nil, err
+	}
+
+	results = append(results, PPAResult{GPGURL: gpgURL, DebLine: debLine})
+
+	// If on non-LTS Ubuntu, also provide LTS fallback
+	if sysInfo.OSName == "ubuntu" {
+		ltsCodename := GetNearestPastLTS(sysInfo.Codename)
+		if ltsCodename != "" {
+			// Create a temporary sysInfo with LTS codename
+			ltsSysInfo := &SystemInfo{
+				OSName:       sysInfo.OSName,
+				Codename:     ltsCodename,
+				Architecture: sysInfo.Architecture,
+			}
+
+			ltsGPGURL, ltsDebLine, err := FetchPPAInfo(ppa, ltsSysInfo)
+			if err == nil {
+				results = append(results, PPAResult{GPGURL: ltsGPGURL, DebLine: ltsDebLine})
+			}
+		}
+	}
+
+	return results, nil
 }

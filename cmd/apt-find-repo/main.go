@@ -142,6 +142,53 @@ func main() {
 					break
 				}
 			}
+
+			// If still no keys/sources, check for PPAs
+			if len(gpgURLs) == 0 || len(debLines) == 0 {
+				ppas := finder.FindPPAs(htmlContent)
+				if len(ppas) > 0 {
+					if verbose {
+						fmt.Fprintf(os.Stderr, "  Found PPA references, checking Launchpad...\n")
+					}
+
+					// Detect system for PPA codename mapping
+					sysInfo, err := finder.DetectSystem()
+					if err != nil {
+						if verbose {
+							fmt.Fprintf(os.Stderr, "  Could not detect system for PPA: %v\n", err)
+						}
+					} else {
+						for _, ppa := range ppas {
+							if verbose {
+								fmt.Fprintf(os.Stderr, "  Fetching PPA info: %s\n", ppa)
+							}
+
+							results, err := finder.FetchPPAInfoWithFallback(ppa, sysInfo)
+							if err != nil {
+								if verbose {
+									fmt.Fprintf(os.Stderr, "  Failed to fetch PPA info: %v\n", err)
+								}
+								continue
+							}
+
+							// Add all results (primary + LTS fallback if applicable)
+							for _, result := range results {
+								gpgURLs = append(gpgURLs, result.GPGURL)
+								debLines = append(debLines, result.DebLine)
+							}
+
+							if verbose {
+								if len(results) > 1 {
+									fmt.Fprintf(os.Stderr, "  Found PPA key and source (with LTS fallback)!\n")
+								} else {
+									fmt.Fprintf(os.Stderr, "  Found PPA key and source!\n")
+								}
+							}
+							break // Use first successful PPA
+						}
+					}
+				}
+			}
 		}
 
 		// If we didn't find both keys and sources, try next candidate

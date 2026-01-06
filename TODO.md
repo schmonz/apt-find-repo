@@ -1,11 +1,5 @@
 # TODO
 
-## 1. Broaden search "enough"
-
-- Iterate over search results, blocklisting more and more crummy tutorial sites until results look decent
-- Tweak search terms: omit Ubuntu? or add Mint?
-- Fetch "too many" results so we probably still have "enough"
-
 ## 2. Narrow results "enough"
 
 - Try to match source against our running system? ("noble" and "amd64", or whatever)
