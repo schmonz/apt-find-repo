@@ -9,6 +9,8 @@
 
 ## 4. Get realer
 
+- Can `apt install ungoogled-chromium`, not finding such a package, be configured to call out to us?
+- Explain how this relates to extrepo
 - Other popular packages
 - Less popular packages whose webpages we can't parse yet
 
