@@ -225,6 +225,38 @@ translation. Now we can reorganize freely.
 | zlib | gzip decompression (Packages.gz) | `zlib1g-dev` |
 | PCRE2 (optional) | Regex if POSIX ERE insufficient | `libpcre2-dev` |
 
+## Post-Rewrite Enhancements
+
+After the rewrite is complete and the C codebase is reorganized (step 8),
+these improvements become natural follow-ups:
+
+### Handle BunsenLabs codenames
+
+BunsenLabs is Debian-based but uses its own codenames (e.g., "Beryllium"
+for Debian Bookworm). System detection needs to recognize BunsenLabs in
+`/etc/os-release` and map its codenames to the underlying Debian codename
+so that repo matching and package validation work correctly.
+
+### Handle Ubuntu PPAs on Debian
+
+Ubuntu PPAs (e.g., xtradeb-apps) often work on Debian when the underlying
+libraries are compatible. The tool should be able to add and install from
+Ubuntu PPAs on Debian systems — mapping the Debian codename to the nearest
+Ubuntu LTS codename for the PPA's `sources.list` entry, and validating
+that the packages are actually available for the target architecture.
+
+### Replace HTML DOM parsing with Markdown-based text search
+
+The current HTML parsing (goquery in Go, libgumbo in the C port) is
+precision-oriented: it traverses specific DOM elements (`<code>`, `<pre>`,
+etc.) looking for deb lines and GPG URLs. This is brittle — tightly
+coupled to the current markup of particular vendor pages. A more robust
+approach: convert fetched HTML to Markdown first (using a library like
+cmark or a lightweight HTML-to-text converter), then do dumb text pattern
+matching (regex) over the resulting plaintext. This likely works better on
+more real-world pages with less custom parsing code, and is simpler to
+maintain. It also eliminates the libgumbo dependency.
+
 ## Risk Notes
 
 - **HTML parsing fidelity**: The Go implementation uses `goquery` (CSS
