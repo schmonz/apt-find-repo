@@ -32,8 +32,11 @@ at any step.
 4. **One module at a time.** Each numbered step ports one Go source file to
    one C compilation unit.
 
-5. **Remove Go code last.** Go source stays in the tree until the C binary
-   is fully working and covered by tests.
+5. **Delete Go code as soon as it is superseded.**  Go *test files* are
+   deleted step by step as C tests replace them (Steps 3–7).  Go *source
+   files* cannot be deleted individually because the remaining source files
+   still cross-reference them; they are all deleted together at Step 8 when
+   `main.c` replaces `main.go` and the Go binary is no longer needed.
 
 ## Module Dependency Map
 
@@ -172,7 +175,12 @@ int normalize_key(const uint8_t *in, size_t in_len,
 | `malformed.asc`      | UNKNOWN           | error                   |
 | `truncated.asc`      | UNKNOWN           | error                   |
 
-**Done when:** `ctest -R key` passes; `make test` (Go) still green.
+**Go code to delete:** Once `ctest -R key` is green, delete
+`internal/finder/key_normalize_test.go`.  The Go *source* file `key.go`
+remains (still needed by `validation.go` and `main.go`).
+
+**Done when:** `ctest -R key` passes; `make test` (Go, minus key tests) still
+green.
 
 ---
 
@@ -221,7 +229,11 @@ directly from `testdata/packages/`.
 | `tailscale-real.txt` | spot-check `tailscale` is present                |
 | `zoom-real.txt`      | spot-check `zoom` is present                     |
 
-**Done when:** `ctest -R packages` passes; `make test` (Go) still green.
+**Go code to delete:** Once `ctest -R packages` is green, delete
+`internal/finder/packages_test.go`.  Source file `packages.go` remains.
+
+**Done when:** `ctest -R packages` passes; `make test` (Go, minus packages
+tests) still green.
 
 ---
 
@@ -258,7 +270,13 @@ follow-up; the table suffices for current test coverage.
 - LTS fallback logic for non-LTS Ubuntu releases
 - `/etc/os-release` parsing (feed a synthetic file, not the live system file)
 
-**Done when:** `ctest -R system` passes; `make test` (Go) still green.
+**Go code to delete:** Once `ctest -R system` is green, delete
+`internal/finder/system_test.go` and
+`internal/finder/system_integration_test.go`.  Source file `system.go`
+remains.
+
+**Done when:** `ctest -R system` passes; `make test` (Go, minus system tests)
+still green.
 
 ---
 
@@ -336,8 +354,12 @@ asserting the same key URLs and deb lines as the Go
 Break into sub-cases by category (official docs, GitHub READMEs, Launchpad)
 if the file becomes unwieldy.
 
+**Go code to delete:** Once `ctest -R parser` is green, delete
+`internal/finder/parser_test.go` and `internal/finder/repo_finder_test.go`
+(the large 45-case table).  Source files `parser.go` remains.
+
 **Done when:** `ctest -R parser` passes for all 45 fixtures; `make test`
-(Go) still green.
+(Go, minus parser tests) still green.
 
 ---
 
@@ -379,7 +401,15 @@ int check_conflicts(const char *key_path, const char *sources_path);
 - System-aware filtering with mock `os_info_t`
 - `generate_key_path` and `generate_sources_entry` round-trips
 
-**Done when:** `ctest -R validation` passes; `make test` (Go) still green.
+**Go code to delete:** Once `ctest -R validation` is green, delete
+`internal/finder/validation_test.go`.  Source file `validation.go` remains.
+
+At this point **all Go test files have been deleted**.  `go test ./...`
+reports nothing to test (the `finder` package still compiles, but has zero
+test functions).  `make test` should now run only `ctest --test-dir build`.
+
+**Done when:** `ctest -R validation` passes; `ctest --test-dir build` is the
+sole content of `make test`.
 
 ---
 
@@ -424,37 +454,48 @@ blacklist of low-quality sites maintained in Go.
 **Decompression of `Packages.gz`:** Use libcurl's built-in support; fall
 back to trying the uncompressed URL if `.gz` fetch fails (matching Go logic).
 
+**Go code to delete:** Once `make e2e` passes with the C binary, delete all
+remaining Go source in one commit:
+
+- `cmd/apt-find-repo/main.go` (and the now-empty `cmd/` tree)
+- `internal/finder/key.go`
+- `internal/finder/packages.go`
+- `internal/finder/parser.go`
+- `internal/finder/system.go`
+- `internal/finder/validation.go`
+- `go.mod`, `go.sum`
+
+All these files cross-reference each other, so they must go together rather
+than one at a time.
+
 **Done when:**
 
 1. `cmake --build build && build/apt-find-repo -v https://tailscale.com/download/linux/ubuntu-2204`
    produces expected output.
-2. `make e2e` (shell end-to-end tests from Step 1) passes against the C
-   binary.
-3. `make test` (Go) still green (both codebases coexist at this point).
+2. `make e2e` passes against the C binary.
+3. No Go source files remain in the repository.
+4. `ctest --test-dir build` (≡ `make test`) is green.
 
 ---
 
-## Step 9: Switch Over and Remove Go Code
+## Step 9: Final Cleanup
 
-**Goal:** Make C the default; retire all Go source.
+**Goal:** Tidy the repository now that Go is fully gone.
 
-**Actions (in order):**
+**Actions:**
 
-1. Update `Makefile`:
-   - `build` target runs `cmake --build build` instead of `go build`
-   - `test` target runs `ctest --test-dir build` instead of `go test ./...`
-   - `install` target copies `build/apt-find-repo` instead of the Go binary
-   - `clean` removes `build/` instead of Go artifacts
-2. Delete `cmd/` (Go entry point).
-3. Delete `internal/` (Go library modules).
-4. Delete `go.mod` and `go.sum`.
-5. Update `docs/CLAUDE.md` with C-oriented build and test instructions.
-6. Update `README.md` to list C library build dependencies.
-7. Update `docs/apt-find-repo.1` if build instructions appear in the man page.
-8. Remove `poc/` (proof-of-concept from Step 6a).
+1. Update `Makefile`: `build` → `cmake --build build`; `install` → copies
+   from `build/`; `clean` → removes `build/`.  (`test` was already updated
+   at the end of Step 7.)
+2. Update `docs/CLAUDE.md` with C-oriented build and test instructions.
+3. Update `README.md` to list C library build dependencies
+   (`libcurl4-openssl-dev`, `libxml2-dev`, `check`, cmake).
+4. Update `docs/apt-find-repo.1` if build instructions appear in the man page.
+5. Remove `poc/` (proof-of-concept from Step 6a).
 
 **Done when:** `make build && make test && make e2e` all pass using only
-the C toolchain.  No Go files remain.
+the C toolchain; repository contains no Go files and no proof-of-concept
+directory.
 
 ---
 
@@ -475,16 +516,20 @@ as `Build-Depends` in the eventual `debian/control` file.
 
 ## Test Coverage at Each Step
 
-| Step | Test command                      | What it covers                     |
-|------|-----------------------------------|------------------------------------|
-| 0    | `make test`                       | Go baseline, refreshed fixtures    |
-| 1    | `make test && make e2e`           | Go + shell e2e                     |
-| 2    | `make test && ctest --test-dir build` | Go + empty C build             |
-| 3    | `make test && ctest -R key`       | Go + C key detection               |
-| 4    | `make test && ctest -R packages`  | Go + C package parsing             |
-| 5    | `make test && ctest -R system`    | Go + C system detection            |
-| 6a   | `make test`                       | Go (PoC manual inspection)         |
-| 6b   | `make test && ctest -R parser`    | Go + C HTML parsing (45 fixtures)  |
-| 7    | `make test && ctest -R validation`| Go + C matching & filtering        |
-| 8    | `make test && make e2e`           | Go + C binary e2e                  |
-| 9    | `make test && make e2e`           | C only                             |
+| Step | Go test files present | C tests present | Go source present |
+|------|-----------------------|-----------------|-------------------|
+| 0    | all 7                 | none            | all 6             |
+| 1    | all 7                 | none            | all 6             |
+| 2    | all 7                 | none (stub)     | all 6             |
+| 3    | 6 (key deleted)       | key             | all 6             |
+| 4    | 5 (packages deleted)  | key, packages   | all 6             |
+| 5    | 3 (system deleted)    | + system        | all 6             |
+| 6a   | 3                     | + system        | all 6             |
+| 6b   | 1 (parser deleted)    | + parser        | all 6             |
+| 7    | 0 (validation deleted)| + validation    | all 6             |
+| 8    | 0                     | + main/http     | none              |
+| 9    | 0                     | all             | none              |
+
+`make test` at each step runs: Go tests for whatever files remain **plus**
+`ctest --test-dir build` for whatever C tests exist.  By end of Step 7 it
+is C-only.
