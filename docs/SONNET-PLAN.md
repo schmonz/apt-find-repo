@@ -578,6 +578,90 @@ C source tree is laid out the way you want it.
 
 ---
 
+## Post-Rewrite Follow-ups
+
+These are deferred until after Step 9 (pure C, organized layout).
+
+---
+
+### Follow-up A: BunsenLabs Codename Support
+
+BunsenLabs releases have their own codenames (Lithium, Beryllium, Helium…)
+that do not match the underlying Debian codenames they are based on.  The
+current `system.c` mapping table only knows Debian↔Ubuntu; running on
+BunsenLabs will misidentify the codename and generate wrong `sources.list`
+entries.
+
+**Actions:**
+
+1. Extend `get_os_info()` to read `ID_LIKE` from `/etc/os-release` and
+   detect BunsenLabs (`ID=bunsenlabs`).
+2. Add a BunsenLabs→Debian codename mapping table (Lithium→stretch,
+   Beryllium→buster, Helium→bullseye, Boron→bookworm, etc.).
+3. When `ID=bunsenlabs`, translate the BunsenLabs codename to the
+   underlying Debian codename before passing it to the rest of the logic.
+4. Add libcheck test cases feeding synthetic `/etc/os-release` content for
+   each BunsenLabs release; assert the correct Debian codename is returned.
+5. Add e2e test fixtures (or synthetic invocations) that verify a
+   Debian-targeting repo is correctly added on a BunsenLabs host.
+
+---
+
+### Follow-up B: Ubuntu PPA Support on Debian
+
+PPAs (e.g. `ppa:xtradeb/apps`) are an Ubuntu concept but their packages
+often build for Debian too.  On a Debian system the tool should:
+
+1. Detect `ppa:owner/name` lines in parsed output (already partially done
+   in `parser.c`).
+2. Resolve the PPA to its Launchpad HTTPS URL:
+   `https://ppa.launchpadcontent.net/<owner>/<name>/ubuntu`
+3. Map the Debian codename to the closest Ubuntu LTS codename (already
+   handled by `debian_to_ubuntu_codename()`; confirm it covers the needed
+   case).
+4. Fetch `https://ppa.launchpadcontent.net/<owner>/<name>/ubuntu/dists/<ubuntu-codename>/`
+   to verify the PPA actually publishes for that series before writing the
+   entry; fall back to the next older LTS if not.
+5. Write the `sources.list` entry using the Ubuntu codename and the
+   Launchpad key URL.
+
+**Known test case:** `ppa:xtradeb/apps` on Trixie should resolve to the
+`noble` (or `jammy`) series, fetch correctly, and install packages.
+
+Add a libcheck unit test with a mock HTTP response for the Launchpad
+`InRelease` endpoint, and an e2e fixture that exercises the full path on
+a real Debian system (or a docker container).
+
+---
+
+### Follow-up C: Markdown-Based HTML Parsing
+
+The current `parser.c` (ported from Go) uses libxml2 DOM traversal to
+find `<code>`/`<pre>` blocks and extract deb lines from them.  This is
+fragile: vendor install pages change their markup, and some useful pages
+don't use `<code>` blocks at all.
+
+**Proposed approach:** Convert HTML to plain Markdown first, then do dumb
+line-by-line pattern matching on the result.
+
+1. Evaluate a C Markdown/HTML-to-text library (e.g. `cmark`, `lowdown`,
+   or a simple custom stripper) for converting HTML to plain text /
+   Markdown.  A simple approach: strip all tags, collapse whitespace,
+   preserve newlines around block elements.
+2. Replace the libxml2 DOM logic in `parser.c` with:
+   a. HTML → Markdown/plain-text conversion.
+   b. Line scan: any line starting with `deb ` or `deb[` is a candidate.
+   c. Link scan: any URL-shaped token ending in `.gpg`/`.asc`/`.key`.
+3. Run the full 45-fixture test suite against both implementations during
+   development; keep whichever approach produces fewer regressions.
+4. If the simpler approach wins, drop the libxml2 dependency entirely and
+   update `CMakeLists.txt` accordingly.
+
+The goal is robustness over precision: it is better to find the right deb
+line on 90 % of real pages than to parse 45 known fixtures perfectly.
+
+---
+
 ## Library Dependency Summary
 
 | Library    | Purpose                          | Debian package         |
