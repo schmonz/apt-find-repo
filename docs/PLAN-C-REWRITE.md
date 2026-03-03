@@ -32,11 +32,19 @@ at any step.
 4. **One module at a time.** Each numbered step ports one Go source file to
    one C compilation unit.
 
-5. **Delete Go code as soon as it is superseded.**  Go *test files* are
-   deleted step by step as C tests replace them (Steps 3–7).  Go *source
-   files* cannot be deleted individually because the remaining source files
-   still cross-reference them; they are all deleted together at Step 8 when
-   `main.c` replaces `main.go` and the Go binary is no longer needed.
+5. **Delete Go source files one by one using CGo as a bridge.**  When a
+   module is ported to C, a thin CGo shim file (`foo_cgo.go`) wraps the C
+   functions in the original Go function signatures.  The original `foo.go`
+   is then deleted; the Go binary keeps compiling and — crucially — the
+   existing Go *tests keep running and now exercise the C code* through the
+   shim.  All CGo shims, Go test files, and `main.go` are deleted together
+   at Step 8 when `main.c` takes over.
+
+6. **C files live alongside the package during the CGo phase.**  `go build`
+   auto-compiles any `.c` files it finds in a CGo-enabled package directory,
+   so during Steps 3–7 the C source files live in `internal/finder/`.  The
+   libcheck tests in `tests/unit/` reference them there directly.  Step 9
+   moves everything to its permanent location.
 
 ## Module Dependency Map
 
@@ -108,11 +116,14 @@ passes.
 
 ```
 CMakeLists.txt               root CMake config
-src/CMakeLists.txt           library + binary targets (stubs only)
-src/apt_find_repo.h          shared typedefs, forward declarations
 tests/CMakeLists.txt         test harness glue
 tests/unit/CMakeLists.txt    libcheck target (zero test cases yet)
 ```
+
+Note: there is no `src/` subtree yet.  During the CGo phase (Steps 3–7)
+the C source files live in `internal/finder/` and the libcheck tests
+reference them there.  `src/` is created in Step 9 when the layout is
+reorganized.
 
 **CMakeLists.txt requirements:**
 
@@ -120,7 +131,7 @@ tests/unit/CMakeLists.txt    libcheck target (zero test cases yet)
 - `find_package(CURL REQUIRED)`
 - `find_package(LibXml2 REQUIRED)`
 - `pkg_check_modules(CHECK REQUIRED check)` (libcheck)
-- `add_subdirectory(src)` and `add_subdirectory(tests)`
+- `add_subdirectory(tests)` (no `src/` yet)
 
 **Done when:**
 
@@ -134,7 +145,8 @@ exits 0 (vacuously — no test cases yet), and `make test` (Go) is still green.
 ## Step 3: Port Key Detection (`key.c`)
 
 **Go source:** `internal/finder/key.go` (103 lines)
-**New files:** `src/key.c`, `src/key.h`
+**New C files:** `internal/finder/key.c`, `internal/finder/key.h`
+**New CGo shim:** `internal/finder/key_cgo.go`
 **New test:** `tests/unit/test_key.c`
 
 **Public API to implement:**
@@ -175,19 +187,26 @@ int normalize_key(const uint8_t *in, size_t in_len,
 | `malformed.asc`      | UNKNOWN           | error                   |
 | `truncated.asc`      | UNKNOWN           | error                   |
 
-**Go code to delete:** Once `ctest -R key` is green, delete
-`internal/finder/key_normalize_test.go`.  The Go *source* file `key.go`
-remains (still needed by `validation.go` and `main.go`).
+**CGo shim** (`key_cgo.go`) wraps `detect_key_format()` and `normalize_key()`
+in the original Go function signatures.  Memory note: `normalize_key` returns
+a heap-allocated buffer; the shim must call `C.free` on it after copying into
+a Go `[]byte`.
 
-**Done when:** `ctest -R key` passes; `make test` (Go, minus key tests) still
-green.
+**Go code to delete:** Once `ctest -R key` is green, delete
+`internal/finder/key.go`.  The shim `key_cgo.go` keeps the Go package
+compiling; the test file `key_normalize_test.go` is kept and now exercises
+the C implementation through the shim.
+
+**Done when:** `ctest -R key` passes; `go test ./...` still green (key tests
+now run against C code).
 
 ---
 
 ## Step 4: Port Packages File Parsing (`packages.c`)
 
 **Go source:** `internal/finder/packages.go` (136 lines)
-**New files:** `src/packages.c`, `src/packages.h`
+**New C files:** `internal/finder/packages.c`, `internal/finder/packages.h`
+**New CGo shim:** `internal/finder/packages_cgo.go`
 **New test:** `tests/unit/test_packages.c`
 
 **Public API to implement:**
@@ -229,18 +248,23 @@ directly from `testdata/packages/`.
 | `tailscale-real.txt` | spot-check `tailscale` is present                |
 | `zoom-real.txt`      | spot-check `zoom` is present                     |
 
-**Go code to delete:** Once `ctest -R packages` is green, delete
-`internal/finder/packages_test.go`.  Source file `packages.go` remains.
+**CGo shim** (`packages_cgo.go`) wraps `parse_packages_file()` and
+`parse_deb_line()`.  The shim converts C string arrays to Go slices and
+calls `packages_free()`/`deb_line_free()` after copying.
 
-**Done when:** `ctest -R packages` passes; `make test` (Go, minus packages
-tests) still green.
+**Go code to delete:** Once `ctest -R packages` is green, delete
+`internal/finder/packages.go`.  The shim keeps the package compiling;
+`packages_test.go` is kept and now exercises C code.
+
+**Done when:** `ctest -R packages` passes; `go test ./...` still green.
 
 ---
 
 ## Step 5: Port System Detection (`system.c`)
 
 **Go source:** `internal/finder/system.go` (284 lines)
-**New files:** `src/system.c`, `src/system.h`
+**New C files:** `internal/finder/system.c`, `internal/finder/system.h`
+**New CGo shim:** `internal/finder/system_cgo.go`
 **New test:** `tests/unit/test_system.c`
 
 **Public API to implement:**
@@ -270,13 +294,17 @@ follow-up; the table suffices for current test coverage.
 - LTS fallback logic for non-LTS Ubuntu releases
 - `/etc/os-release` parsing (feed a synthetic file, not the live system file)
 
-**Go code to delete:** Once `ctest -R system` is green, delete
-`internal/finder/system_test.go` and
-`internal/finder/system_integration_test.go`.  Source file `system.go`
-remains.
+**CGo shim** (`system_cgo.go`) wraps `get_os_info()` and the codename
+mapping functions.  `get_os_info` fills a C struct; the shim copies fields
+into a Go struct then calls `os_info_free()`.  The `const char *` returns
+from mapping functions are static strings — no freeing needed.
 
-**Done when:** `ctest -R system` passes; `make test` (Go, minus system tests)
-still green.
+**Go code to delete:** Once `ctest -R system` is green, delete
+`internal/finder/system.go`.  The shim keeps the package compiling;
+`system_test.go` and `system_integration_test.go` are kept and now
+exercise C code.
+
+**Done when:** `ctest -R system` passes; `go test ./...` still green.
 
 ---
 
@@ -319,7 +347,8 @@ Kubernetes, and a Launchpad PPA page.
 ## Step 6b: Port HTML Parser (`parser.c`)
 
 **Go source:** `internal/finder/parser.go` (284 lines)
-**New files:** `src/parser.c`, `src/parser.h`
+**New C files:** `internal/finder/parser.c`, `internal/finder/parser.h`
+**New CGo shim:** `internal/finder/parser_cgo.go`
 **New test:** `tests/unit/test_parser.c`
 
 **Public API to implement:**
@@ -354,19 +383,26 @@ asserting the same key URLs and deb lines as the Go
 Break into sub-cases by category (official docs, GitHub READMEs, Launchpad)
 if the file becomes unwieldy.
 
-**Go code to delete:** Once `ctest -R parser` is green, delete
-`internal/finder/parser_test.go` and `internal/finder/repo_finder_test.go`
-(the large 45-case table).  Source files `parser.go` remains.
+**CGo shim** (`parser_cgo.go`) wraps `parse_repo_page()`, converting the
+returned `parse_result_t` (C arrays of strings) into Go slices, then calling
+`parse_result_free()`.  This is the most data-rich shim; take care to copy
+all strings before freeing.
 
-**Done when:** `ctest -R parser` passes for all 45 fixtures; `make test`
-(Go, minus parser tests) still green.
+**Go code to delete:** Once `ctest -R parser` is green, delete
+`internal/finder/parser.go`.  The shim keeps the package compiling;
+`parser_test.go` and `repo_finder_test.go` are kept and now exercise C
+code across all 45 fixtures.
+
+**Done when:** `ctest -R parser` passes for all 45 fixtures; `go test ./...`
+still green.
 
 ---
 
 ## Step 7: Port Validation and Matching (`validation.c`)
 
 **Go source:** `internal/finder/validation.go` (469 lines)
-**New files:** `src/validation.c`, `src/validation.h`
+**New C files:** `internal/finder/validation.c`, `internal/finder/validation.h`
+**New CGo shim:** `internal/finder/validation_cgo.go`
 **New test:** `tests/unit/test_validation.c`
 
 **Public API to implement:**
@@ -401,15 +437,22 @@ int check_conflicts(const char *key_path, const char *sources_path);
 - System-aware filtering with mock `os_info_t`
 - `generate_key_path` and `generate_sources_entry` round-trips
 
+**CGo shim** (`validation_cgo.go`) wraps matching, filtering, path
+generation, and preflight-check functions.  `match_keys_to_sources` returns
+a C array of `match_t*`; the shim converts each into a Go struct then calls
+`free` on the array.
+
 **Go code to delete:** Once `ctest -R validation` is green, delete
-`internal/finder/validation_test.go`.  Source file `validation.go` remains.
+`internal/finder/validation.go`.  The shim keeps the package compiling;
+`validation_test.go` is kept and now exercises C code.
 
-At this point **all Go test files have been deleted**.  `go test ./...`
-reports nothing to test (the `finder` package still compiles, but has zero
-test functions).  `make test` should now run only `ctest --test-dir build`.
+At this point all five Go source files in `internal/finder/` have been
+replaced by CGo shims.  `main.go` (which imports the `finder` package) still
+compiles and the entire `go test ./...` suite still passes — but every test
+now runs against C implementations through their respective shims.
 
-**Done when:** `ctest -R validation` passes; `ctest --test-dir build` is the
-sole content of `make test`.
+**Done when:** `ctest -R validation` passes; `go test ./...` still green
+(all tests now exercising C code through CGo shims).
 
 ---
 
@@ -455,47 +498,83 @@ blacklist of low-quality sites maintained in Go.
 back to trying the uncompressed URL if `.gz` fetch fails (matching Go logic).
 
 **Go code to delete:** Once `make e2e` passes with the C binary, delete all
-remaining Go source in one commit:
+remaining Go in one commit:
 
 - `cmd/apt-find-repo/main.go` (and the now-empty `cmd/` tree)
-- `internal/finder/key.go`
-- `internal/finder/packages.go`
-- `internal/finder/parser.go`
-- `internal/finder/system.go`
-- `internal/finder/validation.go`
+- `internal/finder/*_cgo.go` (five CGo shims)
+- `internal/finder/*_test.go` (all seven test files)
 - `go.mod`, `go.sum`
 
-All these files cross-reference each other, so they must go together rather
-than one at a time.
+These can all go together because nothing depends on them any more: the C
+binary doesn't use them, the CGo shims were only bridging Go→C, and the
+Go test files were only kept to validate those shims.
 
 **Done when:**
 
-1. `cmake --build build && build/apt-find-repo -v https://tailscale.com/download/linux/ubuntu-2204`
+1. `build/apt-find-repo -v https://tailscale.com/download/linux/ubuntu-2204`
    produces expected output.
 2. `make e2e` passes against the C binary.
-3. No Go source files remain in the repository.
+3. No Go files of any kind remain in the repository.
 4. `ctest --test-dir build` (≡ `make test`) is green.
 
 ---
 
-## Step 9: Final Cleanup
+## Step 9: Reorganize the C Layout
 
-**Goal:** Tidy the repository now that Go is fully gone.
+**Goal:** Now that Go is fully gone there are no constraints on file layout.
+Move everything to wherever makes sense for a C project and update the build
+to match.
+
+**Suggested layout** (adjust to taste):
+
+```
+src/
+  key.c / key.h
+  packages.c / packages.h
+  system.c / system.h
+  parser.c / parser.h
+  validation.c / validation.h
+  http.c / http.h
+  main.c
+  CMakeLists.txt      (library + binary targets)
+tests/
+  unit/
+    test_key.c
+    test_packages.c
+    test_system.c
+    test_parser.c
+    test_validation.c
+    CMakeLists.txt
+  e2e/
+    run-tests.sh
+  CMakeLists.txt
+testdata/             (unchanged — still shared with tests)
+docs/
+  CLAUDE.md           (update to C build instructions)
+  apt-find-repo.1
+CMakeLists.txt        (root — now adds src/ subdirectory)
+Makefile              (thin wrapper around cmake)
+```
 
 **Actions:**
 
-1. Update `Makefile`: `build` → `cmake --build build`; `install` → copies
-   from `build/`; `clean` → removes `build/`.  (`test` was already updated
-   at the end of Step 7.)
-2. Update `docs/CLAUDE.md` with C-oriented build and test instructions.
-3. Update `README.md` to list C library build dependencies
+1. `git mv internal/finder/*.c internal/finder/*.h src/`
+2. Create `src/CMakeLists.txt` with the library and binary targets.
+3. Update root `CMakeLists.txt` to `add_subdirectory(src)`.
+4. Update `tests/unit/CMakeLists.txt` to reference source files from `src/`
+   instead of `internal/finder/`.
+5. Delete the now-empty `internal/` directory.
+6. Remove `poc/` (proof-of-concept from Step 6a).
+7. Update `Makefile`: `build` → `cmake --build build`; `install` → copies
+   from `build/`; `clean` → removes `build/`.
+8. Update `docs/CLAUDE.md` with C-oriented build and test instructions.
+9. Update `README.md` to list C library build dependencies
    (`libcurl4-openssl-dev`, `libxml2-dev`, `check`, cmake).
-4. Update `docs/apt-find-repo.1` if build instructions appear in the man page.
-5. Remove `poc/` (proof-of-concept from Step 6a).
+10. Update `docs/apt-find-repo.1` if build instructions appear there.
 
-**Done when:** `make build && make test && make e2e` all pass using only
-the C toolchain; repository contains no Go files and no proof-of-concept
-directory.
+**Done when:** `make build && make test && make e2e` all pass; the
+repository has no Go files, no `internal/` directory, no `poc/`, and the
+C source tree is laid out the way you want it.
 
 ---
 
@@ -514,22 +593,19 @@ as `Build-Depends` in the eventual `debian/control` file.
 
 ---
 
-## Test Coverage at Each Step
+## What Gets Deleted at Each Step
 
-| Step | Go test files present | C tests present | Go source present |
-|------|-----------------------|-----------------|-------------------|
-| 0    | all 7                 | none            | all 6             |
-| 1    | all 7                 | none            | all 6             |
-| 2    | all 7                 | none (stub)     | all 6             |
-| 3    | 6 (key deleted)       | key             | all 6             |
-| 4    | 5 (packages deleted)  | key, packages   | all 6             |
-| 5    | 3 (system deleted)    | + system        | all 6             |
-| 6a   | 3                     | + system        | all 6             |
-| 6b   | 1 (parser deleted)    | + parser        | all 6             |
-| 7    | 0 (validation deleted)| + validation    | all 6             |
-| 8    | 0                     | + main/http     | none              |
-| 9    | 0                     | all             | none              |
+| Step | Go source deleted        | CGo shim added       | Go tests deleted |
+|------|--------------------------|----------------------|------------------|
+| 3    | `key.go`                 | `key_cgo.go`         | none             |
+| 4    | `packages.go`            | `packages_cgo.go`    | none             |
+| 5    | `system.go`              | `system_cgo.go`      | none             |
+| 6b   | `parser.go`              | `parser_cgo.go`      | none             |
+| 7    | `validation.go`          | `validation_cgo.go`  | none             |
+| 8    | `main.go`, all 5 shims   | —                    | all 7            |
+| 9    | —                        | —                    | —                |
 
-`make test` at each step runs: Go tests for whatever files remain **plus**
-`ctest --test-dir build` for whatever C tests exist.  By end of Step 7 it
-is C-only.
+`go test ./...` stays green from Step 0 through Step 7 (inclusive).  At
+Steps 3–7 it runs against C implementations via CGo shims.  Everything Go
+is deleted together at Step 8.  `make test` from Step 8 onward is
+`ctest --test-dir build` only.
